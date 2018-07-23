@@ -5,4 +5,6 @@
     :maxdepth: 2
 
     docker
+    kubernetes
     kvm
+    openstack/readme.rst

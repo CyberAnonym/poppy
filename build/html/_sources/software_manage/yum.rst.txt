@@ -62,9 +62,9 @@ mkdir -p /www/share/epel #第三方epel源
 
 
 说明：这里创建三个文件夹，分别存放CentOS官方标准源、第三方的rpmforge源和epel源
-\
+
 二、确定以上三个yum源上游源的同步镜像地址
-------------------------------------
+---------------------------------------------
 
 
 1、CentOS官方标准源：rsync://rsync.mirrors.ustc.edu.cn/centos/
