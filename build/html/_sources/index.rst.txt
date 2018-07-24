@@ -7,20 +7,22 @@ Welcome to Poppy's documentation!
 =================================
 
 .. toctree::
-   :maxdepth: 1
-   :caption: Contents:
+    :maxdepth: 1
+    :caption: Contents:
 
-   introduction
-   user_management/readme
-   software_manage/readme
-   common_service/readme
-   security/readme
-   database/readme
-   storage/readme
-   monitor/readme
-   scripts/readme
-   virtualization/readme
-   ha&lb/readme
-   web/readme
+    introduction
+    user_management/readme
+    software_manage/readme
+    common_service/readme
+    security/readme
+    database/readme
+    storage/readme
+    monitor/readme
+    scripts/readme
+    virtualization/readme
+    ha&lb/readme
+    web/readme
+    rhcsa/readme
+
 
 
