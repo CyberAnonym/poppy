@@ -7,4 +7,6 @@ yum的全称是Yellowdog Updater Modified
     :maxdepth: 5
     :numbered:
 
-    yum
+    yum_official_sync
+    yum_http
+    yum_iso_local

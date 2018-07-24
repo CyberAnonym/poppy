@@ -5,4 +5,4 @@
     :maxdepth: 1
 
     rpm
-    yum_index
+    yum/readme

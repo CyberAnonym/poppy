@@ -1,5 +1,6 @@
 
-搭建yum源服务器
+搭建同步官方的yum源服务器
+###############################
 
 准备篇：
 ```````````````
@@ -47,12 +48,13 @@ Hostname: dc.alv.pub
 创建镜像文件存放目录
 ---------------------------
 
+::
 
-mkdir -p /www/share/centos #CentOS官方标准源
+    mkdir -p /www/share/centos #CentOS官方标准源
 
-mkdir -p /www/share/repoforge #第三方rpmforge源
+    mkdir -p /www/share/repoforge #第三方rpmforge源
 
-mkdir -p /www/share/epel #第三方epel源
+    mkdir -p /www/share/epel #第三方epel源
 
 
 说明：这里创建三个文件夹，分别存放CentOS官方标准源、第三方的rpmforge源和epel源
