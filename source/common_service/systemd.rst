@@ -20,9 +20,12 @@ Linux Init & CentOS systemd
 
 Linux一直以来采用init进程。例如下面的命令用来启动服务：
 
-$ sudo /etc/init.d/apache2 start
+.. code-block:: bash
+    :linenos:
 
-或者\ $ service apache2 start
+    $ sudo /etc/init.d/apache2 start
+
+    或者\ $ service apache2 start
 
 但是init有两个缺点：
 
@@ -46,6 +49,7 @@ systemd文件示例：
 ExecStart后面的，就是启动该服务器时要执行的命令，可以说是单个脚本，也可以是一个命令加参数。
 
 .. code-block:: bash
+    :linenos:
 
     echo '
     [Unit]
@@ -68,7 +72,9 @@ ExecStart后面的，就是启动该服务器时要执行的命令，可以说�
 启动 sophroth-pxe服务
 ```````````````````````````
 
-.. code-block:: bash
+.. code-block:: shell
+    :linenos:
+    :emphasize-lines: 2
 
     systemctl enable sophiroth-pxe
     systemctl start sophiroth-pxe

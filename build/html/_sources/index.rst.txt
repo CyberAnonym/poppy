@@ -14,6 +14,7 @@ Welcome to Poppy's documentation!
     user_management/readme
     software_manage/readme
     common_service/readme
+    network/readme
     security/readme
     database/readme
     storage/readme
@@ -23,6 +24,7 @@ Welcome to Poppy's documentation!
     ha&lb/readme
     web/readme
     rhcsa/readme
+
 
 
 

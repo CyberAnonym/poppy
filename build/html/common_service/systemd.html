@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="安全管理" href="../security/readme.html" />
+    <link rel="next" title="网络" href="../network/readme.html" />
     <link rel="prev" title="systemd" href="systemd_index.html" /> 
 
   
@@ -94,6 +94,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../network/readme.html">网络</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../security/readme.html">安全管理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../database/readme.html">数据库</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../storage/readme.html">存储</a></li>
@@ -213,7 +214,23 @@
 <div class="section" id="id3">
 <h1><a class="toc-backref" href="#id7">4. systemd文件示例：</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h1>
 <p>ExecStart后面的，就是启动该服务器时要执行的命令，可以说是单个脚本，也可以是一个命令加参数。</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s1">&#39;</span>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s1">&#39;</span>
 <span class="s1">[Unit]</span>
 <span class="s1">Description=The Sophiroth Service</span>
 <span class="s1">After=syslog.target network.target salt-master.service</span>
@@ -231,16 +248,19 @@
 <span class="s1">WantedBy=multi-user.target graphic.target</span>
 <span class="s1">&#39;</span> &gt; /usr/lib/systemd/system/sophiroth-pxe.service
 </pre></div>
-</div>
+</td></tr></table></div>
 </div>
 <div class="section" id="sophroth-pxe">
 <h1><a class="toc-backref" href="#id8">5. 启动 sophroth-pxe服务</a><a class="headerlink" href="#sophroth-pxe" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>systemctl <span class="nb">enable</span> sophiroth-pxe
-systemctl start sophiroth-pxe
-systemctl status sophiroth-pxe
+<div class="highlight-shell notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>systemctl <span class="nb">enable</span> sophiroth-pxe
+<span class="hll">systemctl start sophiroth-pxe
+</span>systemctl status sophiroth-pxe
 lsof -i:8001
 </pre></div>
-</div>
+</td></tr></table></div>
 </div>
 
 
@@ -251,7 +271,7 @@ lsof -i:8001
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../security/readme.html" class="btn btn-neutral float-right" title="安全管理" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../network/readme.html" class="btn btn-neutral float-right" title="网络" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="systemd_index.html" class="btn btn-neutral" title="systemd" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
