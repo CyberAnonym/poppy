@@ -195,8 +195,13 @@
 <p>参考资料:<a class="reference external" href="https://blog.csdn.net/shuaixingi/article/details/49641721">https://blog.csdn.net/shuaixingi/article/details/49641721</a></p>
 <p>Linux Init &amp; CentOS systemd</p>
 <p>Linux一直以来采用init进程。例如下面的命令用来启动服务：</p>
-<p>$ sudo /etc/init.d/apache2 start</p>
-<p>或者$ service apache2 start</p>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span>$ sudo /etc/init.d/apache2 start
+
+或者<span class="se">\ </span>$ service apache2 start
+</pre></div>
+</td></tr></table></div>
 <p>但是init有两个缺点：</p>
 <ul class="simple">
 <li>1、启动时间长。Init进程是串行启动，只有前一个进程启动完，才会启动下一个进程。（这也是CentOS5的主要特征)</li>
