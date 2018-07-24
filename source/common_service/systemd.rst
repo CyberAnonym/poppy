@@ -2,6 +2,7 @@ systemd service
 ####################
 
 .. contents::
+.. sectnum::
 
 需求
 ``````````
