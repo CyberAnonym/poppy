@@ -35,3 +35,22 @@ ll是ls -l的间歇，执行ll，可以查看当前目录下的文件和目录�
     chmod u+x file
 
 .. image:: ../_static/images/ugo3.jpg
+
+减值修改
+============
+
+.. code-block:: bash
+
+    chmod a-r file  #让所有权限位、也就是所有人都没有r（读）的权限
+    chmod g-w file  #让g（组）没有w（write写）的权限。
+
+等值修改
+===========
+
+.. code-block:: bash
+
+    chmod u=r file  #将用户所有者的权限改成只有r、也就是只有读的权限。
+    chmod go=r file #将file的所属组和其他人的权限改成只读。
+    chmod a= file   #将file文件设置成任何人没有任何权限。
+    chmod u=g file  #将file文件所属组的权限复制给所属者。
+

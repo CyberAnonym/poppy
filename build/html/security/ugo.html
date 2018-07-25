@@ -89,6 +89,8 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">ugo</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id1">查看权限</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id2">增值修改权限</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">减值修改</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">等值修改</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="selinux.html">selinux</a></li>
@@ -199,6 +201,22 @@
 </pre></div>
 </div>
 <img alt="../_images/ugo3.jpg" src="../_images/ugo3.jpg" />
+</div>
+<div class="section" id="id3">
+<h2>减值修改<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>chmod a-r file  <span class="c1">#让所有权限位、也就是所有人都没有r（读）的权限</span>
+chmod g-w file  <span class="c1">#让g（组）没有w（write写）的权限。</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>等值修改<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>chmod <span class="nv">u</span><span class="o">=</span>r file  <span class="c1">#将用户所有者的权限改成只有r、也就是只有读的权限。</span>
+chmod <span class="nv">go</span><span class="o">=</span>r file <span class="c1">#将file的所属组和其他人的权限改成只读。</span>
+chmod <span class="nv">a</span><span class="o">=</span> file   <span class="c1">#将file文件设置成任何人没有任何权限。</span>
+chmod <span class="nv">u</span><span class="o">=</span>g file  <span class="c1">#将file文件所属组的权限复制给所属者。</span>
+</pre></div>
+</div>
 </div>
 </div>
 
