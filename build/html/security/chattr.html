@@ -1,0 +1,406 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>chattr &mdash; Poppy 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="数据库" href="../database/readme.html" />
+    <link rel="prev" title="acl" href="acl.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Poppy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Poppy 介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_management/readme.html">用户管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../software_manage/readme.html">软件管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../common_service/readme.html">系统常用服务</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/readme.html">网络</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="readme.html">安全管理</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ugo.html">ugo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="selinux.html">selinux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iptables.html">iptables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firewalld.html">firewalld</a></li>
+<li class="toctree-l2"><a class="reference internal" href="acl.html">acl</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">chattr</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">隐藏权限介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">查看隐藏权限</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">修改特殊权限</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">对目录</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">相关网络资料</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../database/readme.html">数据库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/readme.html">存储</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitor/readme.html">监控</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripts/readme.html">脚本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../virtualization/readme.html">虚拟化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ha&amp;lb/readme.html">高可用 &amp; 负载均衡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/readme.html">web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rhcsa/readme.html">rscsa</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Poppy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="readme.html">安全管理</a> &raquo;</li>
+        
+      <li>chattr</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/security/chattr.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="chattr">
+<h1>chattr<a class="headerlink" href="#chattr" title="Permalink to this headline">¶</a></h1>
+<p>Linux 隐藏权限</p>
+<div class="section" id="id1">
+<h2>隐藏权限介绍<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Linux下的隐藏权限，我们用到两个命令，一个是lsattr,也就是list file attributes。用于查看问加你的attr权限，一个是chattr，也就是change file attributes，用于修改文件的attr权限，包括目录的。详情可以查看man手册，man chattr.
+隐藏权限的特点：能限制root用户。</p>
+<p>隐藏权限的特点：能限制root用户。</p>
+<p>语法</p>
+<p>chattr [+-=] [acdeijstu]  filename</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[root@leopard test]# man chattr
+
+append only (a),            只允许追加，不允许删除，移动
+com-pressed  (c),
+no  dump (d),
+extent format (e),
+immutable (i),                      免疫的，防止所有用户误删除，修改，移动文件
+data  journalling  (j),
+secure deletion  (s),
+no tail-merging (t),
+undeletable  (u),
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>查看隐藏权限<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>如下所示，现在我们当前目录下是有一个文件，一个目录。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>root@dhcp tmp<span class="o">]</span><span class="c1"># ls -l</span>
+total <span class="m">0</span>
+-rw-r--r-- <span class="m">1</span> root root <span class="m">0</span> Jul <span class="m">25</span> <span class="m">13</span>:36 cup
+drwxr-xr-x <span class="m">2</span> root root <span class="m">6</span> Jul <span class="m">25</span> <span class="m">13</span>:36 hello
+</pre></div>
+</div>
+<p>直接执行lsattr，查看当前目录下所有文件和目录的隐藏权限。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>root@dhcp tmp<span class="o">]</span><span class="c1"># lsattr</span>
+---------------- ./cup
+---------------- ./hello
+</pre></div>
+</div>
+<p>执行lsattr cup ，查看文件cup文件的隐藏权限</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>root@dhcp tmp<span class="o">]</span><span class="c1"># lsattr cup</span>
+---------------- cup
+</pre></div>
+</div>
+<p>查看目录hello的隐藏权限</p>
+<ul class="simple">
+<li>查看hello目录的隐藏权限，-查看指定目录的时候，需要加-d参数。</li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>root@dhcp tmp<span class="o">]</span><span class="c1"># lsattr -d hello</span>
+---------------- hello
+</pre></div>
+</div>
+<p>查看目录hello下的所有文件的隐藏权限</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>root@dhcp tmp<span class="o">]</span><span class="c1"># lsattr  hello</span>
+---------------- hello/file
+---------------- hello/file2
+</pre></div>
+</div>
+<p># lsattr hello  查看hello目录下所有文件和目录的隐藏权限</p>
+</div>
+<div class="section" id="id3">
+<h2>修改特殊权限<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>对文件</li>
+</ul>
+<p>修改特殊权限用到的命令是chattr</p>
+<p>语法 chattr [+-=] [acdeijstu]  filename</p>
+<ul class="simple">
+<li>append only (a),      添加后，改文件只能增加，不能修改也不能删除，需要使用root账号；</li>
+<li>com-pressed  (c), 文件会自动压缩，读取时会自动解压缩；</li>
+<li>no  dump (d), 不能使用dump程序进行备份；</li>
+<li>extent format (e),</li>
+<li>immutable (i), 免疫的，防止所有用户误删除，不能修改，添加，移动，删除，修改名字等一切操作，需要root账号；</li>
+<li>data  journalling  (j),</li>
+<li>secure deletion  (s), 删除时直接从硬盘中移除不能恢复；</li>
+<li>no tail-merging (t),</li>
+<li>undeletable  (u), 删除后仍然会保存在硬盘中，预防意外删除，可以恢复；</li>
+<li>A：文件在存取过程中不会修改atime；</li>
+<li>S：一般文件并不是同步写入到硬盘中，添加这个属性后，则会同步；</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>+：增加隐藏权限，不改变已有的；
+- ：删除隐藏权限，不改变已有的；
+=：将隐藏权限设置为改值；
+
+chattr：权限
+</pre></div>
+</div>
+<p>一般我们用的比较多的就是特殊权限里的i参数，给文件设置了i的特殊权限之后，就无法删除了，修改和移动也不可以。</p>
+<p>还有就是-a参数，用于让文件只能追加新的信息，不能删除原有的内容</p>
+<p>这里我们为cup这个文件添加隐藏权限a，使其只能追加内容，无法删除或修改</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[root@dhcp tmp]# lsattr cup     #查看权限
+---------------- cup
+[root@dhcp tmp]#
+[root@dhcp tmp]# chattr +a cup  #添加隐藏权限a
+[root@dhcp tmp]# lsattr cup     #再次查看权限
+-----a---------- cup
+[root@dhcp tmp]# rm -f cup  #尝试删除文件，确认无法删除
+rm: cannot remove ‘cup’: Operation not permitted
+[root@dhcp tmp]# echo hello &gt;&gt; cup  #尝试追加内容到该文件，确认可以追加
+[root@dhcp tmp]# echo hello &gt; cup  #尝试覆盖该文件，确认无法覆盖
+-bash: cup: Operation not permitted
+</pre></div>
+</div>
+<p>现在我们尝试删除这个cup这个文件，无法删除，尝试写入数据覆盖这个文件，也同样不行，但追加数据到这个文件，执行成功。</p>
+<p>所以，在执行-a这个参数之后，该文件变的无法删除无法修改，只能添加新的信息到这个文件，这种属性一般用于日志文件会很合适，因为日志文件就是属于那种只需要添加新的内容，旧的内容不做变更的文件。</p>
+<p>前面我们都是使用的+增加权限，使用-取消权限，实际上我们也可以使用等值修改，就是=</p>
+</div>
+<div class="section" id="id4">
+<h2>对目录<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>对目录设置特殊权限，同样的，使用a参数之后，无法删除目录里的文件，但可以修改该目录里的文件，这个时候不只是只能追加新的信息了，也可以覆盖，hello目录的子目录里面，我们也可以新建文件和目录，也可以删除那些文件和目录，但是，我们不能对hello目录的子目录本身进行删除和修改。</p>
+</div>
+<div class="section" id="id5">
+<h2>相关网络资料<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>对于某些有特殊要求的档案(如服务器日志)还可以追加隐藏权限的设定。这些隐藏权限包括：
+Append only (a), compressed (c), no dump (d), immutable (i), data journalling (j),secure deletion (s), no tail-merging (t), undeletable (u), no atime updates (A), synchronous directory updates (D), synchronous updates (S), and top of directory hierarchy (T).
+大部分属性在文件系统的安全管理方面起很重要的作用。关于以上属性的详细描述请兄弟们查阅chattr的在线帮助man，注意多数属性须要由root来施加。
+通过chattr设置档案的隐藏权限。
+[root]#chattr --help
+Usage: chattr [-RV] [-+=AacDdijsSu] [-v version] files...
+参数或选项描述：
+-R：递归处理，将指定目录下的所有文件及子目录一并处理。
+-V：显示详细过程有版本编号。
+-v：设定文件或目录版本(version)。
++ ：在原有参数设定基础上，追加参数。
+- ：在原有参数设定基础上，移除参数。
+= ：更新为指定参数设定。
+A：文件或目录的 atime (access time)不可被修改(modified), 可以有效预防例如手提电脑磁盘I/O错误的发生。
+S：硬盘I/O同步选项，功能类似sync。
+a：即append，设定该参数后，只能向文件中添加数据，而不能删除，多用于服务器日志文 件安全，只有root才能设定这个属性。
+c：即compresse，设定文件是否经压缩后再存储。读取时需要经过自动解压操作。
+d：即no dump，设定文件不能成为dump程序的备份目标。
+i：设定文件不能被删除、改名、设定链接关系，同时不能写入或新增内容。i参数对于文件 系统的安全设置有很大帮助。
+j：即journal，设定此参数使得当通过mount参数：data=ordered 或者 data=writeback 挂 载的文件系统，文件在写入时会先被记录(在journal中)。如果filesystem被设定参数为 data=journal，则该参数自动失效。
+s：保密性地删除文件或目录，即硬盘空间被全部收回。
+u：与s相反，当设定为u时，数据内容其实还存在磁盘中，可以用于undeletion.
+各参数选项中常用到的是a和i。a选项强制只可添加不可删除，多用于日志系统的安全设定。而i是更为严格的安全设定，只有superuser (root) 或具有CAP_LINUX_IMMUTABLE处理能力（标识）的进程能够施加该选项。我们来举一个例子：
+[root]#touch chattr_test
+[root]#chattr +i chattr_test
+[root]#rm chattr_test
+rm: remove write-protected regular empty file `chattr_test`? y
+rm: cannot remove `chattr_test`: Operation not permitted
+呵，此时连root本身都不能直接进行删除操作，必须先去除i设置后再删除。
+chattr命令的在线帮助详细描述了各参数选项的适用范围及bug提示，使用时建议兄弟们仔细查阅。由于上述的这些属性是隐藏的，查看时需要使用lsattr命令，以下简述之。
+lsattr命令格式：
+[root]#lsattr [-RVadlv] [files...]
+参数或选项说明：
+-R：递归列示目录及文件属性。
+-V：显示程序版本号。
+-a：显示所有文件属性，包括隐藏文件(.)、当时目录(./)及上层目录(../)。
+-d：仅列示目录属性。
+-l：（此参数目前没有任何作用）。
+-v：显示文件或目录版本。
+例：
+[root]#chattr +aij lsattr_test
+[root]#lsattr
+----ia---j--- ./lsattr_test
+关于lsattr的用法，详情请参阅在线帮助man。
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../database/readme.html" class="btn btn-neutral float-right" title="数据库" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="acl.html" class="btn btn-neutral" title="acl" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Alvin Wan.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

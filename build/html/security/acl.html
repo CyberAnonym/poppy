@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>数据库 &mdash; Poppy 1.0.0 documentation</title>
+  <title>acl &mdash; Poppy 1.0.0 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="mysql" href="mysql.html" />
-    <link rel="prev" title="chattr" href="../security/chattr.html" /> 
+    <link rel="next" title="chattr" href="chattr.html" />
+    <link rel="prev" title="firewalld" href="firewalld.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -85,12 +85,24 @@
 <li class="toctree-l1"><a class="reference internal" href="../software_manage/readme.html">软件管理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../common_service/readme.html">系统常用服务</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../network/readme.html">网络</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../security/readme.html">安全管理</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">数据库</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="mysql.html">mysql</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongodb.html">mongodb</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="readme.html">安全管理</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ugo.html">ugo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="selinux.html">selinux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iptables.html">iptables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firewalld.html">firewalld</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">acl</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">查看ACL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">针对用户给文件或目录设置ACL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">针对组给文件设置ACL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">删除acl</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chattr.html">chattr</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../database/readme.html">数据库</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../storage/readme.html">存储</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../monitor/readme.html">监控</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../scripts/readme.html">脚本</a></li>
@@ -143,13 +155,15 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>数据库</li>
+          <li><a href="readme.html">安全管理</a> &raquo;</li>
+        
+      <li>acl</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/database/readme.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/security/acl.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -162,22 +176,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="id1">
-<h1>数据库<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="mysql.html">mysql</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="mysql.html#id1">安装mysql</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mysql.html#id2">配置mysql</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mysql.html#id3">查询</a></li>
+  <div class="section" id="acl">
+<h1>acl<a class="headerlink" href="#acl" title="Permalink to this headline">¶</a></h1>
+<p>acl - Access Control Lists</p>
+<div class="section" id="id1">
+<h2>查看ACL<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>getfacl file  <span class="c1">##查看file的ACL设置 。 对查看文件和目录的ACL，都用getfacl</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>针对用户给文件或目录设置ACL<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>setfacl -m u:user1:rwx file  <span class="c1">##对file 设置ACL，让user1对他拥有rwx权限，也就是全部的权限。</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>将user1对 file的权限改成只读</li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="mongodb.html">mongodb</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="mongodb.html#id1">安装mongodb</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongodb.html#id2">配置mongodb</a></li>
-</ul>
-</li>
-</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>setfacl -m u:user1:r file
+getfacl file
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>针对组给文件设置ACL<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>setfacl -m g:it:rwx dir1   <span class="c1">## 对dir1 目录设置ACL，让it 组拥有对这个目录的所有权限。</span>
+</pre></div>
+</div>
+<div class="section" id="id4">
+<h3>删除acl<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>-x 是删除。</p>
+<p>删除上面这条acl</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>getfacl dir1
+setfacl -x g:it dir1
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
@@ -189,10 +223,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="mysql.html" class="btn btn-neutral float-right" title="mysql" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="chattr.html" class="btn btn-neutral float-right" title="chattr" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../security/chattr.html" class="btn btn-neutral" title="chattr" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="firewalld.html" class="btn btn-neutral" title="firewalld" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

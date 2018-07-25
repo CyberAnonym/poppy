@@ -91,11 +91,20 @@
 <li class="toctree-l3"><a class="reference internal" href="#id2">增值修改权限</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id3">减值修改</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id4">等值修改</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#umask">umask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">特殊权限</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#suid">suid权限</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sgid">sgid权限</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sticky">sticky权限</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="selinux.html">selinux</a></li>
 <li class="toctree-l2"><a class="reference internal" href="iptables.html">iptables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="firewalld.html">firewalld</a></li>
+<li class="toctree-l2"><a class="reference internal" href="acl.html">acl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chattr.html">chattr</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../database/readme.html">数据库</a></li>
@@ -178,9 +187,9 @@
 <img alt="../_images/ugo1.png" src="../_images/ugo1.png" />
 <p>针对文件来说，有三种权限，分别是r，w，x</p>
 <ul class="simple">
-<li>r – Read 读权限</li>
-<li>w – Write 写权限</li>
-<li>x – eXecute 可执行权限</li>
+<li>r – Read 读权限 数字代表2</li>
+<li>w – Write 写权限 数字代表4</li>
+<li>x – eXecute 可执行权限 数字代表1</li>
 </ul>
 <p>针对目录来说，也是三种权限，r，w，x</p>
 <ul class="simple">
@@ -216,6 +225,82 @@ chmod <span class="nv">go</span><span class="o">=</span>r file <span class="c1">
 chmod <span class="nv">a</span><span class="o">=</span> file   <span class="c1">#将file文件设置成任何人没有任何权限。</span>
 chmod <span class="nv">u</span><span class="o">=</span>g file  <span class="c1">#将file文件所属组的权限复制给所属者。</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="umask">
+<h2>umask<a class="headerlink" href="#umask" title="Permalink to this headline">¶</a></h2>
+<p>用于创建用户时的默认权限，umask是去掉的部分，umask可以用数字或者描述指定。</p>
+<blockquote>
+<div><p>数字法：</p>
+<p>目录</p>
+</div></blockquote>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>            U       G       O
+<span class="m">777</span>         <span class="m">111</span>     <span class="m">111</span>     <span class="m">111</span>
+umask022    <span class="m">000</span>     <span class="m">010</span>     <span class="m">010</span>
+目录权限    <span class="m">111</span>     <span class="m">101</span>     <span class="m">101</span>
+所以目录的权限就为755
+
+ 文件
+
+            U       G       O
+<span class="m">666</span>         <span class="m">110</span>     <span class="m">110</span>     <span class="m">110</span>
+umask022    <span class="m">000</span>     <span class="m">010</span>     <span class="m">010</span>
+文件的权限   <span class="m">110</span>     <span class="m">100</span>     <span class="m">100</span>
+
+所以文件的权限的644
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>特殊权限<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>suid 4</li>
+<li>sgid 2</li>
+<li>sticky 1</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chmod</span> <span class="mi">2600</span> <span class="n">dir1</span>
+<span class="n">chmod</span> <span class="mi">4600</span> <span class="n">file</span>
+<span class="n">chmod</span> <span class="mi">1600</span> <span class="n">dir1</span>
+</pre></div>
+</div>
+<p>高级权限在用数字设置时权限位是在最前面。</p>
+<div class="section" id="suid">
+<h3>suid权限<a class="headerlink" href="#suid" title="Permalink to this headline">¶</a></h3>
+<p>【普通用户可以通过suid提升一定的权力】</p>
+<p>普通用户使用具有suid权限的命令，会获得此权限所有者的身份，换句话说等同于所有者在运行这条命令</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chmod</span> <span class="n">u</span><span class="o">+</span><span class="n">s</span> <span class="n">file</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sgid">
+<h3>sgid权限<a class="headerlink" href="#sgid" title="Permalink to this headline">¶</a></h3>
+<p>【新建文件继承目录的属组—-sgid权限只针对目录】</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hr</span>
+<span class="n">chgrp</span> <span class="n">hr</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hr</span><span class="o">/</span>
+<span class="n">chmod</span> <span class="n">g</span><span class="o">+</span><span class="n">s</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hr</span>
+<span class="n">ll</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hr</span><span class="o">/</span>
+<span class="n">touch</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hr</span><span class="o">/</span><span class="n">file9</span>
+<span class="n">ll</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hr</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>可以发现新建的文件继承了目录的属组，而不是root组</p>
+</div>
+<div class="section" id="sticky">
+<h3>sticky权限<a class="headerlink" href="#sticky" title="Permalink to this headline">¶</a></h3>
+<p>【用户只能删除自己的文件—–该权限只针对目录】</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>mkdir /home/dir1
+chmod 777 /home/dir1
+user1在/home/dir1建立文件, user2尝试删除！
+chmod o+t /home/dir1
+ll -d /home/dir1
+</pre></div>
+</div>
+<p>谁可以删除：</p>
+<ul class="simple">
+<li>root</li>
+<li>文件的所有者</li>
+<li>目录的所有者</li>
+</ul>
 </div>
 </div>
 </div>

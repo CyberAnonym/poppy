@@ -6,9 +6,9 @@ ugo权限，就是user group other 对于文件的权限。
 
 针对文件来说，有三种权限，分别是r，w，x
 
-- r -- Read 读权限
-- w – Write 写权限
-- x – eXecute 可执行权限
+- r -- Read 读权限 数字代表2
+- w – Write 写权限 数字代表4
+- x – eXecute 可执行权限 数字代表1
 
 针对目录来说，也是三种权限，r，w，x
 
@@ -54,3 +54,87 @@ ll是ls -l的间歇，执行ll，可以查看当前目录下的文件和目录�
     chmod a= file   #将file文件设置成任何人没有任何权限。
     chmod u=g file  #将file文件所属组的权限复制给所属者。
 
+
+umask
+=============
+
+用于创建用户时的默认权限，umask是去掉的部分，umask可以用数字或者描述指定。
+
+ 数字法：
+
+ 目录
+
+.. code-block:: bash
+
+                U	G	O
+    777	        111	111	111
+    umask022	000	010	010
+    目录权限    111	    101     101
+    所以目录的权限就为755
+
+     文件
+
+                U	G	O
+    666	        110	110	110
+    umask022	000	010	010
+    文件的权限   110     100     100
+
+    所以文件的权限的644
+
+特殊权限
+=============
+
+- suid 4
+- sgid 2
+- sticky 1
+
+::
+
+    chmod 2600 dir1
+    chmod 4600 file
+    chmod 1600 dir1
+
+高级权限在用数字设置时权限位是在最前面。
+
+suid权限
+-------------
+【普通用户可以通过suid提升一定的权力】
+
+普通用户使用具有suid权限的命令，会获得此权限所有者的身份，换句话说等同于所有者在运行这条命令
+
+::
+
+    chmod u+s file
+
+sgid权限
+-------------
+【新建文件继承目录的属组—-sgid权限只针对目录】
+
+::
+
+    mkdir /home/hr
+    chgrp hr /home/hr/
+    chmod g+s /home/hr
+    ll -d /home/hr/
+    touch /home/hr/file9
+    ll /home/hr/
+
+可以发现新建的文件继承了目录的属组，而不是root组
+
+sticky权限
+------------------
+【用户只能删除自己的文件—–该权限只针对目录】
+
+::
+
+    mkdir /home/dir1
+    chmod 777 /home/dir1
+    user1在/home/dir1建立文件, user2尝试删除！
+    chmod o+t /home/dir1
+    ll -d /home/dir1
+
+谁可以删除：
+
+- root
+- 文件的所有者
+- 目录的所有者
