@@ -6,3 +6,5 @@
 
     ugo
     selinux
+    iptables
+    firewalld

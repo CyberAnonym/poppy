@@ -1,4 +1,8 @@
+
 @ECHO OFF
+
+
+
 
 pushd %~dp0
 
@@ -33,4 +37,14 @@ goto end
 %SPHINXBUILD% -M help %SOURCEDIR% %BUILDDIR% %SPHINXOPTS%
 
 :end
+
+
+
 popd
+if "%1" == "pdf" (
+  %SPHINXBUILD% -b pdf %ALLSPHINXOPTS% %BUILDDIR%/pdf
+  if errorlevel 1 exit /b 1
+  echo.
+  echo.Build finished. The pdf files are in %BUILDDIR%/pdf.
+  goto end
+)
