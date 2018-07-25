@@ -8,8 +8,4 @@ Poppy 是Alvin的技术文档中心，Alvin平时会将自己遇到的一些技�
 
 .. image::  ./_static/images/etlucency.png
 
-.. image:: https://readthedocs.org/projects/poppywan/badge/?version=latest
-
-:target: https://poppywan.readthedocs.io/zh_CN/latest/?badge=latest
-
-:alt: Documentation Status
+test

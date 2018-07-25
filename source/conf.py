@@ -159,7 +159,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'Poppy', u'Poppy Documentation',
-     author, 'Poppy', 'One line description of project.',
+     author, 'Poppy', 'Poppy是Alvin的技术中心，Alvin在这里记录自己的技术.',
      'Miscellaneous'),
 ]
 
