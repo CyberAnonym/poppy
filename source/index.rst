@@ -13,6 +13,7 @@ Welcome to Poppy's documentation!
     introduction
     user_management/readme
     software_manage/readme
+    common_command/readme
     common_service/readme
     network/readme
     security/readme
