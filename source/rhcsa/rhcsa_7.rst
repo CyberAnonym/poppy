@@ -66,7 +66,9 @@ YUM 的软件库源为 http://rhgls.domainX.example.com/pub/x86_64/Server.将此
 调整逻辑卷的大小
 ------------------
 
-请按照以下要求调整本地逻辑卷 lvm1 的容量：调整后的逻辑卷及文件系统大小为 770MiB 调整后确保文件系统中已存在的内容不能被破坏调整后的容量可能出现误差，只要在 730MiB - 805MiB 之间都是允许的调整后，保证其挂载目录不改变，文件系统完成
+请按照以下要求调整本地逻辑卷 lvm1 的容量：调整后的逻辑卷及文件系统大小为 770MiB 调整后确保文件系统中已存在的内容不能被破坏调整后的容量可能出现误差，
+
+只要在 730MiB - 805MiB 之间都是允许的调整后，保证其挂载目录不改变，文件系统完成
 
 考试时候系统中只有一块硬盘 vda，而且已经使用三个分区 vda1 vda2 vda3。
 
@@ -105,7 +107,8 @@ YUM 的软件库源为 http://rhgls.domainX.example.com/pub/x86_64/Server.将此
     Command (m for help): w
     The partition table has been altered!
     Calling ioctl() to re-read partition table.
-    WARNING: Re-reading the partition table failed with error 16: Device or resource busy. The kernel still uses the old table. The new table will be used at the next reboot or after you run partprobe(8) or kpartx(8) Syncing disks.
+    WARNING: Re-reading the partition table failed with error 16: Device or resource busy. The kernel still uses the old table.
+    The new table will be used at the next reboot or after you run partprobe(8) or kpartx(8) Syncing disks.
     [root@server0 ~]# partprobe
     [root@server0 ~]# vgextend vg1 /dev/vdb2
     Physical volume "/dev/vdb2" successfully created
@@ -125,8 +128,14 @@ YUM 的软件库源为 http://rhgls.domainX.example.com/pub/x86_64/Server.将此
     验证：
     [root@server0 ~]# df -h
     Filesystem	Size	Used Avail Use% Mounted on
-    /dev/vda1 10G 3.1G 7.0G 31% / devtmpfs 906M 0 906M 0% /dev tmpfs 921M 140K 921M 1% /dev/shm tmpfs	921M	17M	904M	2% /run tmpfs	921M	0	921M	0% /sys/fs/cgroup
-    /dev/mapper/vg1-lvm1	769M	14M	756M	2% /vg1/lvm1
+    /dev/vda1 10G 3.1G 7.0G 31%
+    / devtmpfs 906M 0 906M 0%
+    /dev tmpfs 921M 140K 921M 1%
+    /dev/shm tmpfs	921M	17M	904M	2%
+    /run tmpfs	921M	0	921M	0%
+    /sys/fs/cgroup
+    /dev/mapper/vg1-lvm1	769M	14M	756M	2%
+    /vg1/lvm1
 
 
 创建用户和用户组
@@ -460,7 +469,8 @@ ntp 和 chrony 服务有冲突，同时只能运行一个。我们的评分脚�
     Command (m for help): w
     The partition table has been altered!
     Calling ioctl() to re-read partition table.
-    WARNING: Re-reading the partition table failed with error 16: Device or resource busy. The kernel still uses the old table. The new table will be used at the next reboot or after you run partprobe(8) or kpartx(8) Syncing disks.
+    WARNING: Re-reading the partition table failed with error 16: Device or resource busy. The kernel still uses the old table.
+    The new table will be used at the next reboot or after you run partprobe(8) or kpartx(8) Syncing disks.
     通知内核更新分区表
     [root@server0 ~]# partprobe
     格式化 swap 分区
@@ -502,7 +512,8 @@ ntp 和 chrony 服务有冲突，同时只能运行一个。我们的评分脚�
 LVM
 --------
 
-请按下列要求创建一个新的逻辑卷创建一个名为 exam 的卷组，卷组的 PE 尺寸为 16MiB 逻辑卷的名字为 lvm2,所属卷组为 exam,该逻辑卷由 8 个 PE 组成将新建的逻辑卷格式化为 xfs 文件系统，要求系统启动时，该逻辑卷能被自动挂载到
+请按下列要求创建一个新的逻辑卷创建一个名为 exam 的卷组，卷组的 PE 尺寸为 16MiB 逻辑卷的名字为 lvm2,所属卷组为 exam,
+该逻辑卷由 8 个 PE 组成将新建的逻辑卷格式化为 xfs 文件系统，要求系统启动时，该逻辑卷能被自动挂载到
 /exam/lvm2 目录
 解答：准备分区，标记分区类型，通知内核更新分区表
 ::
@@ -535,7 +546,8 @@ LVM
     Command (m for help): w
     The partition table has been altered!
     Calling ioctl() to re-read partition table.
-    WARNING: Re-reading the partition table failed with error 16: Device or resource busy. The kernel still uses the old table. The new table will be used at the next reboot or after you run partprobe(8) or kpartx(8) Syncing disks.
+    WARNING: Re-reading the partition table failed with error 16: Device or resource busy. The kernel still uses the old table.
+    The new table will be used at the next reboot or after you run partprobe(8) or kpartx(8) Syncing disks.
     [root@server0 ~]# partprobe
     创建 pv，vg，lv
     [root@server0 ~]# pvcreate /dev/vdb5
