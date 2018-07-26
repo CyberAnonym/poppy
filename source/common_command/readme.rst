@@ -1,8 +1,9 @@
-常用系统服务
+常用系统命令
 ##################
 
 
 .. toctree::
     :maxdepth: 2
 
-    systemd_index
+    journalctl
+    wget
