@@ -8,3 +8,5 @@ Poppy 是Alvin的技术文档中心，Alvin平时会将自己遇到的一些技�
 
 .. image::  ./_static/images/etlucency.png
 
+.. note:: 欢迎学习这里的知识或继续添加知识到这里。
+
