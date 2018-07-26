@@ -21,11 +21,11 @@ chattr [+-=] [acdeijstu]  filename
 
     [root@leopard test]# man chattr
 
-    append only (a), 		只允许追加，不允许删除，移动
+    append only (a),        只允许追加，不允许删除，移动
     com-pressed  (c),
     no  dump (d),
     extent format (e),
-    immutable (i),			免疫的，防止所有用户误删除，修改，移动文件
+    immutable (i),          免疫的，防止所有用户误删除，修改，移动文件
     data  journalling  (j),
     secure deletion  (s),
     no tail-merging (t),
@@ -89,7 +89,7 @@ chattr [+-=] [acdeijstu]  filename
 
 语法 chattr [+-=] [acdeijstu]  filename
 
-- append only (a), 	添加后，改文件只能增加，不能修改也不能删除，需要使用root账号；
+- append only (a),  添加后，改文件只能增加，不能修改也不能删除，需要使用root账号；
 - com-pressed  (c), 文件会自动压缩，读取时会自动解压缩；
 - no  dump (d), 不能使用dump程序进行备份；
 - extent format (e),
@@ -198,3 +198,4 @@ chattr [+-=] [acdeijstu]  filename
     [root]#lsattr
     ----ia---j--- ./lsattr_test
     关于lsattr的用法，详情请参阅在线帮助man。
+

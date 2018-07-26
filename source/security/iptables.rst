@@ -6,8 +6,6 @@ iptables 参数详解
 =======================
 
 
-略
-
 iptables 优先级顺序
 =========================
 
@@ -117,7 +115,7 @@ iptables 多条规则有冲突的时候，排在上面的规则优先。
 
 
 .. code-block:: bash
-    :emphasize-lines: 6
+       :emphasize-lines: 6
 
     [root@natasha ~]# iptables -L OUTPUT -n -t filter --line-numbers
     Chain OUTPUT (policy ACCEPT)
@@ -247,7 +245,6 @@ ping命令使用的是icmp协议，所以如果要禁止别人来ping我们的�
 
 
 那么这个时候客户端来ping这个服务器的时候就不会收到之前那种不可达之类的提示了。
-
 下面我们是加了-c 2,表示只ping两次，如果没加那个，会一直那样等很久,得不到相应，这样的方式在防攻击的时候能起到一定的作用。
 
 ::
@@ -350,3 +347,4 @@ linux系统下允许包转发
 .. code-block:: bash
 
     iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+
