@@ -7,3 +7,4 @@
 
     journalctl
     wget
+    curl
