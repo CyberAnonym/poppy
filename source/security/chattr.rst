@@ -5,7 +5,10 @@ Linux 隐藏权限
 隐藏权限介绍
 ----------------
 
-Linux下的隐藏权限，我们用到两个命令，一个是lsattr,也就是list file attributes。用于查看问加你的attr权限，一个是chattr，也就是change file attributes，用于修改文件的attr权限，包括目录的。详情可以查看man手册，man chattr.
+Linux下的隐藏权限，我们用到两个命令，一个是lsattr,也就是list file attributes。用于查看问加你的attr权限，一个是chattr，也就是change file attributes，用于修改文件的attr权限，包括目录的。
+
+详情可以查看man手册，man chattr.
+
 隐藏权限的特点：能限制root用户。
 
 隐藏权限的特点：能限制root用户。
@@ -143,7 +146,9 @@ chattr [+-=] [acdeijstu]  filename
 对目录
 --------------
 
-对目录设置特殊权限，同样的，使用a参数之后，无法删除目录里的文件，但可以修改该目录里的文件，这个时候不只是只能追加新的信息了，也可以覆盖，hello目录的子目录里面，我们也可以新建文件和目录，也可以删除那些文件和目录，但是，我们不能对hello目录的子目录本身进行删除和修改。
+对目录设置特殊权限，同样的，使用a参数之后，无法删除目录里的文件，但可以修改该目录里的文件，这个时候不只是只能追加新的信息了，
+
+也可以覆盖，hello目录的子目录里面，我们也可以新建文件和目录，也可以删除那些文件和目录，但是，我们不能对hello目录的子目录本身进行删除和修改。
 
 
 相关网络资料
@@ -152,7 +157,6 @@ chattr [+-=] [acdeijstu]  filename
 ::
 
     对于某些有特殊要求的档案(如服务器日志)还可以追加隐藏权限的设定。这些隐藏权限包括：
-    Append only (a), compressed (c), no dump (d), immutable (i), data journalling (j),secure deletion (s), no tail-merging (t), undeletable (u), no atime updates (A), synchronous directory updates (D), synchronous updates (S), and top of directory hierarchy (T).
     大部分属性在文件系统的安全管理方面起很重要的作用。关于以上属性的详细描述请兄弟们查阅chattr的在线帮助man，注意多数属性须要由root来施加。
     通过chattr设置档案的隐藏权限。
     [root]#chattr --help
@@ -173,7 +177,6 @@ chattr [+-=] [acdeijstu]  filename
     j：即journal，设定此参数使得当通过mount参数：data=ordered 或者 data=writeback 挂 载的文件系统，文件在写入时会先被记录(在journal中)。如果filesystem被设定参数为 data=journal，则该参数自动失效。
     s：保密性地删除文件或目录，即硬盘空间被全部收回。
     u：与s相反，当设定为u时，数据内容其实还存在磁盘中，可以用于undeletion.
-    各参数选项中常用到的是a和i。a选项强制只可添加不可删除，多用于日志系统的安全设定。而i是更为严格的安全设定，只有superuser (root) 或具有CAP_LINUX_IMMUTABLE处理能力（标识）的进程能够施加该选项。我们来举一个例子：
     [root]#touch chattr_test
     [root]#chattr +i chattr_test
     [root]#rm chattr_test
