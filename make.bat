@@ -14,6 +14,7 @@ if "%SPHINXBUILD%" == "" (
 set SOURCEDIR=source
 set BUILDDIR=build
 set SPHINXPROJ=Poppy
+set PDF=../manual.pdf
 
 if "%1" == "" goto help
 
