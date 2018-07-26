@@ -1,7 +1,7 @@
 
-sed （stream editor）
-#############################
-
+sed
+###
+sed - stream editor
 
 .. contents::
 
