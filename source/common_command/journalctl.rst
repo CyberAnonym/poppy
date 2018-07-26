@@ -5,9 +5,9 @@ journalctl
 参数解释
 ================
 
-- -f 试试打印
+- -f 实时打印
 
-- u 指定服务名 （example: -u pptpd)
+- -u 指定服务名 （example: -u pptpd)
 
 
 Example
