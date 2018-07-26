@@ -1,0 +1,417 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>linux用户管理 &mdash; Poppy 1.0.0 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="ldap" href="ldap.html" />
+    <link rel="prev" title="用户管理" href="readme.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/etlucency.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Poppy 介绍</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="readme.html">用户管理</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">linux用户管理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">创建用户</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">用户添加的时候系统做的操作</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">普通用户自己修改密码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">查看普通用户</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#passwd">通过passwd文件查看普通用户的信息</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id">通过id 查看普通用户的信息</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#finger">通过finger查看用户的描述信息</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">用户的修改</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">修改主属组</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">修改副属组</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">用户删除</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ldap.html">ldap</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../software_manage/readme.html">软件管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../common_service/readme.html">系统常用服务</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/readme.html">网络</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/readme.html">安全管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/readme.html">数据库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/readme.html">存储</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitor/readme.html">监控</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripts/readme.html">脚本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../virtualization/readme.html">虚拟化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ha&amp;lb/readme.html">高可用 &amp; 负载均衡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/readme.html">web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rhcsa/readme.html">rscsa</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Poppy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="readme.html">用户管理</a> &raquo;</li>
+        
+      <li>linux用户管理</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/user_management/user.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="linux">
+<h1>linux用户管理<a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>创建用户<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>参数和关键字解释：</p>
+<ul class="simple">
+<li>Uid： 用户id，user id</li>
+<li>Gid： 组id，group id</li>
+</ul>
+<ul class="simple">
+<li>-u 指定uid</li>
+<li>-g 指定主属组id</li>
+<li>-G 指定付属组id</li>
+<li>-d 指定home目录</li>
+<li>-s 指定shell</li>
+<li>-c 备注</li>
+<li>-M 不创建home目录</li>
+<li>-N 不创建组</li>
+</ul>
+<p>Example:</p>
+<ul class="simple">
+<li>创建用户user1</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">useradd</span> <span class="n">user1</span>
+</pre></div>
+</div>
+<p>给user1设置密码</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">passwd</span> <span class="n">user1</span>
+</pre></div>
+</div>
+<p>无交互式的方式给user1设置密码，密码设置为sophiroth</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="n">sophiroth</span><span class="o">|</span><span class="n">passwd</span> <span class="o">--</span><span class="n">stdin</span> <span class="n">user1</span>
+</pre></div>
+</div>
+<p>创建用户user2，并指定uid为501</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">useradd</span> <span class="o">-</span><span class="n">u</span> <span class="mi">501</span> <span class="n">user2</span>
+</pre></div>
+</div>
+<p>创建用户user3，指定uid为502，并指定gid为501，也就是user2的组，刚才创建user2的时候默认也创建了uid为502的组。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">useradd</span> <span class="o">-</span><span class="n">u</span> <span class="mi">502</span> <span class="o">-</span><span class="n">g</span> <span class="mi">501</span> <span class="n">user3</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>用户添加的时候系统做的操作<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>1，      用户添加的时候系统做了哪些事情呢？</p>
+<ol class="arabic simple">
+<li>在/etc/passwd文件中加了一行</li>
+<li>在/etc/shadow文件中加了一行</li>
+<li>在/etc/group文件中加了一行</li>
+<li>在/etc/gshadow文件中加了一行</li>
+<li>在/home目录下建立一个和用户名同名的家目录，同时复制/etc/skel/所有的文件到此用户的家目录下</li>
+</ol>
+</div>
+<div class="section" id="id3">
+<h2>普通用户自己修改密码<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">[</span>root@os1 ~<span class="o">]</span><span class="c1"># su - user1</span>
+<span class="o">[</span>user1@os1 ~<span class="o">]</span>$ passwd
+Changing password <span class="k">for</span> user user1.
+Changing password <span class="k">for</span> user1.
+<span class="o">(</span>current<span class="o">)</span> UNIX password:
+New password:
+Retype new password:
+passwd: all authentication tokens updated successfully.
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="id4">
+<h2>查看普通用户<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<div class="section" id="passwd">
+<h3>通过passwd文件查看普通用户的信息<a class="headerlink" href="#passwd" title="永久链接至标题">¶</a></h3>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">[</span>root@os1 ~<span class="o">]</span><span class="c1"># tail -3 /etc/passwd</span>
+user1:x:1010:1011::/home/user1:/bin/bash
+user2:x:501:501::/home/user2:/bin/bash
+user3:x:502:501::/home/user3:/bin/bash
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="id">
+<h3>通过id 查看普通用户的信息<a class="headerlink" href="#id" title="永久链接至标题">¶</a></h3>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">[</span>root@os1 ~<span class="o">]</span><span class="c1"># id user2</span>
+<span class="nv">uid</span><span class="o">=</span><span class="m">501</span><span class="o">(</span>user2<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span><span class="m">501</span><span class="o">(</span>user2<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span><span class="m">501</span><span class="o">(</span>user2<span class="o">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="finger">
+<h3>通过finger查看用户的描述信息<a class="headerlink" href="#finger" title="永久链接至标题">¶</a></h3>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">[</span>root@os1 ~<span class="o">]</span><span class="c1"># finger user1</span>
+Login: user1                                Name:
+Directory: /home/user1                      Shell: /bin/bash
+Never logged in.
+No mail.
+No Plan.
+<span class="o">[</span>root@os1 ~<span class="o">]</span><span class="c1">#</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>用户的修改<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id6">
+<h3>修改主属组<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>这里我们可以看到user1当前的gid是1011，user2当前的gid是501， 通过usermod命令，我们可以将user2的gid改成1011.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>root@os1 ~<span class="o">]</span><span class="c1"># id user1</span>
+<span class="nv">uid</span><span class="o">=</span><span class="m">1010</span><span class="o">(</span>user1<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span><span class="m">1011</span><span class="o">(</span>user1<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span><span class="m">1011</span><span class="o">(</span>user1<span class="o">)</span>
+<span class="o">[</span>root@os1 ~<span class="o">]</span><span class="c1">#</span>
+<span class="o">[</span>root@os1 ~<span class="o">]</span><span class="c1"># id user2</span>
+<span class="nv">uid</span><span class="o">=</span><span class="m">501</span><span class="o">(</span>user2<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span><span class="m">501</span><span class="o">(</span>user2<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span><span class="m">501</span><span class="o">(</span>user2<span class="o">)</span>
+<span class="hll"><span class="o">[</span>root@os1 ~<span class="o">]</span><span class="c1"># usermod -g 1011 user2</span>
+</span><span class="o">[</span>root@os1 ~<span class="o">]</span><span class="c1">#</span>
+<span class="o">[</span>root@os1 ~<span class="o">]</span><span class="c1"># id user2</span>
+<span class="nv">uid</span><span class="o">=</span><span class="m">501</span><span class="o">(</span>user2<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span><span class="m">1011</span><span class="o">(</span>user1<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span><span class="m">1011</span><span class="o">(</span>user1<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>修改副属组<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@os1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># id user1</span>
+<span class="n">uid</span><span class="o">=</span><span class="mi">1010</span><span class="p">(</span><span class="n">user1</span><span class="p">)</span> <span class="n">gid</span><span class="o">=</span><span class="mi">1011</span><span class="p">(</span><span class="n">user1</span><span class="p">)</span> <span class="n">groups</span><span class="o">=</span><span class="mi">1011</span><span class="p">(</span><span class="n">user1</span><span class="p">)</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@os1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># id user3</span>
+<span class="n">uid</span><span class="o">=</span><span class="mi">502</span><span class="p">(</span><span class="n">user3</span><span class="p">)</span> <span class="n">gid</span><span class="o">=</span><span class="mi">501</span><span class="p">(</span><span class="n">user2</span><span class="p">)</span> <span class="n">groups</span><span class="o">=</span><span class="mi">501</span><span class="p">(</span><span class="n">user2</span><span class="p">)</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@os1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># usermod -G 1011 user3</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@os1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># id user3</span>
+<span class="n">uid</span><span class="o">=</span><span class="mi">502</span><span class="p">(</span><span class="n">user3</span><span class="p">)</span> <span class="n">gid</span><span class="o">=</span><span class="mi">501</span><span class="p">(</span><span class="n">user2</span><span class="p">)</span> <span class="n">groups</span><span class="o">=</span><span class="mi">501</span><span class="p">(</span><span class="n">user2</span><span class="p">),</span><span class="mi">1011</span><span class="p">(</span><span class="n">user1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id8">
+<h2>用户删除<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<p>用户删除的命令是userdel， 加-r ，会将 用户的home目录，和邮件等内容也全部删除，不加-r，则会保存那些数据</p>
+<ul class="simple">
+<li>默认用户的家目录不删除</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@os1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># userdel user1</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>删除用户的同时删除用户的家目录以及mail相关信息</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@os1</span> <span class="o">~</span><span class="p">]</span><span class="c1"># userdel -r user3</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ldap.html" class="btn btn-neutral float-right" title="ldap" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="readme.html" class="btn btn-neutral" title="用户管理" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Alvin Wan.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            LANGUAGE:'zh_CN',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

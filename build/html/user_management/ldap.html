@@ -1,0 +1,444 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ldap &mdash; Poppy 1.0.0 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="软件管理" href="../software_manage/readme.html" />
+    <link rel="prev" title="linux用户管理" href="user.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/etlucency.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Poppy 介绍</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="readme.html">用户管理</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="user.html">linux用户管理</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ldap</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#server">Server端安装</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#install-the-following-packages">Install the following packages:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Server端配置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configure-openldap-server">Configure OpenLDAP Server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configure-monitoring-database-configuration-file">Configure Monitoring Database Configuration file:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prepare-the-ldap-database">Prepare the LDAP database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test-the-configuration">Test the configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#start-and-enable-the-slapd-service-at-boot">Start and enable the slapd service at boot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#check-the-ldap-activity">Check the LDAP activity:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#to-start-the-configuration-of-the-ldap-server-add-the-follwing-ldap-schemas">To start the configuration of the LDAP server, add the follwing LDAP schemas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#now-use-migration-tools-to-create-ldap-dit">Now use Migration Tools to create LDAP DIT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generate-a-base-ldif-file-for-your-domain-dit">Generate a base.ldif file for your Domain DIT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load-base-ldif-into-ldap-database">Load “base.ldif” into LDAP Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#now-create-some-users-and-groups-and-migrate-it-from-local-database-to-ldap">Now Create some users and Groups and migrate it from local database to LDAP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#now-filter-out-these-users-and-groups-and-it-password-from-etc-shadow-to-different-file">Now filter out these Users and Groups and it password from /etc/shadow to different file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#now-you-need-to-create-ldif-file-for-these-users-using-migrationtools">Now you need to create ldif file for these users using migrationtools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#upload-these-users-and-groups-ldif-file-into-ldap-database">Upload these users and groups ldif file into LDAP Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#now-search-ldap-dit-for-all-records">Now search LDAP DIT for all records</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">客户端安装配置调试</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">以上是通过图形化的方式配置，也可以通过命令直接配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../software_manage/readme.html">软件管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../common_service/readme.html">系统常用服务</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/readme.html">网络</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/readme.html">安全管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/readme.html">数据库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/readme.html">存储</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitor/readme.html">监控</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripts/readme.html">脚本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../virtualization/readme.html">虚拟化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ha&amp;lb/readme.html">高可用 &amp; 负载均衡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/readme.html">web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rhcsa/readme.html">rscsa</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Poppy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="readme.html">用户管理</a> &raquo;</li>
+        
+      <li>ldap</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/user_management/ldap.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ldap">
+<h1>ldap<a class="headerlink" href="#ldap" title="永久链接至标题">¶</a></h1>
+<p>ldap 是轻量级目录管理访问协议。</p>
+<div class="section" id="server">
+<h2>Server端安装<a class="headerlink" href="#server" title="永久链接至标题">¶</a></h2>
+<div class="section" id="install-the-following-packages">
+<h3>Install the following packages:<a class="headerlink" href="#install-the-following-packages" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">openldap</span> <span class="n">openldap</span><span class="o">-</span><span class="n">clients</span> <span class="n">openldap</span><span class="o">-</span><span class="n">servers</span> <span class="n">migrationtools</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Server端配置<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<div class="section" id="configure-openldap-server">
+<h3>Configure OpenLDAP Server<a class="headerlink" href="#configure-openldap-server" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">openldap</span><span class="o">/</span><span class="n">slapd</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">cn</span>\<span class="o">=</span><span class="n">config</span><span class="o">/</span><span class="n">olcDatabase</span>\<span class="o">=</span>\<span class="p">{</span><span class="mi">2</span>\<span class="p">}</span><span class="n">hdb</span><span class="o">.</span><span class="n">ldif</span>
+<span class="n">change</span> <span class="n">two</span> <span class="n">lines</span><span class="p">:</span>   <span class="c1">#change  dc=alv</span>
+<span class="n">olcSuffix</span><span class="p">:</span> <span class="n">dc</span><span class="o">=</span><span class="n">alv</span><span class="p">,</span><span class="n">dc</span><span class="o">=</span><span class="n">pub</span>
+<span class="n">olcRootDN</span><span class="p">:</span> <span class="n">cn</span><span class="o">=</span><span class="n">natasha</span><span class="p">,</span><span class="n">dc</span><span class="o">=</span><span class="n">alv</span><span class="p">,</span><span class="n">dc</span><span class="o">=</span><span class="n">pub</span>
+<span class="n">add</span> <span class="n">one</span> <span class="n">line</span><span class="p">:</span>
+<span class="n">olcRootPW</span><span class="p">:</span>  <span class="mi">123456</span> <span class="c1">#密码根据自己需要修改,主要密码前面是个tab</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configure-monitoring-database-configuration-file">
+<h3>Configure Monitoring Database Configuration file:<a class="headerlink" href="#configure-monitoring-database-configuration-file" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">openldap</span><span class="o">/</span><span class="n">slapd</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">cn</span>\<span class="o">=</span><span class="n">config</span><span class="o">/</span><span class="n">olcDatabase</span>\<span class="o">=</span>\<span class="p">{</span><span class="mi">1</span>\<span class="p">}</span><span class="n">monitor</span><span class="o">.</span><span class="n">ldif</span>
+<span class="c1">#修改dn.base=&quot;&quot;中的cn、dc项与step2中的相同</span>
+<span class="n">olcAccess</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span><span class="n">to</span> <span class="o">*</span> <span class="n">by</span> <span class="n">dn</span><span class="o">.</span><span class="n">base</span><span class="o">=</span><span class="s2">&quot;gidNumber=0+uidNumber=0,cn=peercred,cn=extern</span>
+<span class="n">al</span><span class="p">,</span><span class="n">cn</span><span class="o">=</span><span class="n">auth</span><span class="s2">&quot; read by dn.base=&quot;</span><span class="n">cn</span><span class="o">=</span><span class="n">natasha</span><span class="p">,</span><span class="n">dc</span><span class="o">=</span><span class="n">alv</span><span class="p">,</span><span class="n">dc</span><span class="o">=</span><span class="n">pub</span><span class="s2">&quot; read by * none</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="prepare-the-ldap-database">
+<h3>Prepare the LDAP database<a class="headerlink" href="#prepare-the-ldap-database" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">openldap</span><span class="o">-</span><span class="n">servers</span><span class="o">/</span><span class="n">DB_CONFIG</span><span class="o">.</span><span class="n">example</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ldap</span><span class="o">/</span><span class="n">DB_CONFIG</span>
+<span class="n">chown</span> <span class="o">-</span><span class="n">R</span> <span class="n">ldap</span><span class="o">.</span><span class="n">ldap</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ldap</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-the-configuration">
+<h3>Test the configuration<a class="headerlink" href="#test-the-configuration" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">slaptest</span> <span class="o">-</span><span class="n">u</span>
+<span class="mf">56e7</span><span class="n">c83d</span> <span class="n">ldif_read_file</span><span class="p">:</span> <span class="n">checksum</span> <span class="n">error</span> <span class="n">on</span> <span class="s2">&quot;/etc/openldap/slapd.d/cn=config/olcDatabase=</span><span class="si">{1}</span><span class="s2">monitor.ldif&quot;</span>
+<span class="mf">56e7</span><span class="n">c83d</span> <span class="n">ldif_read_file</span><span class="p">:</span> <span class="n">checksum</span> <span class="n">error</span> <span class="n">on</span> <span class="s2">&quot;/etc/openldap/slapd.d/cn=config/olcDatabase=</span><span class="si">{2}</span><span class="s2">hdb.ldif&quot;</span>
+<span class="n">config</span> <span class="n">file</span> <span class="n">testing</span> <span class="n">succeeded</span>  <span class="c1">#验证成功</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-and-enable-the-slapd-service-at-boot">
+<h3>Start and enable the slapd service at boot<a class="headerlink" href="#start-and-enable-the-slapd-service-at-boot" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">start</span> <span class="n">slapd</span>
+<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">slapd</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="check-the-ldap-activity">
+<h3>Check the LDAP activity:<a class="headerlink" href="#check-the-ldap-activity" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">netstat</span> <span class="o">-</span><span class="n">lt</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">ldap</span>
+<span class="n">netstat</span> <span class="o">-</span><span class="n">tunlp</span> <span class="o">|</span> <span class="n">egrep</span> <span class="s2">&quot;389|636&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="to-start-the-configuration-of-the-ldap-server-add-the-follwing-ldap-schemas">
+<h3>To start the configuration of the LDAP server, add the follwing LDAP schemas<a class="headerlink" href="#to-start-the-configuration-of-the-ldap-server-add-the-follwing-ldap-schemas" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">openldap</span><span class="o">/</span><span class="n">schema</span><span class="o">/</span>
+<span class="n">ldapadd</span> <span class="o">-</span><span class="n">Y</span> <span class="n">EXTERNAL</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldapi</span><span class="p">:</span><span class="o">///</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=config&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="n">cosine</span><span class="o">.</span><span class="n">ldif</span>
+<span class="n">ldapadd</span> <span class="o">-</span><span class="n">Y</span> <span class="n">EXTERNAL</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldapi</span><span class="p">:</span><span class="o">///</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=config&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="n">nis</span><span class="o">.</span><span class="n">ldif</span>
+<span class="n">ldapadd</span> <span class="o">-</span><span class="n">Y</span> <span class="n">EXTERNAL</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldapi</span><span class="p">:</span><span class="o">///</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=config&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="n">collective</span><span class="o">.</span><span class="n">ldif</span>
+<span class="n">ldapadd</span> <span class="o">-</span><span class="n">Y</span> <span class="n">EXTERNAL</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldapi</span><span class="p">:</span><span class="o">///</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=config&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="n">corba</span><span class="o">.</span><span class="n">ldif</span>
+<span class="n">ldapadd</span> <span class="o">-</span><span class="n">Y</span> <span class="n">EXTERNAL</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldapi</span><span class="p">:</span><span class="o">///</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=config&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="n">core</span><span class="o">.</span><span class="n">ldif</span>
+<span class="n">ldapadd</span> <span class="o">-</span><span class="n">Y</span> <span class="n">EXTERNAL</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldapi</span><span class="p">:</span><span class="o">///</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=config&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="n">duaconf</span><span class="o">.</span><span class="n">ldif</span>
+<span class="n">ldapadd</span> <span class="o">-</span><span class="n">Y</span> <span class="n">EXTERNAL</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldapi</span><span class="p">:</span><span class="o">///</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=config&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="n">dyngroup</span><span class="o">.</span><span class="n">ldif</span>
+<span class="n">ldapadd</span> <span class="o">-</span><span class="n">Y</span> <span class="n">EXTERNAL</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldapi</span><span class="p">:</span><span class="o">///</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=config&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="n">inetorgperson</span><span class="o">.</span><span class="n">ldif</span>
+<span class="n">ldapadd</span> <span class="o">-</span><span class="n">Y</span> <span class="n">EXTERNAL</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldapi</span><span class="p">:</span><span class="o">///</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=config&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="n">java</span><span class="o">.</span><span class="n">ldif</span>
+<span class="n">ldapadd</span> <span class="o">-</span><span class="n">Y</span> <span class="n">EXTERNAL</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldapi</span><span class="p">:</span><span class="o">///</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=config&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="n">misc</span><span class="o">.</span><span class="n">ldif</span>
+<span class="n">ldapadd</span> <span class="o">-</span><span class="n">Y</span> <span class="n">EXTERNAL</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldapi</span><span class="p">:</span><span class="o">///</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=config&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="n">openldap</span><span class="o">.</span><span class="n">ldif</span>
+<span class="n">ldapadd</span> <span class="o">-</span><span class="n">Y</span> <span class="n">EXTERNAL</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldapi</span><span class="p">:</span><span class="o">///</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=config&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="n">pmi</span><span class="o">.</span><span class="n">ldif</span>
+<span class="n">ldapadd</span> <span class="o">-</span><span class="n">Y</span> <span class="n">EXTERNAL</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldapi</span><span class="p">:</span><span class="o">///</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=config&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="n">ppolicy</span><span class="o">.</span><span class="n">ldif</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="now-use-migration-tools-to-create-ldap-dit">
+<h3>Now use Migration Tools to create LDAP DIT<a class="headerlink" href="#now-use-migration-tools-to-create-ldap-dit" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd /usr/share/migrationtools/
+vim migrate_common.ph
+on the Line Number 61, change &quot;ou=Groups&quot;
+$NAMINGCONTEXT{&#39;group&#39;} = &quot;ou=Groups&quot;;
+on the Line Number 71, change your domain name
+$DEFAULT_MAIL_DOMAIN = &quot;sophiroth.com&quot;;
+on the line number 74, change your base name
+$DEFAULT_BASE = &quot;dc=alv,dc=pub&quot;;
+on the line number 90, change schema value
+$EXTENDED_SCHEMA = 1;
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-a-base-ldif-file-for-your-domain-dit">
+<h3>Generate a base.ldif file for your Domain DIT<a class="headerlink" href="#generate-a-base-ldif-file-for-your-domain-dit" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">migrate_base</span><span class="o">.</span><span class="n">pl</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">base</span><span class="o">.</span><span class="n">ldif</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="load-base-ldif-into-ldap-database">
+<h3>Load “base.ldif” into LDAP Database<a class="headerlink" href="#load-base-ldif-into-ldap-database" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ldapadd</span> <span class="o">-</span><span class="n">x</span> <span class="o">-</span><span class="n">W</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=natasha,dc=alv,dc=pub&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">base</span><span class="o">.</span><span class="n">ldif</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="now-create-some-users-and-groups-and-migrate-it-from-local-database-to-ldap">
+<h3>Now Create some users and Groups and migrate it from local database to LDAP<a class="headerlink" href="#now-create-some-users-and-groups-and-migrate-it-from-local-database-to-ldap" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">guests</span>
+<span class="n">useradd</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">guests</span><span class="o">/</span><span class="n">ldapuser1</span> <span class="n">ldapuser1</span>
+<span class="n">useradd</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">guests</span><span class="o">/</span><span class="n">ldapuser2</span> <span class="n">ldapuser2</span>
+<span class="n">echo</span> <span class="s1">&#39;password&#39;</span> <span class="o">|</span> <span class="n">passwd</span> <span class="o">--</span><span class="n">stdin</span> <span class="n">ldapuser1</span>
+<span class="n">echo</span> <span class="s1">&#39;password&#39;</span> <span class="o">|</span> <span class="n">passwd</span> <span class="o">--</span><span class="n">stdin</span> <span class="n">ldapuser2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="now-filter-out-these-users-and-groups-and-it-password-from-etc-shadow-to-different-file">
+<h3>Now filter out these Users and Groups and it password from /etc/shadow to different file<a class="headerlink" href="#now-filter-out-these-users-and-groups-and-it-password-from-etc-shadow-to-different-file" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">getent</span> <span class="n">passwd</span> <span class="o">|</span> <span class="n">tail</span> <span class="o">-</span><span class="n">n</span> <span class="mi">5</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">users</span>
+<span class="n">getent</span> <span class="n">shadow</span> <span class="o">|</span> <span class="n">tail</span> <span class="o">-</span><span class="n">n</span> <span class="mi">5</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">shadow</span>
+<span class="n">getent</span> <span class="n">group</span> <span class="o">|</span> <span class="n">tail</span> <span class="o">-</span><span class="n">n</span> <span class="mi">5</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">groups</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="now-you-need-to-create-ldif-file-for-these-users-using-migrationtools">
+<h3>Now you need to create ldif file for these users using migrationtools<a class="headerlink" href="#now-you-need-to-create-ldif-file-for-these-users-using-migrationtools" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">migrationtools</span>
+ <span class="n">vim</span> <span class="n">migrate_passwd</span><span class="o">.</span><span class="n">pl</span>
+ <span class="c1">#search /etc/shadow and replace it into /root/shadow on Line Number 188.</span>
+<span class="o">./</span><span class="n">migrate_passwd</span><span class="o">.</span><span class="n">pl</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">users</span> <span class="o">&gt;</span> <span class="n">users</span><span class="o">.</span><span class="n">ldif</span>
+<span class="o">./</span><span class="n">migrate_group</span><span class="o">.</span><span class="n">pl</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">groups</span> <span class="o">&gt;</span> <span class="n">groups</span><span class="o">.</span><span class="n">ldif</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="upload-these-users-and-groups-ldif-file-into-ldap-database">
+<h3>Upload these users and groups ldif file into LDAP Database<a class="headerlink" href="#upload-these-users-and-groups-ldif-file-into-ldap-database" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ldapadd</span> <span class="o">-</span><span class="n">x</span> <span class="o">-</span><span class="n">W</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=natasha,dc=alv,dc=pub&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="n">users</span><span class="o">.</span><span class="n">ldif</span>
+<span class="n">ldapadd</span> <span class="o">-</span><span class="n">x</span> <span class="o">-</span><span class="n">W</span> <span class="o">-</span><span class="n">D</span> <span class="s2">&quot;cn=natasha,dc=alv,dc=pub&quot;</span> <span class="o">-</span><span class="n">f</span> <span class="n">groups</span><span class="o">.</span><span class="n">ldif</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="now-search-ldap-dit-for-all-records">
+<h3>Now search LDAP DIT for all records<a class="headerlink" href="#now-search-ldap-dit-for-all-records" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ldapsearch</span> <span class="o">-</span><span class="n">x</span> <span class="o">-</span><span class="n">b</span> <span class="s2">&quot;dc=alv,dc=pub&quot;</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldap</span><span class="p">:</span><span class="o">//</span><span class="n">natasha</span><span class="o">.</span><span class="n">alv</span><span class="o">.</span><span class="n">pub</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>客户端安装配置调试<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>yum install -y nss-pam*
+authconfig-tui   #chose the secend [ Use LDAP] and next
+su ldapuser1
+bash-4.2$     #测试成功
+</pre></div>
+</div>
+<img alt="../_images/ldap1.bmp" src="../_images/ldap1.bmp" />
+<img alt="../_images/ldap2.jpg" src="../_images/ldap2.jpg" />
+<img alt="../_images/ldap3.jpg" src="../_images/ldap3.jpg" />
+<div class="section" id="id3">
+<h3>以上是通过图形化的方式配置，也可以通过命令直接配置<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">nss</span><span class="o">-</span><span class="n">pam</span><span class="o">-</span><span class="n">ldapd</span> <span class="n">setuptool</span> <span class="o">-</span><span class="n">y</span>
+<span class="n">authconfig</span> <span class="o">--</span><span class="n">enableldap</span>  <span class="o">--</span><span class="n">enableldapauth</span> <span class="o">--</span><span class="n">ldapserver</span><span class="o">=</span><span class="n">ldap</span><span class="p">:</span><span class="o">//</span><span class="n">natasha</span><span class="o">.</span><span class="n">alv</span><span class="o">.</span><span class="n">pub</span> <span class="o">--</span><span class="n">disableldaptls</span>  <span class="o">--</span><span class="n">enablemkhomedir</span> <span class="o">--</span><span class="n">ldapbasedn</span><span class="o">=</span><span class="s2">&quot;dc=alv,dc=pub&quot;</span> <span class="o">--</span><span class="n">update</span>
+</pre></div>
+</div>
+<p>然后就可以了。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">getent</span> <span class="n">shadow</span> <span class="n">ldapuser1</span>
+<span class="n">getent</span> <span class="n">passwd</span> <span class="n">ldapuser1</span>
+<span class="nb">id</span> <span class="n">ldapuser1</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../software_manage/readme.html" class="btn btn-neutral float-right" title="软件管理" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="user.html" class="btn btn-neutral" title="linux用户管理" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Alvin Wan.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            LANGUAGE:'zh_CN',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

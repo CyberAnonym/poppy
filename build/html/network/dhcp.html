@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dhcp &mdash; Poppy 1.0.0 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="安全管理" href="../security/readme.html" />
+    <link rel="prev" title="网络" href="readme.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/etlucency.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Poppy 介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_management/readme.html">用户管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../software_manage/readme.html">软件管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../common_service/readme.html">系统常用服务</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="readme.html">网络</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">dhcp</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">安装dhcp服务</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">配置DHCP服务</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../security/readme.html">安全管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/readme.html">数据库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/readme.html">存储</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitor/readme.html">监控</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripts/readme.html">脚本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../virtualization/readme.html">虚拟化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ha&amp;lb/readme.html">高可用 &amp; 负载均衡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/readme.html">web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rhcsa/readme.html">rscsa</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Poppy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="readme.html">网络</a> &raquo;</li>
+        
+      <li>dhcp</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/network/dhcp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dhcp">
+<h1>dhcp<a class="headerlink" href="#dhcp" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>安装dhcp服务<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">dhcp</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>配置DHCP服务<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">dhcp</span><span class="o">/</span><span class="n">dhcpd</span><span class="o">.</span><span class="n">conf</span>
+<span class="c1">#设置DHCP于DNS服务器的动态信息更新模式。初学时完全可以不理这个选项，但是全局设置中一定要有这个选项，否则DHCP服务不能成功启动。</span>
+<span class="n">ddns</span><span class="o">-</span><span class="n">update</span><span class="o">-</span><span class="n">style</span> <span class="n">interim</span><span class="p">;</span>
+<span class="n">subnet</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">38.0</span> <span class="n">netmask</span> <span class="mf">255.255</span><span class="o">.</span><span class="mf">255.0</span> <span class="p">{</span>
+    <span class="nb">range</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">38.200</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">38.254</span><span class="p">;</span> <span class="c1">#分配给客户机的IP从192.168.233.100开始到192.168.233.199</span>
+    <span class="n">option</span> <span class="n">routers</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">38.1</span><span class="p">;</span> <span class="c1">#设置网关</span>
+    <span class="n">default</span><span class="o">-</span><span class="n">lease</span><span class="o">-</span><span class="n">time</span> <span class="mi">600</span><span class="p">;</span> <span class="c1">#默认租约时间</span>
+    <span class="nb">max</span><span class="o">-</span><span class="n">lease</span><span class="o">-</span><span class="n">time</span> <span class="mi">7200</span><span class="p">;</span> <span class="c1">#最大租约时间</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>为指定服务器网卡进行MAC地址与IP地址绑定，则继续在上面的配置文件下面进行如下配置</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">host</span> <span class="n">ops2</span> <span class="p">{</span> <span class="c1">#有一个主机，叫ops2</span>
+    <span class="n">hardware</span> <span class="n">ethernet</span> <span class="mi">00</span><span class="p">:</span><span class="mi">0</span><span class="n">c</span><span class="p">:</span><span class="mi">29</span><span class="p">:</span><span class="mi">1</span><span class="n">c</span><span class="p">:</span><span class="mi">53</span><span class="p">:</span><span class="mi">48</span><span class="p">;</span> <span class="c1">#MAC地址是08:...:27的网卡</span>
+    <span class="n">fixed</span><span class="o">-</span><span class="n">address</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">38.235</span><span class="p">;</span>    <span class="c1">#分配给它192.168.38.235的IP</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>以上是为一个网段做配置，那么如果是两个网段呢？我们进行如下配置，顺便将dhcp于dns服务器的动态信息更新关掉</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">dhcp</span><span class="o">/</span><span class="n">dhcpd</span><span class="o">.</span><span class="n">conf</span>
+<span class="c1">#</span>
+<span class="c1"># DHCP Server Configuration file.</span>
+<span class="c1">#   see /usr/share/doc/dhcp*/dhcpd.conf.example</span>
+<span class="c1">#   see dhcpd.conf(5) man page</span>
+<span class="c1">#设置DHCP于DNS服务器的动态信息更新模式。初学时完全可以不理这个选项，但是全局设置中一定要有这个选项，否则DHCP服务不能成功启动。</span>
+<span class="n">ddns</span><span class="o">-</span><span class="n">update</span><span class="o">-</span><span class="n">style</span> <span class="n">none</span><span class="p">;</span>
+<span class="n">shared</span><span class="o">-</span><span class="n">network</span> <span class="n">alpha</span> <span class="p">{</span>
+<span class="n">subnet</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">38.0</span> <span class="n">netmask</span> <span class="mf">255.255</span><span class="o">.</span><span class="mf">255.0</span> <span class="p">{</span>
+    <span class="nb">range</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">38.100</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">38.200</span><span class="p">;</span> <span class="c1">#分配给客户机的IP从192.168.233.100开始到192.168.233.199</span>
+    <span class="n">option</span> <span class="n">domain</span><span class="o">-</span><span class="n">name</span><span class="o">-</span><span class="n">servers</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">38.3</span><span class="p">;</span>
+    <span class="n">option</span> <span class="n">domain</span><span class="o">-</span><span class="n">name</span> <span class="s2">&quot;alv.pub shenmin.com sophiroth.com&quot;</span><span class="p">;</span>
+    <span class="n">option</span> <span class="n">routers</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">38.1</span><span class="p">;</span> <span class="c1">#设置网关</span>
+    <span class="n">default</span><span class="o">-</span><span class="n">lease</span><span class="o">-</span><span class="n">time</span> <span class="mi">600</span><span class="p">;</span> <span class="c1">#默认租约时间</span>
+    <span class="nb">max</span><span class="o">-</span><span class="n">lease</span><span class="o">-</span><span class="n">time</span> <span class="mi">7200</span><span class="p">;</span> <span class="c1">#最大租约时间</span>
+<span class="p">}</span>
+<span class="n">host</span> <span class="n">ops2</span> <span class="p">{</span> <span class="c1">#有一个主机，叫ops2</span>
+    <span class="n">hardware</span> <span class="n">ethernet</span> <span class="mi">00</span><span class="p">:</span><span class="mi">0</span><span class="n">c</span><span class="p">:</span><span class="mi">29</span><span class="p">:</span><span class="mi">1</span><span class="n">c</span><span class="p">:</span><span class="mi">53</span><span class="p">:</span><span class="mi">48</span><span class="p">;</span> <span class="c1">#MAC地址是08:...:27的网卡</span>
+    <span class="n">fixed</span><span class="o">-</span><span class="n">address</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">38.235</span><span class="p">;</span>    <span class="c1">#分配给它192.168.38.235的IP</span>
+<span class="p">}</span>
+<span class="n">host</span> <span class="n">ops1</span> <span class="p">{</span> <span class="c1">#有一个主机，叫ops1</span>
+    <span class="n">hardware</span> <span class="n">ethernet</span> <span class="mi">00</span><span class="p">:</span><span class="mi">0</span><span class="n">C</span><span class="p">:</span><span class="mi">29</span><span class="p">:</span><span class="mi">8</span><span class="n">A</span><span class="p">:</span><span class="mi">81</span><span class="p">:</span><span class="mi">7</span><span class="n">B</span><span class="p">;</span>
+    <span class="n">fixed</span><span class="o">-</span><span class="n">address</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">38.200</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">host</span> <span class="n">t1</span> <span class="p">{</span> <span class="c1">#有一个主机，叫t1</span>
+    <span class="n">hardware</span> <span class="n">ethernet</span> <span class="mi">00</span><span class="p">:</span><span class="mi">50</span><span class="p">:</span><span class="mi">56</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mi">9</span><span class="n">C</span><span class="p">:</span><span class="n">C4</span><span class="p">;</span>
+    <span class="n">fixed</span><span class="o">-</span><span class="n">address</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">38.86</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">subnet</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">127.0</span> <span class="n">netmask</span> <span class="mf">255.255</span><span class="o">.</span><span class="mf">255.0</span> <span class="p">{</span>
+    <span class="nb">range</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">127.100</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">127.200</span><span class="p">;</span> <span class="c1">#分配给客户机的IP从192.168.233.100开始到192.168.233.199</span>
+    <span class="n">option</span> <span class="n">domain</span><span class="o">-</span><span class="n">name</span><span class="o">-</span><span class="n">servers</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">127.3</span><span class="p">,</span><span class="mf">114.114</span><span class="o">.</span><span class="mf">114.114</span><span class="p">;</span>
+    <span class="n">option</span> <span class="n">domain</span><span class="o">-</span><span class="n">name</span> <span class="s2">&quot;alv.pub shenmin.com sophiroth.com&quot;</span><span class="p">;</span>
+    <span class="n">option</span> <span class="n">routers</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">127.2</span><span class="p">;</span> <span class="c1">#设置网关</span>
+    <span class="n">default</span><span class="o">-</span><span class="n">lease</span><span class="o">-</span><span class="n">time</span> <span class="mi">600</span><span class="p">;</span> <span class="c1">#默认租约时间</span>
+    <span class="nb">max</span><span class="o">-</span><span class="n">lease</span><span class="o">-</span><span class="n">time</span> <span class="mi">7200</span><span class="p">;</span> <span class="c1">#最大租约时间</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../security/readme.html" class="btn btn-neutral float-right" title="安全管理" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="readme.html" class="btn btn-neutral" title="网络" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Alvin Wan.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            LANGUAGE:'zh_CN',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

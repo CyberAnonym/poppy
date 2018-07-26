@@ -1,0 +1,344 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>需求 &mdash; Poppy 1.0.0 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="网络" href="../network/readme.html" />
+    <link rel="prev" title="systemd" href="systemd_index.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/etlucency.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Poppy 介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_management/readme.html">用户管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../software_manage/readme.html">软件管理</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="readme.html">系统常用服务</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="systemd_index.html">systemd</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">需求</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">解决方案</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#systemd">systemd简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">systemd文件示例：</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sophroth-pxe">启动 sophroth-pxe服务</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../network/readme.html">网络</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/readme.html">安全管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/readme.html">数据库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/readme.html">存储</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitor/readme.html">监控</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripts/readme.html">脚本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../virtualization/readme.html">虚拟化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ha&amp;lb/readme.html">高可用 &amp; 负载均衡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/readme.html">web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rhcsa/readme.html">rscsa</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Poppy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="readme.html">系统常用服务</a> &raquo;</li>
+        
+          <li><a href="systemd_index.html">systemd</a> &raquo;</li>
+        
+      <li>需求</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/common_service/systemd.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="contents topic" id="id1">
+<p class="topic-title first">目录</p>
+<ul class="simple">
+<li><a class="reference internal" href="#id2" id="id5">需求</a></li>
+<li><a class="reference internal" href="#id3" id="id6">解决方案</a></li>
+<li><a class="reference internal" href="#systemd" id="id7">systemd简介</a></li>
+<li><a class="reference internal" href="#id4" id="id8">systemd文件示例：</a></li>
+<li><a class="reference internal" href="#sophroth-pxe" id="id9">启动 sophroth-pxe服务</a></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h1><a class="toc-backref" href="#id5">需求</a><a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h1>
+<p>运行环境为CentOS 7系统，我们开发了一个程序，需要在开机时启动它，当程序进程crash之后，守护进程立即拉起进程。</p>
+</div>
+<div class="section" id="id3">
+<h1><a class="toc-backref" href="#id6">解决方案</a><a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h1>
+<p>使用CentOS 7中的init进程systemd</p>
+</div>
+<div class="section" id="systemd">
+<h1><a class="toc-backref" href="#id7">systemd简介</a><a class="headerlink" href="#systemd" title="永久链接至标题">¶</a></h1>
+<p>参考资料:<a class="reference external" href="https://blog.csdn.net/shuaixingi/article/details/49641721">https://blog.csdn.net/shuaixingi/article/details/49641721</a></p>
+<p>Linux Init &amp; CentOS systemd</p>
+<p>Linux一直以来采用init进程。例如下面的命令用来启动服务：</p>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span>$ sudo /etc/init.d/apache2 start
+
+或者<span class="se">\ </span>$ service apache2 start
+</pre></div>
+</td></tr></table></div>
+<p>但是init有两个缺点：</p>
+<ul class="simple">
+<li>1、启动时间长。Init进程是串行启动，只有前一个进程启动完，才会启动下一个进程。（这也是CentOS5的主要特征)</li>
+<li>2、启动脚本复杂。Init进程只是执行启动脚本，不管其他事情。脚本需要自己处理各种情况，这使得脚本变得很长而且复杂。</li>
+</ul>
+<p>Init：</p>
+<ul class="simple">
+<li>Centos 5 Sys init 是启动速度最慢的，串行启动过程，无论进程相互之间有无依赖关系。</li>
+<li>Centos6 Upstart init 相对启动速度快一点有所改进。有依赖的进程之间依次启动而其他与之没有依赖关系的则并行同步启动。</li>
+<li>Centos7 systemd 与以上都不同。所有进程无论有无依赖关系则都是并行启动（当然很多时候进程没有真正启动而是只有一个信号或者说是标记而已，在真正利用的时候才会真正启动。）</li>
+</ul>
+<p>systemd为了解决上文的问题而诞生。它的目标是为系统的启动和管理提供一套完整的解决方案。根据linux惯例，字母d是守护进程（daemon） 的缩写。</p>
+<p>Systemd名字的含义就是守护整个系统。Centos7里systemd代替了init，成为了系统的第一个进程。PID为1.其他所有的进程都是它的子进程。</p>
+<p>systemd是Linux下的一款系统和服务管理器，兼容 SysV 和 LSB 的启动脚本。</p>
+<p>systemd的特性有：支持并行化任务；同时采用socket式与D-Bus总线式激活服务；按需启动守护进程（daemon）；利用 Linux 的 cgroups 监视进程；
+支持快照和系统恢复；维护挂载点和自动挂载点；各服务间基于依赖关系进行精密控制。</p>
+</div>
+<div class="section" id="id4">
+<h1><a class="toc-backref" href="#id8">systemd文件示例：</a><a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h1>
+<p>ExecStart后面的，就是启动该服务器时要执行的命令，可以说是单个脚本，也可以是一个命令加参数。</p>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s1">&#39;</span>
+<span class="s1">[Unit]</span>
+<span class="s1">Description=The Sophiroth Service</span>
+<span class="s1">After=syslog.target network.target salt-master.service</span>
+
+<span class="s1">[Service]</span>
+<span class="s1">Type=simple</span>
+<span class="s1">User=alvin</span>
+<span class="s1">WorkingDirectory=/opt/sophiroth-pxe</span>
+<span class="s1">ExecStart=/usr/bin/python2 -m CGIHTTPServer 8001</span>
+<span class="s1">KillMode=process</span>
+<span class="s1">Restart=on-failure</span>
+<span class="s1">RestartSec=3s</span>
+
+<span class="s1">[Install]</span>
+<span class="s1">WantedBy=multi-user.target graphic.target</span>
+<span class="s1">&#39;</span> &gt; /usr/lib/systemd/system/sophiroth-pxe.service
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="sophroth-pxe">
+<h1><a class="toc-backref" href="#id9">启动 sophroth-pxe服务</a><a class="headerlink" href="#sophroth-pxe" title="永久链接至标题">¶</a></h1>
+<div class="highlight-shell notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>systemctl <span class="nb">enable</span> sophiroth-pxe
+<span class="hll">systemctl start sophiroth-pxe
+</span>systemctl status sophiroth-pxe
+lsof -i:8001
+</pre></div>
+</td></tr></table></div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../network/readme.html" class="btn btn-neutral float-right" title="网络" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="systemd_index.html" class="btn btn-neutral" title="systemd" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Alvin Wan.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            LANGUAGE:'zh_CN',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

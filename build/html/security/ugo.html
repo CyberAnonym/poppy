@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ugo &mdash; Poppy 1.0.0 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="selinux" href="selinux.html" />
+    <link rel="prev" title="安全管理" href="readme.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/etlucency.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Poppy 介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_management/readme.html">用户管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../software_manage/readme.html">软件管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../common_service/readme.html">系统常用服务</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/readme.html">网络</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="readme.html">安全管理</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ugo</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">查看权限</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">增值修改权限</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">减值修改</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">等值修改</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#umask">umask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">特殊权限</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#suid">suid权限</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sgid">sgid权限</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sticky">sticky权限</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="selinux.html">selinux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iptables.html">iptables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firewalld.html">firewalld</a></li>
+<li class="toctree-l2"><a class="reference internal" href="acl.html">acl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chattr.html">chattr</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../database/readme.html">数据库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/readme.html">存储</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitor/readme.html">监控</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripts/readme.html">脚本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../virtualization/readme.html">虚拟化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ha&amp;lb/readme.html">高可用 &amp; 负载均衡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/readme.html">web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rhcsa/readme.html">rscsa</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Poppy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="readme.html">安全管理</a> &raquo;</li>
+        
+      <li>ugo</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/security/ugo.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ugo">
+<h1>ugo<a class="headerlink" href="#ugo" title="永久链接至标题">¶</a></h1>
+<p>ugo权限，就是user group other 对于文件的权限。</p>
+<img alt="../_images/ugo1.png" src="../_images/ugo1.png" />
+<p>针对文件来说，有三种权限，分别是r，w，x</p>
+<ul class="simple">
+<li>r – Read 读权限 数字代表2</li>
+<li>w – Write 写权限 数字代表4</li>
+<li>x – eXecute 可执行权限 数字代表1</li>
+</ul>
+<p>针对目录来说，也是三种权限，r，w，x</p>
+<ul class="simple">
+<li>r – 具有读取目录内文件名称的权限</li>
+<li>w – 对目录内的文件内容的操作(创建文件)</li>
+<li>x – 能够cd到目录内的权限</li>
+</ul>
+<div class="section" id="id1">
+<h2>查看权限<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>ll是ls -l的间歇，执行ll，可以查看当前目录下的文件和目录的列表，其中列表的信息里也还包括了文件的权限，</p>
+<p>下图中的drwxr-xr-x  是dir1的权限，-rw-r—r—是file的权限。其中，第一个字母代表文件类型，比如下图中dir1的权限，d 代表这是文件是一个目录，</p>
+<p>d后面的3个字母代表该文件所有者对该文件的权限，再后面的三个字母代表该文件所属组对该文件的权限，最后的三个字母代表其他用户对该文件的权限。</p>
+<img alt="../_images/ugo2.png" src="../_images/ugo2.png" />
+</div>
+<div class="section" id="id2">
+<h2>增值修改权限<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>为文件的所属者添加x权限，也就是可执行权限</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chmod</span> <span class="n">u</span><span class="o">+</span><span class="n">x</span> <span class="n">file</span>
+</pre></div>
+</div>
+<img alt="../_images/ugo3.jpg" src="../_images/ugo3.jpg" />
+</div>
+<div class="section" id="id3">
+<h2>减值修改<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>chmod a-r file  <span class="c1">#让所有权限位、也就是所有人都没有r（读）的权限</span>
+chmod g-w file  <span class="c1">#让g（组）没有w（write写）的权限。</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>等值修改<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>chmod <span class="nv">u</span><span class="o">=</span>r file  <span class="c1">#将用户所有者的权限改成只有r、也就是只有读的权限。</span>
+chmod <span class="nv">go</span><span class="o">=</span>r file <span class="c1">#将file的所属组和其他人的权限改成只读。</span>
+chmod <span class="nv">a</span><span class="o">=</span> file   <span class="c1">#将file文件设置成任何人没有任何权限。</span>
+chmod <span class="nv">u</span><span class="o">=</span>g file  <span class="c1">#将file文件所属组的权限复制给所属者。</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="umask">
+<h2>umask<a class="headerlink" href="#umask" title="永久链接至标题">¶</a></h2>
+<p>用于创建用户时的默认权限，umask是去掉的部分，umask可以用数字或者描述指定。</p>
+<blockquote>
+<div><p>数字法：</p>
+<p>目录</p>
+</div></blockquote>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>            U       G       O
+<span class="m">777</span>         <span class="m">111</span>     <span class="m">111</span>     <span class="m">111</span>
+umask022    <span class="m">000</span>     <span class="m">010</span>     <span class="m">010</span>
+目录权限    <span class="m">111</span>     <span class="m">101</span>     <span class="m">101</span>
+所以目录的权限就为755
+
+ 文件
+
+            U       G       O
+<span class="m">666</span>         <span class="m">110</span>     <span class="m">110</span>     <span class="m">110</span>
+umask022    <span class="m">000</span>     <span class="m">010</span>     <span class="m">010</span>
+文件的权限   <span class="m">110</span>     <span class="m">100</span>     <span class="m">100</span>
+
+所以文件的权限的644
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>特殊权限<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li>suid 4</li>
+<li>sgid 2</li>
+<li>sticky 1</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chmod</span> <span class="mi">2600</span> <span class="n">dir1</span>
+<span class="n">chmod</span> <span class="mi">4600</span> <span class="n">file</span>
+<span class="n">chmod</span> <span class="mi">1600</span> <span class="n">dir1</span>
+</pre></div>
+</div>
+<p>高级权限在用数字设置时权限位是在最前面。</p>
+<div class="section" id="suid">
+<h3>suid权限<a class="headerlink" href="#suid" title="永久链接至标题">¶</a></h3>
+<p>【普通用户可以通过suid提升一定的权力】</p>
+<p>普通用户使用具有suid权限的命令，会获得此权限所有者的身份，换句话说等同于所有者在运行这条命令</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chmod</span> <span class="n">u</span><span class="o">+</span><span class="n">s</span> <span class="n">file</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sgid">
+<h3>sgid权限<a class="headerlink" href="#sgid" title="永久链接至标题">¶</a></h3>
+<p>【新建文件继承目录的属组—-sgid权限只针对目录】</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hr</span>
+<span class="n">chgrp</span> <span class="n">hr</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hr</span><span class="o">/</span>
+<span class="n">chmod</span> <span class="n">g</span><span class="o">+</span><span class="n">s</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hr</span>
+<span class="n">ll</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hr</span><span class="o">/</span>
+<span class="n">touch</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hr</span><span class="o">/</span><span class="n">file9</span>
+<span class="n">ll</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hr</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>可以发现新建的文件继承了目录的属组，而不是root组</p>
+</div>
+<div class="section" id="sticky">
+<h3>sticky权限<a class="headerlink" href="#sticky" title="永久链接至标题">¶</a></h3>
+<p>【用户只能删除自己的文件—–该权限只针对目录】</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>mkdir /home/dir1
+chmod 777 /home/dir1
+user1在/home/dir1建立文件, user2尝试删除！
+chmod o+t /home/dir1
+ll -d /home/dir1
+</pre></div>
+</div>
+<p>谁可以删除：</p>
+<ul class="simple">
+<li>root</li>
+<li>文件的所有者</li>
+<li>目录的所有者</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="selinux.html" class="btn btn-neutral float-right" title="selinux" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="readme.html" class="btn btn-neutral" title="安全管理" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Alvin Wan.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            LANGUAGE:'zh_CN',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
