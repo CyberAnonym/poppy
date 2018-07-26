@@ -115,7 +115,7 @@ iptables 多条规则有冲突的时候，排在上面的规则优先。
 
 
 .. code-block:: bash
-       :emphasize-lines: 6
+    :emphasize-lines: 6
 
     [root@natasha ~]# iptables -L OUTPUT -n -t filter --line-numbers
     Chain OUTPUT (policy ACCEPT)
