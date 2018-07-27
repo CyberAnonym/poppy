@@ -8,3 +8,4 @@
     iscsi
     ceph
     owncloud
+    autofs
