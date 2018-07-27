@@ -7,3 +7,4 @@
     lvm
     iscsi
     ceph
+    owncloud

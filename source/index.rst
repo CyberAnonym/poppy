@@ -25,6 +25,7 @@ Welcome to Poppy's documentation!
     ha&lb/readme
     web/readme
     rhcsa/readme
+    open_source/readme
 
 
 
