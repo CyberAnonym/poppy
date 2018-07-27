@@ -12,3 +12,5 @@ common system tools
     iostat
     nethogs
     lsof
+    w
+    who
