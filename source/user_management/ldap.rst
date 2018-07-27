@@ -196,7 +196,7 @@ Now search LDAP DIT for all records
 
 
 
-ldap用户的添加和删除，
+ldap用户的添加和删除
 ========================
 
 添加ldap用户和组
