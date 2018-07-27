@@ -10,3 +10,4 @@
     firewalld
     acl
     chattr
+    password_break

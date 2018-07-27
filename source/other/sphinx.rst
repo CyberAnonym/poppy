@@ -28,3 +28,15 @@ sphinx编写语法
 
 
 
+.. note:: 自动生成文档注释
+
+   sphinx支持从python源代码中提取文档注释信息，然后生成文档，我们将这称之为autodoc。
+
+   为了使用autodoc，首先需要在配置文件的extensions选项中添加'sphinx.ext.autodoc'。然后我们就可以使用autodoc的指令了。这里我们生成subprocess的注释。
+
+   ..automodule:: subprocess
+        :members:
+
+
+.. autofunction:: subprocess.call
+
