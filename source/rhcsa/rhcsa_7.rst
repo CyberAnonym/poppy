@@ -58,8 +58,11 @@ YUM 的软件库源为 http://rhgls.domainX.example.com/pub/x86_64/Server.将此
     [root@server0 ~]# cd /etc/yum.repos.d/
     [root@server0 yum.repos.d]# vim base.repo
     [root@server0 yum.repos.d]# cat base.repo
-    [base] name=base
-    baseurl=http://classroom.example.com/content/rhel7.0/x86_64/dvd enabled=1
+    [base]
+    name=base
+    baseurl=http://classroom.example.com/content/rhel7.0/x86_64/dvd
+    enabled=1
+    gpgcheck=0
     [root@server0 yum.repos.d]# yum repolist
 
 
