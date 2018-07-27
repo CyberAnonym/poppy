@@ -1,0 +1,22 @@
+#!/bin/bash
+:<<!
+-----------------------------------------------------------------
+|Script Name            :       alvmem                          |
+|Script Description     :       alv print memory status         |
+|Update Time            :       2017-02-12 17:00                |
+|Author                 :       Alvin Wan                       |
+|Email                  :       alvin.wan@51alvin.com           |
+-----------------------------------------------------------------
+!
+
+cd $(dirname $0)
+#v_ConfigDIR=../config
+v_WorkDIR=`cd $(dirname $0) && cd .. && pwd`
+v_BinDIR=$v_WorkDIR/bin
+v_ConfigDIR=$v_WorkDIR/config
+
+. $v_BinDIR/getMonitorValues
+
+
+echo -e "alvmem title:\ttotal\t\tused\t\tunavailable\t\tfree\t\tavailable\t\tbuffers\t\tcached"
+echo -e "Mem:\t\t$v_TotalMemoryKB\t\t$v_UsedMemKB\t\t$v_RealUsedMemKB($v_RealUsedMemPercent%)\t\t$v_FreeMemoryKB\t\t$v_RealFreeMemKB($v_RealFreeMemPercent%)\t\t$v_BuffersKB\t\t$v_CachedKB"

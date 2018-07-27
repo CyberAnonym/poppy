@@ -5,4 +5,4 @@
     :maxdepth: 2
 
     shell/readme.rst
-    python
+    python/readme.rst

@@ -1,0 +1,94 @@
+#!/bin/bash
+:<<!
+-----------------------------------------------------------------
+|Script Name            :       alvctl		                |
+|Script Description     :       alv control		        |
+|Update Time            :       2017-02-12 17:00	        |
+|Author                 :       Alvin Wan                       |
+|Email                  :       alvin.wan@51alvin.com	        |
+-----------------------------------------------------------------
+!
+
+v_WorkDIR=`cd $(dirname $0) && cd .. && pwd`
+v_BinDIR=$v_WorkDIR/bin
+. $v_BinDIR/getMonitorValues.sh
+RETVAL=0
+v_Pid=`cat $v_PidFile`
+
+
+f_Start()
+{
+	nohup /bin/bash $v_BinDIR/alvmonitor  &>>$v_LogFile &
+	sleep 1
+	if [ $? -eq 0 ];then
+		v_NewPid=`cat $v_PidFile`
+		#echo "New Pid is $v_NewPid old Pid is $v_Pid"
+		if [ $v_Pid -ne $v_NewPid ] && ps aux|grep $v_NewPid|grep -v grep &>/dev/null;then
+			echo -e "alvmonitor startup successfully, process id is $v_NewPid \t\t\t \033[32m [OK]\033[0m"
+			else
+			echo -e "alvinmonitor startup failed! Please check it. \t\t\t \033[33m [FAILED]\033[0m"
+		fi
+		else
+		 echo -e "alvinmonitor startup failed! Please check it.Current Pid is $v_NewPid \t\t \033[33m [FAILED]\033[0m"
+	fi
+}
+
+
+f_Stop()
+{
+	ps aux|grep $v_Pid|grep -v grep &>/dev/null
+	if [ $? -eq 0 ];then
+		kill -9 $v_Pid
+		if [ $? -eq 0 ];then
+			echo -e "alvmonitor stop successfully, process id $v_Pid has been killed \t\t \033[32m [OK]\033[0m"
+			else
+			echo -e "alvmonitor stop failed! Please check it. \t\t \033[33m [FAILED]\033[0m"
+		fi
+		else
+		echo -e "Sorry, we have not found last pid exist, please kill process by manually if process alive.\033[33m [FAILED]\033[0m"
+	fi
+}
+
+f_Status()
+{
+	ps aux|grep $v_Pid|grep -v grep &>/dev/null
+        if [ $? -eq 0 ];then
+		echo -e "alvmonitor running as normal. process id is $v_Pid. \033[32m [OK]\033[0m "
+		else
+		echo -e "alvmonitor not running now, or not running as normal. \033[33m [FAILED]\033[0m "
+	fi
+}
+
+f_Else()
+{
+echo $"Usage: $0 {start|stop|status|restart}"	
+}
+#v_Pid=ps -eo,args|grep alvmonitor|
+
+f_AlvctlMain(){
+case $1 in
+	start)
+		f_Start
+		RETVAL=$?
+		;;
+	stop)
+		f_Stop
+		RETVAL=$?
+		;;
+	status)
+		f_Status
+		RETVAL=$?
+		;;
+	restart)
+		f_Stop
+		f_Start
+		RETVAL=$?
+		;;
+	*)
+		f_Else
+		RETVAL=$?
+esac
+exit $RETVAL
+}
+
+f_AlvctlMain $1

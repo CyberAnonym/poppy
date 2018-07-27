@@ -1,0 +1,5 @@
+[LoadBalancer]
+name=rhel6u4-LoadBalancer
+baseurl=http://192.168.105.4/rhel6u4/LoadBalancer
+gpgcheck=0
+enabled=1

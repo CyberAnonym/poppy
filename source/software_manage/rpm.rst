@@ -23,6 +23,8 @@ rpm安装软件
 
     rpm -q httpd
 
+.. _rpm_undeploy_software:
+
 rpm卸载软件
 -----------------
 这里我们卸载一个名为httpd的rpm包的安装。
@@ -200,3 +202,5 @@ rpm卸载软件
     --quiet 尽可能的减少输出
     --help 显示帮助文件
     --version 显示RPM的当前版本
+
+

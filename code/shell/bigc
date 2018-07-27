@@ -1,0 +1,397 @@
+#!/bin/bash
+
+KQ(){
+read -p "keep use to be input k,quit to be input q(k/q) " KQ
+if [ $KQ == q ];then 
+	exit
+fi
+}
+_DHCP(){
+yum install dhcp -y >> /dev/null
+ETH=`ifconfig | grep eth | awk '{print $1}' |sed -n 1p`
+
+IP=` ifconfig $ETH | grep ask|cut -d ":" -f 2|cut -d " " -f 1`
+SEGMENT=`echo $IP | cut -d "." -f 1,2,3`
+cat >/etc/dhcp/dhcpd.conf<<eof
+subnet $SEGMENT.0 netmask 255.255.255.0 {
+	range $SEGMENT.100 $SEGMENT.130;
+	option routers $IP;
+}
+eof
+/etc/init.d/dhcpd start
+}
+function _SMB()
+{
+yum install samba samba-client -y &>/dev/null
+mkdir /mnt &>/dev/null
+mkdir /mnt/smb &>/dev/null
+cat >>/etc/samba/smb.conf<<eof
+[global]
+        workgroup = MYGROUP_UP
+        server string = Samba Server Version %v
+        log file = /var/log/samba/log.%m
+        max log size = 50
+        security = share
+        passdb backend = tdbsam
+[pubdir]
+    comment = My shared dir
+    path = /mnt/smb
+    browseable = no
+    writable = yes
+    guest ok = yes
+eof
+chmod 777 /mnt/smb
+/etc/init.d/smb restart &>/dev/null
+echo "SAMBA SERVER IS RUNING"
+echo "Samba directory is /mnt/smb"
+
+}
+_DNS(){
+echo "作者：clear"
+echo "mail: clearfromchina@hotmail.com"
+echo "本软件用于自动安装dns"
+echo "使用本软件前，请先确认您的系统是否符合一下几点："
+echo "1,当前系统是rhel6.4"
+echo "2,yum已经成功配好，可以正常使用"
+echo "3,您长的很帅"
+read -p  "以上三项如果全部符合，请输入0，不符合，请输入任意键退出本程序，不要问我任意键是哪个键,我什么都不会告诉你！:" A
+if [ $A -eq 0 ]
+	then 
+	echo "正在检测您的系统是否已经安装好了DNS,如果安装好了，我会卸载了重装。如果没装，我现在就装"
+	yum remove bind* -y >> /dev/null 2>&1
+	yum install bind* -y >> /dev/null 2>&1
+	if [ $? -eq 0 ]
+		then 
+			echo "dns已成功为您安装，"
+			read -p "请输入您要配置的域名，如alice.com ：" YM
+			read -p "请输入您在使用的IP地址的网卡，如eth0,或eth1:" ETH
+			IP=`ifconfig $ETH | head -2 | tail -1 |cut -d ":" -f 2 |cut -d " " -f 1`
+			hostname=`hostname`
+			echo "正在为您配置DNS服务..."
+			rndc-confgen -r /dev/urandom -a
+			/etc/init.d/named start	>> /dev/null 2>&1
+			cat >/etc/named.conf<<EOF
+options {
+        listen-on port 53 { any; };
+        listen-on-v6 port 53 { any; };
+        directory       "/var/named";
+        allow-query     { any; };
+
+
+};
+
+
+zone "." IN {
+        type hint;
+        file "named.ca";
+};
+
+include "/etc/named.rfc1912.zones";
+EOF
+			cat >/etc/named.rfc1912.zones<<EOF
+zone "$YM" IN {
+	type master;
+	file "$YM.zone";
+};
+EOF
+			cp /var/named/named.localhost $YM.zone -p
+			echo "\$TTL 1D
+@       IN SOA  @ root.$YM. (
+                                        0       ; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H )    ; minimum
+        NS      $hostname.
+dns     A       $IP
+www     A       $IP" > /var/named/$YM.zone
+			chown root.named /var/named/$YM.zone
+			/etc/init.d/named restart >> /dev/null 2>&1
+			echo "已成功为您配置好了DNS服务。"
+			echo "客户端指定DNS服务器的的方式是修改/etc/resolv.conf文件，在里面添加nameserver $IP这一行就将您的地址指定为DNS服务器了。"
+			echo "然后就可以通过访问www.$YM来访问到您了，比如ping www.$YM"
+			echo "需要解析更多域名，请自行到/var/named/$YM.zone进行添加，或联系作者为此序添加此功能或其他更多一些功能。竭诚为您服务！。"
+		else 
+		echo "都说了yum配置好了再来找我，怎么就是不听？！"	
+		exit
+	fi
+	else 
+	exit
+fi
+}
+function _NFS()
+{
+yum install nfs-utils -y &>/dev/null
+mkdir /mnt &>/dev/null
+mkdir /mnt/nfs &>/dev/null
+cat >/etc/exports<<eof
+/mnt/nfs *(rw)
+eof
+/etc/init.d/rpcbind start &>/dev/null
+/etc/init.d/nfs start &>/dev/null
+echo "NFS Server runing"
+echo "Your NFS share directory is /mnt/nfs"
+}
+_SSH(){
+read -p "Please input your password:" _PASSWORD
+read -p "Please input your network segment:" _SEGMENT
+if ls /etc/init.d/sshd  &>/dev/null;then
+    /etc/init.d/sshd restart >> /dev/null
+    else
+    yum install openssh-* -y >> /dev/null
+    /etc/init.d/sshd start &>/dev/null
+fi
+    yum install expect -y &>/dev/null
+/usr/bin/expect <<eof
+spawn ssh-keygen
+expect "Enter file in which to save the key (/root/.ssh/id_rsa):"
+send "\n"
+expect {
+"Overwrite (y/n)?"
+{send "y\n";exp_continue}
+ "Enter passphrase (empty for no passphrase):"
+{send "\n"}
+}
+expect "Enter same passphrase again:"
+send "\n"
+expect eof
+eof
+yum install nmap -y &>/dev/null
+IP=`nmap -sP ${_SEGMENT}/24 | grep for | cut -d " " -f 5`
+for i in $IP
+do
+/usr/bin/expect <<eof
+spawn ssh-copy-id -i /root/.ssh/id_rsa.pub $i
+expect {
+"yes/no"
+{ send "yes\n";exp_continue }
+"assword"
+{send "${_PASSWORD}\n"} 
+}
+expect eof
+eof
+done
+}
+
+function YUM_CONFIG()
+{
+cat >/etc/yum.repos.d/local.repo<<eof
+[base]
+name=linux
+baseurl=file:///mnt/iso
+gpgcheck=0
+enabled=1
+eof
+	echo "yum config is complete."
+	sleep 1
+}
+BIGBIG()
+{
+while true
+do
+echo "1,config yum"
+echo "2,DNS"
+echo "3,SSH-keygen for local area network"
+echo "4,DHCP"
+echo "5,SAMBA"
+echo "6,NFS"
+read -p "Pleae input number or q(1/2/../6/q):)" BC
+	case  $BC in
+		1)
+		YUM_CONFIG
+		;;
+		2)
+		_DNS
+		KQ
+		;;
+		q)
+		exit
+		;;
+		3)
+	_SSH
+	KQ
+		;;
+		4)
+	_DHCP
+	KQ
+		;;
+		5)
+		_SMB
+		;;
+		6)
+		_NFS
+		;;
+		*)
+	echo "your input is wrong,please try again"
+		;;
+	esac
+done
+}
+
+SIP(){
+_ETH=`ifconfig | grep eth | awk '{print $1}'`
+for i in $_ETH
+do
+echo $i:`ifconfig $i| grep Mask |cut -d ":" -f 2 | cut -d " " -f 1`
+done
+}
+
+LOGING(){
+						if [ "$_BIGUSER" == "$_CHBIGUSER" ]
+							then
+							echo "username or password have wrong,please try again."
+						else
+							sed -i "s/boshimaomizhetadeshuangyan/${_USERNAME}_${_PASSWORD}/" biguser.txt &>/dev/null
+							echo "login complete!"
+							BIGBIG
+						fi
+
+}
+function _REGIST()
+{
+					read -p "Please input your username:" _USERNAME
+					read -p "Please input your password:" _PASSWORD
+					cat >>biguser.txt<<eof
+${_USERNAME}_${_PASSWORD}
+eof
+					echo "regist  complete."
+
+}
+_INPUTERROR(){
+echo "Your input have error,Please input again."
+}
+function mysql_use()
+{
+_s='mysql -u bigcenter -pbigcenter -e'
+$_s "select * from bigcenter.user" &>/dev/null || $_s "create database bigcenter" && $_s "create table bigcenter.user (no int(10) not null auto_increment key,username varchar(20) not null,password varchar(20) not null)" &>/dev/null
+
+if [ $_LOR == 1 ];then
+while true
+do
+echo "this is login"
+read -p "username:" _USERNAME 
+read -p "password:" _PASSWORD
+$_s "select * from bigcenter.user" | awk '{print $2,$3}'| grep "$_USERNAME $_PASSWORD" &>/dev/null
+if [ $? -eq 0 ] ;then
+echo "login complete"
+BIGBIG
+else 
+echo "login failed,username or password have error,Please trg again." 
+break
+fi
+exit
+done
+elif [ $_LOR == 2 ];then
+read -p "username:" _USERNAME 
+read -p "password:" _PASSWORD
+$_s "insert bigcenter.user (username,password) values ('$_USERNAME','$_PASSWORD')"
+if [ $? -eq 0 ];then
+echo "regist complete!"
+sleep 1
+break
+else 
+echo "username already exist,Please try again."
+fi
+fi
+}
+function local_use()
+{
+		 [ ! -f biguser.txt ] && echo "username_password" >> biguser.txt
+				if [ $_LOR == 2 ];then
+					_REGIST
+					break
+				elif [ $_LOR == 1 ];then
+					while true
+					do
+					_BIGUSER=`cat biguser.txt`
+					read -p "Please input your username:" _USERNAME
+					read -p "Please input your password:" _PASSWORD
+					sed -i "s/${_USERNAME}_${_PASSWORD}/boshimaomizhetadeshuangyan/" biguser.txt &>/dev/null
+					_CHBIGUSER=`cat biguser.txt`
+						LOGING
+						break
+					done
+				fi
+}
+
+function _INTO_BCENTER()
+{
+			while true
+			do
+		read -p "use mysql?(yes/no):" UM
+		echo "1,login"
+		echo "2,regist"
+		read -p "Enter number(1/2):" _LOR
+					if [ $UM = no ];then
+					local_use
+					else 
+					mysql_use
+					fi
+			done
+}
+function bigcenter1()
+{
+_HOSTNAME=`hostname`
+	echo Hostname:$_HOSTNAME
+	echo IPADDR:`SIP`
+	df -h
+	KQ
+}
+function bigcenter2()
+{
+	echo "1,change ip address"
+	echo "2,change hostname"
+	read -p "Please input your choice(1/2/q): " CH
+		while true
+		do
+			if [ $CH == 1 ];then
+				read -p "Please input your choice (`ifconfig | grep eth | awk '{print $1}'`):" CHOEH
+				read -p "Please input IPADDR:" IPADD
+				EHADD=/etc/sysconfig/network-scripts/ifcfg-$CHOEH
+				sed -i '/IPADDR/d;/NETMASK/d' $EHADD
+				echo "IPADDR=$IPADD" $EHADD
+				echo "NETMASK=255.255.255.0" $EHADD
+				/etc/init.d/network restart &>/dev/null
+				echo "IPADDR is changed"
+			SIP
+			elif [ $CH == 2 ];then
+				read -p "Please input your new hostname:" _HOST
+				sed -i "s/HOSTNAME.*/HOSTNAME=$_HOST/" /etc/sysconfig/network
+				hostname $_host
+				echo "hostname is changed,effect after your next login" 
+				break
+			elif [ $CH == q ];then
+				exit
+			else
+			_INPUTERROR
+			fi
+		done
+}
+function main_show()
+{
+clear
+echo -e "\t\t\033[31m Welcome to Big Center of Clear \033[0m"
+echo -e "\033[31m 1,Check the system's information \033[0m"
+echo -e "\033[32m 2,Change the system's information \033[0m"
+echo -e "\033[33m 3,Login the Big Center to be more. \033[0m"
+read -p  " Please choice what you want,input "q" to quit this(1/2/3/q):" CHO
+}
+function main()
+{
+while true
+do
+main_show
+if [ $CHO == 1 ];then
+		bigcenter1
+	elif [ $CHO == 2 ];then
+		bigcenter2
+	elif [ $CHO == "q" ];then
+		exit
+	elif [ $CHO == 3 ];then
+		_INTO_BCENTER	
+	else
+	_INPUTERROR
+fi
+done
+}
+main

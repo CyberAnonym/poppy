@@ -1,0 +1,44 @@
+#!/bin/bash
+:<<!
+-----------------------------------------------------------------
+|Script Name            :       alvmonitor                      |
+|Script Description     :       alv monitor system              |
+|Update Time            :       2017-02-12 17:00                |
+|Author                 :       Alvin Wan                       |
+|Email                  :       alvin.wan@sophiroth.com           |
+-----------------------------------------------------------------
+!
+v_WorkDIR=`cd $(dirname $0) && cd .. && pwd`
+v_BinDIR=$v_WorkDIR/bin
+v_ConfigDIR=$v_WorkDIR/config
+
+. $v_BinDIR/getMonitorValues
+
+
+
+#Define disk alarm message
+
+f_DiskAlarmMessage()
+{
+echo -e "$1 $2 partition already used $3, $4 than alarm space ${v_AlarmUsedDiskPercent}%, free disk $5"
+}
+
+#v_PartitionName=`df -P|grep dev|grep -v tmp|awk -F " " '{print $(NF)}'`
+
+f_DiskMain()
+{
+for i in $v_PartitionName
+do
+v_UsedDisk=`df -P $i|tail -1|awk -F ' ' '{print $5}'|sed 's/.$//'`
+v_FreeDisk=`df -hP /|awk -F " " '{print $4}'|tail -1`
+if [ $v_UsedDisk -gt $v_AlarmUsedDiskPercent ];then
+	f_DiskAlarmMessage "[WARNING]" "$i" "${v_UsedDisk}%" "more" "$v_FreeDisk"
+	v_DiskMessage="$(echo -e "Date: `date +%Y-%m-%d' '%H:%M:%S` \nHostname: $(hostname) \nMessage:`f_DiskAlarmMessage [WARNING] $i ${v_UsedDisk}% more $v_FreeDisk` \n\n\n \t\t\t Powered by Sophiroth, www.sophiroth.com")"
+	echo -e $v_DiskMessage
+	else
+	f_DiskAlarmMessage "[OK]" "$i" "${v_UsedDisk}%" "less" "$v_FreeDisk"
+fi
+done
+}
+
+f_DiskMain

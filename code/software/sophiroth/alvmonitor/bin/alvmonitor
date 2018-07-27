@@ -1,0 +1,68 @@
+#!/bin/bash
+
+:<<!
+-----------------------------------------------------------------
+|Script Name            :       alvmonitor                      |
+|Script Description     :       alv monitor system              |
+|Update Time            :       2017-02-12 17:00                |
+|Author                 :       Alvin Wan                       |
+|Email                  :       alvin.wan@sophiroth.com           |
+-----------------------------------------------------------------
+!
+v_WorkDIR=`cd $(dirname $0) && cd .. && pwd`
+v_BinDIR=$v_WorkDIR/bin
+v_ConfigDIR=$v_WorkDIR/config
+vf_ShowRss="RANKINGS RSS\t PID\t COMMAND\n `ps -eo rss,pid,cmd|sort -nr|head -20|cat -n`"
+v_LastStatus=0
+v_LastErrorReportTime=0
+
+. $v_BinDIR/getMonitorValues
+#v_DiskALlInfo=`df -hP|grep dev|grep -v tmpfs`
+echo $$ > $v_PidFile
+
+#f_AlarmFreeMem(){
+#. $v_BinDIR/getMonitorValues
+#
+#if [ $v_FreeMemoryKB -lt $v_AlarmFreeMemKB ];then
+#        echo "`date ` \t Warning, Now you free memoryis $v_FreeMemoryKB ,Total memory is $v_TotalMemoryKB Warning memory is $v_AlarmFreeMemKB . Please check your system"
+#        else
+#        echo "`date ` \t It's ok , Now you free mem is $v_FreeMemoryKB ,Total memory is $v_TotalMemoryKB Warning memory is $v_AlarmFreeMemKB . "
+#fi
+#
+#}
+
+#Define Memory alarm message.
+f_MemAlarmMessage()
+
+{
+echo -e "$1 Currently using ${v_RealUsedMemKB}KB(${v_RealUsedMemPercent}%) memory, $2 than alarm memory ${v_AlarmUsedMemKB}KB(${v_AlarmUsedMemPercent}%). Total memory is ${v_TotalMemoryKB}KB."
+}
+f_AlarmUsedMem(){
+. $v_BinDIR/getMonitorValues
+
+if [ $v_RealUsedMemKB -lt $v_AlarmUsedMemKB ];then
+	f_MemAlarmMessage "[NORMAL]" "less"
+	v_Message="$(echo -e "Date: `date +%Y-%m-%d' '%H:%M:%S` \nHostname: $(hostname) \nMessage:`f_MemAlarmMessage [RECOVERY] less` \nMemory Details: \n $vf_ShowRss \n\n\n \t\t\t Powered by Sophiroth, www.sophiroth.com")"
+	[ $v_LastStatus -ne 0 ] &&  $v_BinDIR/alvmail "[RECOVERY] $(hostname) Memory OK!" "$v_Message" "$v_EmailReceiver"
+	v_LastStatus=0
+	v_LastErrorReportTime=0
+        else
+	f_MemAlarmMessage "[WARNING]" "more"
+	v_Message="$(echo -e "Date: `date +%Y-%m-%d' '%H:%M:%S` \nHostname: $(hostname) \nMessage:`f_MemAlarmMessage [WARNING] more` \nMemory Details: \n $vf_ShowRss \n\n\n \t\t\t Powered by Sophiroth, www.sophiroth.com")"
+	v_NowTime=`date +%s`
+	v_LastErrorTimeInterval=$((v_NowTime-v_LastErrorReportTime))
+	[ $v_LastErrorTimeInterval -gt $v_ReportInterval ] && $v_BinDIR/alvmail "[WARNING] `hostname` Memory Alarm!" "$v_Message" "$v_EmailReceiver" && v_LastErrorReportTime=`date +%s`
+	v_LastStatus=1
+fi
+}
+MAIN()
+{
+while true
+do
+f_AlarmUsedMem > $v_TempFile
+v_RportMessage=`cat $v_TempFile`
+echo -e "`date +%Y-%m-%d' '%H:%M:%S` $v_RportMessage" >> $v_LogFile
+sleep $v_MonitorInterval
+done
+}
+MAIN

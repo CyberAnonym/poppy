@@ -1,0 +1,62 @@
+#!/bin/bash
+
+:<<!
+-----------------------------------------------------------------
+|Script Name            :       alvmonitor                      |
+|Script Description     :       alv monitor system              |
+|Update Time            :       2017-02-12 17:00                |
+|Author                 :       Alvin Wan                       |
+|Email                  :       alvin.wan@51alvin.com           |
+-----------------------------------------------------------------
+!
+v_WorkDIR=`cd $(dirname $0) && cd .. && pwd`
+v_BinDIR=$v_WorkDIR/bin
+v_ConfigDIR=$v_WorkDIR/config
+
+. $v_BinDIR/getMonitorValues.sh
+#v_DiskALlInfo=`df -hP|grep dev|grep -v tmpfs`
+echo $$ > $v_PidFile
+
+f_AlarmFreeMem(){
+. $v_BinDIR/getMonitorValues.sh
+
+if [ $v_FreeMemoryKB -lt $v_AlarmFreeMemKB ];then
+        echo "`date ` \t Warning, Now you free memoryis $v_FreeMemoryKB ,Total memory is $v_TotalMemoryKB Warning memory is $v_AlarmFreeMemKB . Please check your system"
+        else
+        echo "`date ` \t It's ok , Now you free mem is $v_FreeMemoryKB ,Total memory is $v_TotalMemoryKB Warning memory is $v_AlarmFreeMemKB . "
+fi
+
+}
+
+
+f_MemAlarmMessage()
+
+{
+echo -e "`date `\t $1 \t Current used ${v_RealUsedMemKB}KB[${v_RealUsedMemPercent}%] Memory, Total Memroy is ${v_TotalMemoryKB}KB, we have setup warning memory used is ${v_AlarmUsedMemKB}KB[${v_AlarmUsedMemPercent}%]"
+}
+f_AlarmUsedMem(){
+. $v_BinDIR/getMonitorValues.sh
+
+if [ $v_RealUsedMemKB -lt $v_AlarmUsedMemKB ];then
+f_MemAlarmMessage [NORMAL]
+
+        else
+f_MemAlarmMessage [WARNING]
+v_Message=`f_MemAlarmMessage [WARNING]`
+$v_BinDIR/alvmail "$(hostname) Memory Warning!" "$v_Message" "$v_EmailReceiver"
+fi
+
+}
+#ls $v_ConfigDIR
+MAIN()
+{
+while true
+do
+#f_AlarmFreeMem
+f_AlarmUsedMem >> $v_LogFile
+#echo $v_LogFile
+#echo ok >>  $v_LogFile
+sleep $v_MonitorInterval
+done
+}
+MAIN

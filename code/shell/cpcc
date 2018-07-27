@@ -1,0 +1,229 @@
+#!/bin/bash
+clear
+function _MAINMENU_COMMENT()
+{
+echo -e "\t\t\033[31m ##########################################\033[0m"
+echo -e "\t\t\033[31m #Welcome to Clear Process Control Center!#\033[0m"
+echo -e "\t\t\033[31m #\t\033[32mBy \033[4mClear\033[0m\t\033[35mQQ \033[4m105449 \t\033[0m \033[031m #\033[0m"
+echo -e "\t\t\033[31m ##########################################\033[0m"
+echo -e " \033[4m\033[031m(1)\033[0m\033[032m Ipaddress & Hostname Server\033[0m"
+echo -e " \033[4m\033[031m(2)\033[0m\033[033m Server Center\033[0m"
+read -p "Type [1/2]:"  MAINMENU_COMMENT
+}
+
+_DHCP(){
+yum install dhcp -y >> /dev/null
+ETH=`ifconfig | grep eth | awk '{print $1}' |sed -n 1p`
+
+IP=` ifconfig $ETH | grep ask|cut -d ":" -f 2|cut -d " " -f 1`
+SEGMENT=`echo $IP | cut -d "." -f 1,2,3`
+cat >/etc/dhcp/dhcpd.conf<<eof
+subnet $SEGMENT.0 netmask 255.255.255.0 {
+	range $SEGMENT.100 $SEGMENT.130;
+	option routers $IP;
+}
+eof
+/etc/init.d/dhcpd start
+}
+function _NFS()
+{
+yum install nfs-utils -y &>/dev/null
+mkdir /mnt &>/dev/null
+mkdir /mnt/nfs &>/dev/null
+cat >/etc/exports<<eof
+/mnt/nfs *(rw)
+eof
+/etc/init.d/rpcbind start &>/dev/null
+/etc/init.d/nfs start &>/dev/null
+echo "NFS Server runing"
+echo "Your NFS share directory is /mnt/nfs"
+}
+_SSH(){
+read -p "Please input your password:" _PASSWORD
+read -p "Please input your network segment:" _SEGMENT
+if ls /etc/init.d/sshd  &>/dev/null;then
+    /etc/init.d/sshd restart >> /dev/null
+    else
+    yum install openssh-* -y >> /dev/null
+    /etc/init.d/sshd start &>/dev/null
+fi
+    yum install expect -y &>/dev/null
+/usr/bin/expect <<eof
+spawn ssh-keygen
+expect "Enter file in which to save the key (/root/.ssh/id_rsa):"
+send "\n"
+expect {
+"Overwrite (y/n)?"
+{send "y\n";exp_continue}
+ "Enter passphrase (empty for no passphrase):"
+{send "\n"}
+}
+expect "Enter same passphrase again:"
+send "\n"
+expect eof
+eof
+yum install nmap -y &>/dev/null
+IP=`nmap -sP ${_SEGMENT}/24 | grep for | cut -d " " -f 5`
+for i in $IP
+do
+/usr/bin/expect <<eof
+spawn ssh-copy-id -i /root/.ssh/id_rsa.pub $i
+expect {
+"yes/no"
+{ send "yes\n";exp_continue }
+"assword"
+{send "${_PASSWORD}\n"} 
+}
+expect eof
+eof
+done
+}
+function _SERVERCENTER()
+{
+while true
+do
+echo "1,config yum"
+echo "2,DNS"
+echo "3,SSH-keygen for local area network"
+echo "4,DHCP"
+echo "5,SAMBA"
+echo "6,NFS"
+read -p "Pleae input number or q(1/2/../6/q):)" BC
+        case  $BC in
+                1)
+                YUM_CONFIG
+                ;;
+                2)
+                _DNS
+                ;;
+                q)
+                exit
+                ;;
+                3)
+        _SSH
+                ;;
+                4)
+        _DHCP
+                ;;
+                5)
+                _SMB
+                ;;
+                6)
+                _NFS
+                ;;
+                *)
+        echo "your input is wrong,please try again"
+                ;;
+        esac
+done
+}
+_DNS(){
+echo "作者：clear"
+echo "mail: clearfromchina@hotmail.com"
+echo "This software be use for aoto install DNS service"
+read -p  "type 'y' for install or type 'n' for exit here :" 
+if [ $A == y ]
+        then
+        echo "checking your system..."
+        yum remove bind* -y >> /dev/null 2>&1
+        yum install bind* -y >> /dev/null 2>&1
+        if [ $? -eq 0 ]
+                then
+                        echo "NDS Install Success"
+                        read -p "Please input your domain name，for example:alice.com ：" YM
+                        read -p "Please input your network card name,for exampleeth0 or eth1:" ETH
+                        IP=`ifconfig $ETH | head -2 | tail -1 |cut -d ":" -f 2 |cut -d " " -f 1`
+                        hostname=`hostname`
+                        echo "configureing DNS..."
+                        rndc-confgen -r /dev/urandom -a
+                        /etc/init.d/named start >> /dev/null 2>&1
+                        cat >/etc/named.conf<<EOF
+options {
+        listen-on port 53 { any; };
+        listen-on-v6 port 53 { any; };
+        directory       "/var/named";
+        allow-query     { any; };
+
+
+};
+
+
+zone "." IN {
+        type hint;
+        file "named.ca";
+};
+
+include "/etc/named.rfc1912.zones";
+EOF
+                        cat >/etc/named.rfc1912.zones<<EOF
+zone "$YM" IN {
+        type master;
+        file "$YM.zone";
+};
+EOF
+                        cp /var/named/named.localhost $YM.zone -p
+                        echo "\$TTL 1D
+@       IN SOA  @ root.$YM. (
+                                        0       ; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                       3H )    ; minimum
+        NS      $hostname.
+dns     A       $IP
+www     A       $IP" > /var/named/$YM.zone
+                        chown root.named /var/named/$YM.zone
+                        /etc/init.d/named restart >> /dev/null 2>&1
+                        echo "DNS SERVER ALREADY READY"
+                        echo 'Client can be edit /etc/resolv.conf to add "nameserver $IP" for appoint Server'
+                else
+                echo "Please check your YUM"      
+                exit
+        fi
+        else
+        exit
+fi
+}
+
+function _SMB()
+{
+yum install samba samba-client -y &>/dev/null
+mkdir /mnt &>/dev/null
+mkdir /mnt/smb &>/dev/null
+cat >>/etc/samba/smb.conf<<eof
+[global]
+        workgroup = MYGROUP_UP
+        server string = Samba Server Version %v
+        log file = /var/log/samba/log.%m
+        max log size = 50
+        security = share
+        passdb backend = tdbsam
+[pubdir]
+    comment = My shared dir
+    path = /mnt/smb
+    browseable = no
+    writable = yes
+    guest ok = yes
+eof
+chmod 777 /mnt/smb
+/etc/init.d/smb restart &>/dev/null
+echo "SAMBA SERVER IS RUNING"
+echo "Samba directory is /mnt/smb"
+}
+function _MAINMENU()
+{
+_MAINMENU_COMMENT
+case $MAINMENU_COMMENT in 
+	1)
+	echo "Please waiting..." 
+	;;
+	2)
+	_SERVERCENTER
+	;;
+	*)
+	exit
+esac 
+}
+_MAINMENU
+
+##test

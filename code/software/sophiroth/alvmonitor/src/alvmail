@@ -1,0 +1,63 @@
+#!/bin/bash
+:<<!
+-----------------------------------------------------------------
+|Script Name            :       alvmail                         |
+|Script Description     :       alv sendemail                   |
+|Update Time            :       2017-02-12 17:00                |
+|Author                 :       Alvin Wan                       |
+|Email                  :       alvin.wan@51alvin.com           |
+-----------------------------------------------------------------
+!
+#This input $1 define by subject, $2 is content $3 is receiver
+f_SendErrorLog()
+{
+echo $1 >> $v_ErrorLogFile
+}
+mkdir -p /var/log/alv
+v_ErrorLogFile=/var/log/alv/error.log
+v_RedhatMailxFile=/etc/mail.rc
+v_UbuntuMailxFile=/etc/nail.rc
+v_SystemVersion=`grep -Ei "redhat|centos|ubuntu" /etc/issue`
+v_RedhatInstallMailx="yum install mailx -y"
+v_UbuntuInstallMailx="apt-get install heirloom-mailx -y"
+v_UbuntuRepo=/etc/apt/source.list
+v_UbuntuSoftType=apt
+v_RedhatRepo=/etc/yum.repos.d/
+v_RedhatSoftType=yum
+v_EmailSubject="$1"
+v_MessageContent="$2"
+v_EmailReceiver="$3"
+
+#Define mailx confirm function.
+f_ConfirmMailx()
+{
+if [ -f $1 ] && `which mail &>/dev/null`;then
+        v_MailxConfigFile=$1
+        else
+        $2
+        if [ $? -eq 0 ];then
+            v_MailxConfigFile=$1
+            else
+            f_SendErrorLog "I detected this system is $v_SystemVersion, and I found mailx has not installed, so I try to install max with command --$2-- but I field, so please check the system $3 repository configuration, related directory or file might includes $4, please check it."
+            exit 2
+        fi
+fi      
+}
+#grep -Ei "redhat|centos" /etc/issue &>/dev/null
+grep -Ei "ubuntu" /etc/issue &>/dev/null
+if [ $? -ne 0 ];then
+	f_ConfirmMailx $v_RedhatMailxFile $v_RedhatInstallMailx $v_RedhatSoftType $v_RedhatRepo
+	else
+	f_ConfirmMailx $v_UbuntuMailxFile $v_UbuntuInstallMailx $v_UbuntuSoftType $v_UbuntuRepo
+fi
+
+#v_MailxConfigFile=/etc/mail.rc
+echo "set from=notify@51alvin.com
+set smtp=smtp.exmail.qq.com
+set smtp-auth-user=notify@51alvin.com
+set smtp-auth-password=Alvin-Notify2016
+set smtp-auth=login" >> $v_MailxConfigFile
+
+echo "$v_MessageContent"|mail -s "$v_EmailSubject" $v_EmailReceiver
+
+for i in {1..5};do sed -i '$d' $v_MailxConfigFile;done
