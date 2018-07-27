@@ -4,7 +4,7 @@ yum
 yum的全称是Yellowdog Updater Modified
 
 .. toctree::
-    :maxdepth: 5
+    :maxdepth: 4
     :numbered:
 
     yum_official_sync

@@ -3,12 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Poppy's documentation!
+Welcome to Alvin's document center Poppy !
 =================================
 
 .. toctree::
     :maxdepth: 2
-    :numbered:
     :caption: Contents:
 
     introduction
@@ -26,6 +25,7 @@ Welcome to Poppy's documentation!
     ha&lb/readme
     web/readme
     rhcsa/readme
+    devops/readme
     open_source/readme
 
 
