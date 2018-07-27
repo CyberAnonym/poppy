@@ -10,3 +10,4 @@ yum的全称是Yellowdog Updater Modified
     yum_official_sync
     yum_http
     yum_iso_local
+    yum

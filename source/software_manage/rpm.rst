@@ -38,6 +38,14 @@ rpm卸载软件
 
     rpm -qa
 
+查看指定命令是通过那个包安装的
+------------------------------------
+
+.. code-block:: bash
+
+    [root@dns ~]# rpm -qf /usr/bin/sar
+    sysstat-10.1.5-13.el7.x86_64
+
 其他详细资料
 -------------
 以下内容来自网络：https://www.cnblogs.com/xxpal/articles/816692.html

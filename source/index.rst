@@ -28,6 +28,7 @@ Welcome to Alvin's document center Poppy !
     rhcsa/readme
     devops/readme
     open_source/readme
+    other/readme
 
 
 

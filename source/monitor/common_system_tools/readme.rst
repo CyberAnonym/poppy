@@ -11,3 +11,4 @@ common system tools
     sar
     iostat
     nethogs
+    lsof
