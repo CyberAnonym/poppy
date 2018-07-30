@@ -14,3 +14,17 @@ wget
 
     wget http://cn.wordpress.org/wordpress-3.1-zh_CN.zip
 
+
+wget下载文件到指定路径后重命名
+===========================================
+
+.. code-block:: bash
+
+    wget -O /opt/wordpress.zip http://cn.wordpress.org/wordpress-3.1-zh_CN.zip
+
+wget下载文件到指定目录
+=========================
+
+.. code-block:: bash
+
+    wget -P /opt/ http://cn.wordpress.org/wordpress-3.1-zh_CN.zip
