@@ -5,5 +5,5 @@
     :maxdepth: 2
 
     jenkins
-    saltstack
+    saltstack/readme.rst
     git
