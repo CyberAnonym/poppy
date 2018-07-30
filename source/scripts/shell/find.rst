@@ -37,3 +37,10 @@ find
 
     find . -path ./a -prune -o -type f -name s.txt -print
 
+
+查找当前目录下的所有*.doc文件并将所有结果复制到 /tmp/doc 目录下
+```````````````````````````````````````````````````````````````
+
+.. code-block:: bash
+
+    find . -iname "*.doc" -type f -exec cp {} /tmp/doc /;

@@ -2,6 +2,41 @@ lvm
 ###
 lvm - logic volume manage
 
+
+LVM基本术语
+================
+
+
+　　LVM是在磁盘分区和文件系统之间添加的一个逻辑层，来为文件系统屏蔽下层磁盘分区布局，提供一个抽象的盘卷，在盘卷上建立文件系统。首先我们讨论以下几个LVM术语：
+
+　　物理存储介质（The physical media）
+
+　　这里指系统的存储设备：硬盘，如：/dev/hda、/dev/sda等等，是存储系统最低层的存储单元。
+
+　　物理卷（physicalvolume）
+
+　　物理卷就是指硬盘分区或从逻辑上与磁盘分区具有同样功能的设备(如RAID)，是LVM的基本存储逻辑块，但和基本的物理存储介质（如分区、磁盘等）比较，却包含有与LVM相关的管理参数。
+
+　　卷组（Volume Group）
+
+　　LVM卷组类似于非LVM系统中的物理硬盘，其由物理卷组成。可以在卷组上创建一个或多个“LVM分区”（逻辑卷），LVM卷组由一个或多个物理卷组成。
+
+　　逻辑卷（logicalvolume）
+
+　　LVM的逻辑卷类似于非LVM系统中的硬盘分区，在逻辑卷之上可以建立文件系统(比如/home或者/usr等)。
+
+　　PE（physical extent）
+
+　　每一个物理卷被划分为称为PE(Physical Extents)的基本单元，具有唯一编号的PE是可以被LVM寻址的最小单元。PE的大小是可配置的，默认为4MB。
+
+    由于vg是多个PE（块）组成的，而且每个vg块的PE最大数量是65534。默认每个PE的大小是4m
+
+    也就是说默认的每个vg最大也就是4m乘65534=256G，因此PE块的大小决定了最终vg的大小。
+
+    PE的值可以是4，8，16，32，64。PE越小硬盘利于率越高，但是每个VG块的最大数量是65534，所以PE大小决定了VG卷组的大小。
+
+
+
 准备好物理磁盘或分区
 ==============================
 
@@ -31,6 +66,13 @@ lvm - logic volume manage
 
 创建卷组（vg）
 ================
+
+vgcreate 参数说明
+
+- -l：卷组上允许创建的最大逻辑卷数；
+- -p：卷组中允许添加的最大物理卷数；
+- -s：卷组上的物理卷的PE大小。
+
 .. code-block:: bash
 
     [root@teacher Desktop]# vgcreate /dev/vg0 /dev/sdb /dev/sdc2
@@ -41,6 +83,17 @@ lvm - logic volume manage
 
 创建逻辑卷
 ================
+
+说明：
+
+-L    指定创建的LV 的大小
+
+-l    指定创建的LV 的PE 数量
+
+-n    LV的名字
+
+
+
 .. code-block:: bash
 
     [root@teacher Desktop]# lvcreate -L 10G -n /dev/vg0/lv01 /dev/vg0
@@ -257,7 +310,7 @@ fdisk分区
     n #开始分区
         #回车
         #回车
-    +500M
+    +512M
     w
     partprobe #通知内核重新读取分区表
 
