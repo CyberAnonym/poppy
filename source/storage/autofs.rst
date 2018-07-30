@@ -29,8 +29,8 @@ autofs
 
 .. code-block:: bash
 
-    echo "/sophiroth auto.sophiroth rw,nosuid --timeout=60" >>/etc/auto.master
-    echo "* ops1.alv.pub:/ldapUserData/&" >> /etc/auto.sophiroth
+    echo "/sophiroth auto.sophiroth rw,nosuid --timeout=60" >>/etc/auto.master     #向主配置里添加一条配置
+    echo "* ops1.alv.pub:/ldapUserData/&" >> /etc/auto.sophiroth    #新增一个配置文件
 
 
 启动autofs，并设置开机自动启动

@@ -9,3 +9,5 @@
     ceph
     owncloud
     autofs
+    samba
+    nfs
