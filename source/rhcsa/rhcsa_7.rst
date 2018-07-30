@@ -289,7 +289,7 @@ http://content.example.com/rhel7.0/x86_64/errata/Packages/
 安装软件包
 ::
 
-    yum install -y sssd	krb5-workstation.x86_64
+    yum install -y sssd	krb5-workstation.x86_64 nss-pam-* pam-krb5
 
 打开配置界面
 ::
