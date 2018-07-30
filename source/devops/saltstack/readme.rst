@@ -8,3 +8,5 @@ saltstack
 
     install_saltstack
     saltstack_agent
+    group
+    salt-ui-halite
