@@ -14,8 +14,10 @@ Welcome to Alvin's document center Poppy !
     introduction
     user_management/readme
     software_manage/readme
+    common_system_funtion/readme
     common_command/readme
     common_service/readme
+    common_system_optimiz/readme
     network/readme
     security/readme
     database/readme

@@ -7,3 +7,4 @@
 
     dhcp
     route
+    vpn/readme

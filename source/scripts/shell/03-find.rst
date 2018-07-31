@@ -43,4 +43,4 @@ find
 
 .. code-block:: bash
 
-    find . -iname "*.doc" -type f -exec cp {} /tmp/doc /;
+    find . -iname "*.doc" -type f -exec cp {} /tmp/doc \;
