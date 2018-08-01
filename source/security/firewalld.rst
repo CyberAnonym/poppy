@@ -167,6 +167,7 @@ firewall-cmd 常用命令及说明
 
 .. code-block:: bash
 
+    firewall-cmd --zone=trusted --add-forward-port=port=5423:proto=tcp:toport=80
     firewall-cmd --permanent --zone=trusted --add-forward-port=port=5423:proto=tcp:toport=80
 
 将本地端口转发到其他IP的端口
@@ -176,6 +177,7 @@ firewall-cmd 常用命令及说明
 .. code-block:: bash
 
     firewall-cmd --add-forward-port=port=3333:proto=tcp:toport=80:toaddr=192.168.127.59
+    firewall-cmd --permanent --add-forward-port=port=3333:proto=tcp:toport=80:toaddr=192.168.127.59
 
 拒绝指定网络的所有请求
 =================================

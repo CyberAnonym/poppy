@@ -5,6 +5,6 @@
 .. toctree::
     :maxdepth: 1
 
-    journalctl
-    wget
-    curl
+    001-journalctl
+    002-wget
+    003-curl

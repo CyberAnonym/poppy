@@ -1,5 +1,6 @@
-apache
+httpd
 ===========
+Apache httpd web service
 
 yum安装apache
 ====================
