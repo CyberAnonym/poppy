@@ -4,5 +4,6 @@
 .. toctree::
     :maxdepth: 2
 
-    mysql
-    mongodb
+    01-mariadb
+    02-mongodb
+    03-redis

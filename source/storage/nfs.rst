@@ -14,5 +14,5 @@ nfs - Network File System
 
 .. code-block:: bash
 
-# vim /etc/exports
-/opt 192.168.1.0/24(rw,async)
+    # vim /etc/exports
+    /opt 192.168.1.0/24(rw,async)
