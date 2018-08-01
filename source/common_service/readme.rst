@@ -5,5 +5,7 @@
 .. toctree::
     :maxdepth: 2
 
-    systemd_index
-    chrony
+    01-systemd_index
+    02-chrony
+    03-ssh
+    04-cron

@@ -149,6 +149,17 @@ firewall-cmd 常用命令及说明
     firewall-cmd --permanent --zone=public --add-service=http
     firewall-cmd --reload#firewall-cmd --list-all
 
+伪装IP
+===============
+防火墙可以实现伪装IP的功能，下面的端口转发就会用到这个功能。
+
+如果要将本地端口转发到其他IP的端口，则必须要开启伪装IP。
+
+.. code-block:: bash
+
+    firewall-cmd --query-masquerade # 检查是否允许伪装IP
+    firewall-cmd --add-masquerade # 允许防火墙伪装IP
+    firewall-cmd --remove-masquerade# 禁止防火墙伪装IP
 
 指定网络中将本地端口5423转发到80
 =================================================
@@ -156,7 +167,15 @@ firewall-cmd 常用命令及说明
 
 .. code-block:: bash
 
-    firewall-cmd --permanent --zone=trusted --add-forward-port=port=5423:proto=toport=80
+    firewall-cmd --permanent --zone=trusted --add-forward-port=port=5423:proto=tcp:toport=80
+
+将本地端口转发到其他IP的端口
+===========================================
+将本地3333端口转发至192.168.127.59的80端口。
+
+.. code-block:: bash
+
+    firewall-cmd --add-forward-port=port=3333:proto=tcp:toport=80:toaddr=192.168.127.59
 
 拒绝指定网络的所有请求
 =================================
@@ -194,6 +213,7 @@ firewall-cmd 常用命令及说明
     firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="192.168.38.1" port protocol="tcp" port="22" reject'
     firewall-cmd --reload
 
+使用上面的规则会让目标地址来访问我们的端口的时候直接被拒绝掉，这里我们用的是reject，实际上我们也可以用drop，使用dorp表示直接丢弃对方的请求不回应，对方的访问请求不会直接被拒绝，而是超时。
 富规则-允许指定ip访问指定端口
 ==================================
 允许192.168.127.1访问我们的tcp80端口。
