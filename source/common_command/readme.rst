@@ -8,3 +8,4 @@
     001-journalctl
     002-wget
     003-curl
+    004-mail
