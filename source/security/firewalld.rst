@@ -97,6 +97,12 @@ firewall-cmd 常用命令及说明
 
     firewall-cmd --list-all --zone=block
 
+- 查看所有区域的防火墙设置
+
+.. code-block:: bash
+
+    firewall-cmd --list-all-zones
+
 将默认区域设置为信任
 ============================
 调整防火墙信任区域，简化对后续各种服务的防护
@@ -179,3 +185,19 @@ firewall-cmd 常用命令及说明
     # firewall-cmd --reload
 
 默认区域设置为 dmz，来自192.168.0.0/24 网络的所有流量都被分配给 internal 区域，而 internal 区域打开了用于 mysql 的网络端口。
+
+富规则-禁止指定IP访问指定端口
+===================================
+
+.. code-block:: bash
+
+    firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="192.168.38.1" port protocol="tcp" port="22" reject'
+    firewall-cmd --reload
+
+富规则-允许指定ip访问指定端口
+==================================
+允许192.168.127.1访问我们的tcp80端口。
+
+.. code-block:: bash
+
+    firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=192.168.127.1 port protocol="tcp" port="80" accept'
