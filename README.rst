@@ -8,4 +8,4 @@ Poppy也是Alvin家小博美的名字，Alvin家的小博美Poppy是在2018年7�
 
 如果你愿意帮助Alvin完善这个文档，也欢迎在这里提交pull request。
 
-该项目访问网址: http://poppy.alv.pub
+网络访问地址： http://alvin.pub/   或者 http://poppy.alv.pub/
