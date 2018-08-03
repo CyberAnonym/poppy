@@ -1,0 +1,560 @@
+
+RHCE 7 参考
+========================
+
+环境说明
+
+真实机（无 root 权限）：foundation.groupX.example.com
+
+虚拟机 1（有 root 权限）：system1.groupX.example.com
+
+虚拟机 2（有 root 权限）：system2.groupX.example.com
+
+考试服务器（提供 DNS/YUM/认证/素材	）：server1.groupX.example.com、host.groupX.example.com
+
+练习环境说明
+
+真实机（无 root 权限）：foundationX.example.com
+
+虚拟机 1（有 root 权限）：serverX.example.com
+
+虚拟机 2（有 root 权限）：desktopX.example.com
+
+练习服务器（提供 DNS/YUM/认证/素材.. ..）：http://classroom.example.com
+
+
+配置 SELinux
+=================
+
+试题概述：
+
+确保 SELinux 处于强制启用模式。
+
+::
+
+    setenforce 1 #开启selinux
+    sed -i 's/SELINUX=.*/SELINUX=enforcing/ /etc/selinux/config #通过配置文件永久开启selinux。
+
+
+配置 SSH 访问试题概述：
+===========================
+
+按以下要求配置 SSH 访问：
+
+- 用户能够从域 groupX.example.com 内的客户端 SSH 远程访问您的两个虚拟机系统
+- 在域 my133t.org 内的客户端不能访问您的两个虚拟机系统
+
+
+自定义用户环境（别名设置） 试题概述：
+==============================================
+
+
+在系统 system1 和 system2 上创建自定义命令为 qstat，此自定义命令将执行以下命令：
+
+/bin/ps -Ao pid,tt,user,fname,rsz 此命令对系统中所有用户有效。
+
+
+配置防火墙端口转发试题概述：
+==============================================
+
+在系统 system1 配置端口转发，要求如下：
+•	在 172.25.0.0/24 网络中的系统，访问 system1 的本地端口 5423 将被转发到 80
+此设置必须永久有效
+[注：推荐 firewall-config 图形配置工具]
+
+
+配置链路聚合试题概述：
+==============================================
+
+在 system1.groupX.example.com 和 system2.groupX.example.com 之间按以下要求配置一个链路：
+
+- 此链路使用接口 eth1 和 eth2
+- 此链路在一个接口失效时仍然能工作；
+- 此链路在 system1 使用下面的地址 172.16.X.20/255.255.255.0
+- 此链路在 system2 使用下面的地址 172.16.X.25/255.255.255.0
+- 此链路在系统重启之后依然保持正常状态
+
+
+
+配置 IPv6 地址试题概述：
+==============================================
+
+在您的考试系统上配置接口 eth0 使用下列 IPv6 地址：
+
+- system1 上的地址应该是 2003:ac18::305/64
+- system2 上的地址应该是 2003:ac18::306/64
+- 两个系统必须能与网络 2003:ac18/64 内的系统通信
+- 地址必须在重启后依旧生效
+- 两个系统必须保持当前的 IPv4 地址并能通信
+
+配置本地邮件服务试题概述：
+==============================================
+
+在系统 system1 和 system2 上配置邮件服务，满足以下要求：
+
+- 这些系统不接收外部发送来的邮件
+- 在这些系统上本地发送的任何邮件都会自动路由到 server1.groupX.example.com
+- 从这些系统上发送的邮件显示来自于 groupX.example.com
+- 您可以通过发送邮件到本地用户arthur来测试您的配置，系统
+- server1.groupX.example.com	已经配置把此用户的邮件转到下列URL：http://server1.groupX.example.com/received_mail/3
+
+- 解题参考：
+
+[练习环境：lab smtp-nullclient setup] server和desktop都执行这个，
+
+server端：
+
+.. code-block:: bash
+
+    # vim /etc/postfix/mail.conf
+    relayhost=[smtpX.example.com]
+    inet_interfaces = loopback-only
+    myorigin = desktopX.example.com
+    mynetworks = 127.0.0.0/8 [::1]/128
+    local_transport = error:local
+    mydestination =
+
+    # systemctl restart postfix
+    # systemctl enable postfix
+
+    # echo 'Mail Data.' |mail -s 'Test1' student
+
+desktop端验证：
+
+.. code-block:: bash
+
+    mail - u student
+
+验证该实验
+
+lab smtp-nullclient grade
+
+通过 Samba 发布共享目录试题概述：
+==============================================
+
+在 system1 上通过 SMB 共享/common 目录：
+
+- 您的 SMB 服务器必须是 STAFF 工作组的一个成员
+- 共享名必须为 common
+- 只有 groupX.example.com 域内的客户端可以访问 common 共享
+- common 必须是可以浏览的
+- 用户 harry 必须能够读取共享中的内容，如果需要的话，验证的密码是 migwhisk
+
+
+- 解题参考：
+
+.. code-block:: bash
+
+    yum install samba -y
+    mkdir -p /common
+    setsebool -P samba_export_all_rw=on  ##取消selinux限制
+    useradd harry ； pdbedit -a harry ##启用共享账号并设置migwhisk
+    vim /etc/samba/smb.conf
+    [global]
+        workgroup = STAFF
+    [common]
+        path = /common
+        hosts allow = 172.25.0.0/24
+
+    systemctl restart smb
+    systemctl enable smb
+
+
+
+配置多用户 Samba 挂载试题概述：
+==============================================
+
+在 system1 通过 SMB 共享目录/devops，并满足以下要求：
+
+- 共享名为 devops
+- 共享目录 devops 只能被 groupX.example.com 域中的客户端使用
+- 共享目录 devops 必须可以被浏览
+- 用户 kenji 必须能以读的方式访问此共享，该问密码是 atenorth
+- 用户 chihiro 必须能以读写的方式访问此共享，访问密码是 atenorth
+- 此共享永久挂载在 system2.groupX.example.com 上的/mnt/dev 目录，并使用用户kenji 作为认证，任何用户可以通过用户 chihiro 来临时获取写的权限
+
+
+解题参考：
+
+.. code-block:: bash
+
+    [root@serverX ~]# mkdir /devops
+    [root@serverX ~]# useradd kenji ; pdbedit -a kenji
+    [root@serverX ~]# useradd chihiro; pdbedit -a chihiro
+    [root@serverX ~]# setfacl -m u:chihiro:rwx /devops/
+    [root@serverX ~]# vim /etc/samba/smb.conf
+    .. ..
+    [devops] path = /devops
+        write list = chihiro
+        hosts allow = 172.25.0.0/24 //只允许指定网域访问
+    [root@serverX ~]# systemctl restart smb
+
+然后在客户端desktopX上:
+
+.. code-block:: bash
+
+    [root@desktopX ~]# yum -y install samba-client cifs-utils
+    [root@desktopX ~]# smbclient -L serverX
+    .. ..
+    [root@desktopX ~]# mkdir/mnt/dev
+    [root@desktopX ~]# vim /etc/fstab
+    //serverX.example.com/devops    /mnt/dev    cifs username=kenji,password=atenorth,multiuser,sec=ntlmssp,_netdev 0 0
+    [root@desktopX ~]# mount -a
+
+验证多用户访问（在 desktopX 上）：chihiro 可读写
+
+.. code-block:: bash
+
+    [root@desktopX ~]# useradd mike   //添加普通测试用户
+    [root@desktopX ~]# su - mike    //切换到普通用户
+    [root@desktopX ~]# su - chihiro
+    [mike@desktopX ~]$ cifscreds add    //向服务器提交用户认证凭据
+    Password:                         //提供 Samba 用户 chihiro 的密码
+    [mike@desktopX ~]$ touch /mnt/dev/b.txt     //确认有写入权限（新建文件)
+
+配置 NFS 共享服务试题概述：
+==============================================
+
+
+在 system1 配置 NFS 服务，要求如下：
+
+- 以只读的方式共享目录/public，同时只能被 groupX.example.com 域中的系统访问
+- 以读写的方式共享目录/protected，能被 groupX.example.com 域中的系统访问
+- 访问/protected 需要通过 Kerberos 安全加密，您可以使用下面 URL 提供的密钥： http://host.groupX.example.com/material/nfs_server.keytab
+- 目录/protected 应该包含名为 project 拥有人为 krishna 的子目录
+- 用户 krishna 能以读写方式访问/protected/project
+
+server0:
+
+.. code-block:: bash
+
+    [root@server0 ~]# mkdir /public
+    [root@server0 ~]# mkdir -p /protected/confidential
+    [root@server0 ~]# chcon -R -t public_content_t /public
+    [root@server0 ~]# chcon -R -t public_content_t /protected
+    [root@server0 ~]# vim /etc/exports
+    /public 172.25.0.0/24(ro,sync) /protected 172.25.0.0/24(rw,sync,sec=krb5p)
+    [root@server0 ~]# wget -O /etc/krb5.keytab http://classroom.example.com/pub/keytabs/server0.keytab
+    [root@server0 ~]# vim /etc/sysconfig/nfs RPCNFSDARGS="-V 4.2"
+    [root@system1~]# chown deepak /protected/confidential
+    [root@server0 ~]# firewall-cmd --permanent --add-service=nfs success
+    [root@server0 ~]# firewall-cmd --permanent --add-service=mountd success
+    [root@server0 ~]# firewall-cmd --permanent --add-service=rpc-bind success
+    [root@server0 ~]# firewall-cmd --reload success
+    [root@server0 ~]# setfacl -m u:deepak:rwx /protected
+    [root@server0 ~]# systemctl restart nfs-server nfs-secure-server
+    [root@server0 ~]# systemctl enable nfs-server nfs-secure-server
+    [root@server0 ~]# exportfs -ra
+    [root@server0 ~]# showmount -e
+    Export list for server0.example.com:
+    /protected 172.25.0.0/24
+    /public 172.25.0.0/24
+
+挂载 NFS 共享试题概述：
+==============================================
+
+在 system2 上挂载一个来自 system1.goup3.exmaple.com 的共享，并符合下列要求：
+
+- /public 挂载在下面的目录上/mnt/nfsmount
+- /protected 挂载在下面的目录上/mnt/nfssecure 并使用安全的方式，密钥下载 URL： http://host.groupX.example.com/nfs_client.keytab
+- 用户 krishna 能够在/mnt/nfssecure/project 上创建文件
+- 这些文件系统在系统启动时自动挂载
+
+desktop0:
+
+.. code-block:: bash
+
+    [root@desktop0 ~]# showmount -e 172.25.0.11
+    Export list for 172.25.0.11:
+    /protected 172.25.0.0/24
+    /public 172.25.0.0/24
+    [root@desktop0 ~]# wget -O /etc/krb5.keytab http://classroom.example.com/pub/keytabs/desktop0.keytab
+    [root@desktop0 ~]# systemctl restart nfs-secure
+    [root@desktop0 ~]# systemctl enable nfs-secure
+    ln -s '/usr/lib/systemd/system/nfs-secure.service' '/etc/systemd/system/nfs.target.wants/nfs-secure.service'
+    [root@desktop0 ~]# mkdir -p /mnt/nfsmount
+    [root@desktop0 ~]# mkdir -p /mnt/nfssecure
+    [root@desktop0 ~]# vim /etc/fstab
+    172.25.0.11:/public /mnt/nfsmount nfs defaults 0 0
+    172.25.0.11:/protected /mnt/nfssecure nfs defaults,sec=krb5p,v4.2 0 0
+    [root@desktop0 ~]# mount -a
+    [root@desktop0 ~]# df -Th
+
+
+
+实现一个 web 服务器试题概述：
+==============================================
+
+为 http://system1.groupX.example.com 配置 Web 服务器：
+
+- 从http://server1.groupX.example.com/materials/station.html 下载一个主页文件，并将该文件重命名为 index.html
+- 将文件 index.html 拷贝到您的 web 服务器的 DocumentRoot 目录下
+- 不要对文件 index.html 的内容进行任何修改
+- 来自于 groupX.example.com 域的客户端可以访问此 Web 服务
+- 来自于 my133t.org 域的客户端拒绝访问此 Web 服务
+
+
+server0:
+
+.. code-block:: bash
+
+    [root@server0 httpd-2.4.6]# yum install -y httpd
+    [root@server0 httpd-2.4.6]# cp /usr/share/doc/httpd-2.4.6/httpd-vhosts.conf /etc/httpd/conf.d/
+    [root@server0 ~]# vim /etc/httpd/conf.d/httpd-vhosts.conf
+    <VirtualHost *:80>
+    DocumentRoot /var/www/html
+    ServerName server0.example.com
+    </VirtualHost>
+    [root@server0 ~]# cd /var/www/html/
+    [root@server0 html]# wget -O index.html http://rhgls.domain1.example.com/materials/server.html
+    [root@server0 html]# ls index.html
+    [root@server0 html]# cat index.html server.example.com.
+    [root@server0 ~]# systemctl restart httpd
+    [root@server0 ~]# systemctl enable httpd
+    ln -s '/usr/lib/systemd/system/httpd.service' '/etc/systemd/system/multi-user.target.wants/httpd.service'
+    [root@server0 ~]# firewall-cmd --permanent --add-service=http success
+    [root@server0 ~]# firewall-cmd --permanent --add-service=https success
+    [root@server0 ~]# firewall-cmd --reload success
+
+    desktop0:
+    验证
+
+    [root@desktop0 ~]# firefox
+
+
+
+配置安全 web 服务试题概述：
+==============================================
+
+
+为站点 http://system1.groupX.example.com 配置 TLS 加密：
+
+- 一个已签名证书从 http://host.groupX.example.com/materials/system1.crt 获取
+- 此证书的密钥从 http://host.groupX.example.com/materials/system1.key 获取
+- 此证书的签名授权信息从 http://host.groupX.example.com/materials/groupX.crt 获取
+
+
+server0:
+
+.. code-block:: bash
+
+    [root@server0 html]# yum install -y mod_ssl
+    [root@server0 html]# vim /etc/httpd/conf.d/ssl.conf
+    <VirtualHost _default_:443>
+    # General setup for the virtual host, inherited from global configuration
+    DocumentRoot "/var/www/html"
+    ServerName server0.example.com:443
+    SSLEngine on
+    SSLProtocol all -SSLv2
+    SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5
+    SSLHonorCipherOrder on
+    SSLCertificateFile /etc/pki/tls/certs/localhost.crt
+    SSLCertificateKeyFile /etc/pki/tls/private/localhost.key
+    SSLCertificateChainFile /etc/pki/tls/certs/server-chain.crt
+    </VirtualHost>
+    [root@server0 tls]# cd /etc/pki/tls/certs/
+    [root@server0 certs]# wget -O localhost.crt http://classroom/pub/tls/certs/www0.crt
+    [root@server0 certs]# cd /etc/pki/tls/private/
+    [root@server0 private]# wget -O localhost.key http://classroom/pub/tls/private/www0.key
+    [root@server0 private]# cd /etc/pki/tls/certs/
+    [root@server0 certs]# wget -O server-chain.crt http://classroom/pub/example-ca.crt
+    [root@server0 ~]# systemctl restart httpd.service
+    [root@server0 ~]# systemctl enable httpd.service
+
+desktop0:
+
+ 验证
+
+.. code-block:: bash
+
+
+    [root@desktop0 ~]# firefox
+
+
+配置虚拟主机试题概述：
+==============================================
+
+在 system1 上扩展您的 web 服务器，为站点 http://www.groupX.example.com 创建一个虚拟主机，然后执行下述步骤：
+
+- 设置 DocumentRoot 为/var/www/virtual
+- 从 http://server1.groupX.example.com/materials/www.html 下载文件并重命名为index.html
+- 不要对文件 index.html 的内容做任何修改
+- 将文件 index.html 放到虚拟主机的 DocumentRoot 目录下
+- 确保 harry 用户能够在/var/www/virtual 目录下创建文件
+
+注意：原始站点 http://system1.groupX.example.com 必须仍然能够访问，名称服务器groupX.example.com 提供对主机名 www.groupX.example.com 的域名解析。
+
+
+server0:
+
+.. code-block:: bash
+
+    [root@server0 ~]# mkdir -p /var/www/virtual
+    [root@server0 ~]# ls -Zd /var/www/html/
+    drwxr-xr-x. root root system_u:object_r:httpd_sys_content_t:s0 /var/www/html/
+    [root@server0 ~]# chcon -R -t httpd_sys_content_t /var/www/virtual
+    [root@server0 ~]# vim /etc/httpd/conf.d/httpd-vhosts.conf
+    <VirtualHost *:80>
+    DocumentRoot /var/www/virtual
+    ServerName www0.example.com
+    </VirtualHost>
+    [root@server0 ~]# cd /var/www/virtual/
+    [root@server0 virtual]# wget -O index.html http://rhgls.domain1.example.com/materials/www.html
+    [root@server0 virtual]# cat index.html www.example.com.
+    [root@server0 virtual]# cd
+    [root@server0 ~]# setfacl -m u:andy:rwx /var/www/virtual
+    [root@server0 ~]# systemctl restart httpd.service
+
+desktop0:
+
+.. code-block:: bash
+
+    [root@desktop0 ~]# firefox
+
+配置 web 内容的访问试题概述：
+==============================================
+
+在您的 system1 上的 web 服务器的 DocumentRoot 目录下创建一个名为 private 的目录，要求如下：
+
+- 从 http://server1.groupX.example.com/materails/private.html 下载一个文件副本到这个目录，并且得命名为 index.html
+- 不要对这个文件的内容做任何修改
+- 从 system1 上，任何人都可以浏览 private 的内容，但是从其他系统不能访问这个目录的内容
+
+server0:
+
+.. code-block:: bash
+
+    [root@server0 ~]# mkdir -p /var/www/html/secret
+    [root@server0 ~]# chcon -R -t httpd_sys_content_t /var/www/html/secret
+    [root@server0 ~]# vim /etc/httpd//conf.d/httpd-vhosts.conf
+    <Directory "/var/www/html/secret">
+    AllowOverride None Require all denied Require local
+    </Directory>
+    [root@server0 ~]# systemctl restart httpd.service
+    [root@server0 ~]# cd /var/www/html/secret/
+    [root@server0 secret]# wget -O index.html http://rhgls.domain1.example.com/materials/private.html
+    [root@server0 secret]# cat index.html private test.
+    [root@server0 ~]# systemctl restart httpd.service
+    [root@server0 ~]# firefox
+
+
+
+实现动态 WEB 内容试题概述：
+==============================================
+
+在 system1 上配置提供动态 Web 内容，要求如下：
+
+- 动态内容由名为 alt.groupX.example.com 的虚拟主机提供
+- 虚拟主机侦听在端口 8909
+- 从 http://server1.groupX.example.com/materials/webinfo.wsgi 下载一个脚本， 然后放在适当的位置，无论如何不要修改此文件的内容
+- 客户端访问 http://alt.groupX.example.com:8909 可接收到动态生成的 Web 页
+- 此 http://alt.groupX.example.com:8909/必须能被 groupX.example.com 域内的所有系统访问
+
+.. code-block:: bash
+
+    [root@server0 ~]# yum install -y mod_wsgi
+    [root@server0 ~]# vim /etc/httpd/conf/httpd.conf
+    Listen 8998
+    [root@server0 ~]# mkdir -p /var/www/webapp
+    [root@server0 ~]# chcon -R -t httpd_sys_content_t /var/www/webapp
+    [root@server0 ~]# cd /var/www/webapp/
+    [root@server0 webapp]# wget -O webapp.wsgi http://rhgls.domain1.example.com/materials/webapp.wsgi
+    [root@server0 webapp]# cat webapp.wsgi
+    #!/usr/bin/env python
+    import time
+    def application (environ, start_response):
+        response_body = 'UNIX EPOCH time is now: %s\n' % time.time()
+        status = '200 OK'
+        response_headers = [('Content-Type', 'text/plain'),
+                            ('Content-Length', '1'),
+                            ('Content-Length', str(len(response_body)))]
+        start_response(status, response_headers)
+        return [response_body]
+    [root@server0 webapp]# cd
+    [root@server0 ~]# vim /etc/httpd/conf.d/httpd-vhosts.conf
+    <VirtualHost *:8998>
+    ServerName webapp0.example.com
+    WSGIScriptAlias / /var/www/webapp/webapp.wsgi
+    </VirtualHost>
+    [root@server0 ~]# firewall-cmd --permanent --add-port=8998/tcp success
+    [root@server0 ~]# firewall-cmd --reload success
+    [root@server0 ~]# firewall-config
+
+.. image:: ../../_static/images/rhce1.jpg
+
+.. code-block:: bash
+
+    [root@server0 ~]# semanage port -a -t http_port_t -p tcp 8998
+    [root@server0 ~]# systemctl restart httpd.service
+
+创建一个脚本试题概述：
+==============================================
+
+在 system1 上创建一个名为/root/foo.sh 的脚本，让其提供下列特性：
+
+- 当运行/root/foo.sh redhat，输出为 fedora
+- 当运行/root/foo.sh fedora，输出为 redhat
+- 当没有任何参数或者参数不是 redhat 或者 fedora 时，其错误输出产生以下的信息：
+    /root/foo.sh redhat|fedora
+
+
+
+
+创建一个添加用户的脚本试题概述：
+==============================================
+
+在 system1 上创建一个脚本，名为/root/batchusers，此脚本能实现为系统 system1 创建本地用户，并且这些用户的用户名来自一个包含用户名的文件，同时满足下列要求：
+
+- 此脚本要求提供一个参数，此参数就是包含用户名列表的文件
+- 如果没有提供参数，此脚本应该给出下面的提示信息	Usage: /root/batchusers
+    <userfile> 然后退出并返回相应的值
+
+- 如果提供一个不存在的文件名，此脚本应该给出下面的提示信息 Input file not found 然后退出并返回相应的值
+- 创建的用户登陆 Shell 为/bin/false，此脚本不需要为用户设置密码
+- 您可以从下面的 URL 获取用户名列表作为测试用： http://server1.groupX.example.com/materials/userlist
+
+
+配置 iSCSI 服务端试题概述：
+==============================================
+
+配置 system1 提供 iSCSI 服务，磁盘名为 iqn.2016-02.com.example.groupX:system1，并符合下列要求：
+
+- 服务端口为 3260
+- 使用 iscsi_store 作其后端卷，其大小为 3GiB
+- 此服务只能被 system2.groupX.example.com 访问
+
+
+配置 iSCSI 客户端试题概述：
+==============================================
+
+配置 system2 使其能连接 system1 上提供的 iqn.2016-02.com.example.groupX:system1，并符合以下要求：
+
+- iSCSI 设备在系统启动的期间自动加载
+- 块设备 iSCSI 上包含一个大小为 2100MiB 的分区，并格式化为 ext4 文件系统,此分区挂载在/mnt/data 上，同时在系统启动的期间自动挂载
+
+配置一个数据库试题概述：
+==============================================
+
+在 system1 上创建一个 MariaDB 数据库，名为 Contacts，并符合以下条件：
+
+- 数据库应该包含来自数据库复制的内容，复制文件的 URL 为： http://server1.groupX.example.com/materials/users.sql
+- 数据库只能被 localhost 访问
+- 除了 root 用户，此数据库只能被用户 Raikon 查询，此用户密码为 atenorth
+- root 用户的密码为 atenorth，同时不允许空密码登陆。
+
+
+
+数据库查询（填空） 试题概述：
+==============================================
+
+在系统 system1 上使用数据库 Contacts，并使用相应的 SQL 查询以回答下列问题：
+
+- 密码是 solicitous 的人的名字？
+
+- 有多少人的姓名是 Barbara 同时居住在 Sunnyvale？
+
+
+
+
+
+

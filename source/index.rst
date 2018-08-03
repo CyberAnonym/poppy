@@ -27,11 +27,10 @@ Welcome to Alvin's document center Poppy !
     virtualization/readme
     ha&lb/readme
     web/readme
-    rhcsa/readme
     devops/readme
     open_source/readme
     other/readme
-
+    redhat_certification/readme
 
 
 

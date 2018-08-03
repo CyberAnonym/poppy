@@ -16,3 +16,15 @@ nfs - Network File System
 
     # vim /etc/exports
     /opt 192.168.1.0/24(rw,async)
+
+
+防火墙设置
+==================
+
+.. code-block:: bash
+
+    firewall-cmd --permanent --add-service=nfs
+    firewall-cmd --permanent --add-service=rpc-bind
+    firewall-cmd --permanent --add-service=mountd
+    firewall-cmd --reload
+

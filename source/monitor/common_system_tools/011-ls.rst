@@ -1,0 +1,46 @@
+ls
+####
+
+ls - list directory contents
+
+
+ls基本上是linux系统中我们最常用的命令。
+
+
+查看文件的context值
+===========================
+ll等于ls -l , ll是ls -l的别名，用alias做的.
+
+.. code-block:: bash
+
+
+    [root@db1 ~]# ll
+    total 3672
+    -rw-r--r--  1 root root      16 Jul 12 13:08 1
+    -rwxr-xr-x  1 root root     291 Mar 28 14:39 1.py
+    -rw-r--r--  1 root root      40 Mar 15 09:31 1.sh
+    -rw-r--r--  1 root root     826 Mar 28 15:11 2.py
+    -rw-------. 1 root root    3108 Mar 14 15:23 anaconda-ks.cfg
+    -rw-r--r--  1 root root  145762 Apr 15 12:50 etlucency.png
+    -rw-------. 1 root root    3055 Mar 14 15:23 original-ks.cfg
+    -rw-r--r--  1 root root    1886 Jul 12 13:05 owncloud.conf
+    -rw-r--r--  1 root root    1214 May 11 14:45 sendemail.py
+    -rwxr-xr-x  1 root root 3579488 Jun  9  2017 weixin_linux_amd64
+
+这里我们看到下面有的文件的权限位有点'.'有的没有点，.代表着context值，这个文件有selinux的context值，就会有点。
+
+如何查看文件的context值呢？ 通过-Z参数可以查看， ls -Z
+
+.. code-block:: bash
+
+    [root@db1 ~]# ls -Z 1.py
+    -rwxr-xr-x root root ?                                1.py
+    [root@db1 ~]# ls -Z anaconda-ks.cfg
+    -rw-------. root root system_u:object_r:admin_home_t:s0 anaconda-ks.cfg
+
+查看所有文件，包括隐藏文件
+============================
+
+.. code-block:: bash
+
+    ls -la

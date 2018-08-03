@@ -94,3 +94,10 @@ nmcli connection 这里主要是操作管理配置文件的，启用/停用、�
 
     grep NETWORKING_IPV6=yes /etc/sysconfig/network || echo NETWORKING_IPV6=yes >> /etc/sysconfig/network
     grep net.ipv6.conf.all.disable_ipv6=0 /etc/sysctl.conf || echo net.ipv6.conf.all.disable_ipv6=0 >> /etc/sysctl.conf
+
+使用图形化的方式配置IP
+==============================
+
+.. code-block:: bash
+
+    nm-connection-editor

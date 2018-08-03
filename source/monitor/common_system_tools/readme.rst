@@ -15,3 +15,4 @@ common system tools
     008-lsof
     009-w
     010-who
+    011-ls

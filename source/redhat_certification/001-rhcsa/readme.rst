@@ -6,4 +6,4 @@ rscsa
     :maxdepth: 2
     :numbered:
 
-    rhcsa_7
+    001-rhcsa_7
