@@ -19,7 +19,7 @@ ssh - Secure Shell
 拒绝指定网络的用户访问
 ==================================
 
-.. code-block:: bsah
+.. code-block:: bash
 
     vim /etc/ssh/sshd_config
     DenyUsers *@192.168.127.*

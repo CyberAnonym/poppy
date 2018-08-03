@@ -38,6 +38,12 @@ ll等于ls -l , ll是ls -l的别名，用alias做的.
     [root@db1 ~]# ls -Z anaconda-ks.cfg
     -rw-------. root root system_u:object_r:admin_home_t:s0 anaconda-ks.cfg
 
+查看目录的context值
+
+.. code-block:: bash
+
+    ls -dZ /tmp
+
 查看所有文件，包括隐藏文件
 ============================
 
