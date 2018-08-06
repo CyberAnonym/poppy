@@ -4,6 +4,6 @@ web
 .. toctree::
    :maxdepth: 2
 
-   001-nginx
-   002-httpd
-   003-tomcat
+   001-nginx/readme
+   002-httpd/readme
+   003-tomcat/readme

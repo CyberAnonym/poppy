@@ -228,6 +228,7 @@ server0:
 
 .. code-block:: bash
 
+    [root@server0 ~]# lab nfskrb5 setup   #练习环境
     [root@server0 ~]# mkdir /public
     [root@server0 ~]# mkdir -p /protected/confidential
     [root@server0 ~]# chcon -R -t public_content_t /public
@@ -264,6 +265,7 @@ desktop0:
 
 .. code-block:: bash
 
+    [root@desktop0 ~]# lab nfskrb5 setup  #练习环境
     [root@desktop0 ~]# showmount -e 172.25.0.11
     Export list for 172.25.0.11:
     /protected 172.25.0.0/24
@@ -327,12 +329,21 @@ server0:
 ==============================================
 
 
-为站点 http://system1.groupX.example.com 配置 TLS 加密：
 
-- 一个已签名证书从 http://host.groupX.example.com/materials/system1.crt 获取
-- 此证书的密钥从 http://host.groupX.example.com/materials/system1.key 获取
-- 此证书的签名授权信息从 http://host.groupX.example.com/materials/groupX.crt 获取
 
+..
+    为站点 http://system1.groupX.example.com 配置 TLS 加密：
+    - 一个已签名证书从 http://host.groupX.example.com/materials/system1.crt 获取
+    - 此证书的密钥从 http://host.groupX.example.com/materials/system1.key 获取
+    - 此证书的签名授权信息从 http://host.groupX.example.com/materials/groupX.crt 获取
+
+
+
+描述： 为站点 http://server0.example.com 配置TLS 加密
+
+- 一个已签名证书从http://classroom/pub/tls/certs/wwwX.crt获取
+- 此证书的密钥从http://classroom/pub/tls/private/wwwX.key获取
+- 此证书的签名授权信息http://classroom/pub/example-ca.crt获取
 
 server0:
 
@@ -385,6 +396,7 @@ desktop0:
 注意：原始站点 http://system1.groupX.example.com 必须仍然能够访问，名称服务器groupX.example.com 提供对主机名 www.groupX.example.com 的域名解析。
 
 
+
 server0:
 
 .. code-block:: bash
@@ -414,11 +426,22 @@ desktop0:
 配置 web 内容的访问试题概述：
 ==============================================
 
-在您的 system1 上的 web 服务器的 DocumentRoot 目录下创建一个名为 private 的目录，要求如下：
+..
+    在您的 system1 上的 web 服务器的 DocumentRoot 目录下创建一个名为 private 的目录，要求如下：
 
-- 从 http://server1.groupX.example.com/materails/private.html 下载一个文件副本到这个目录，并且得命名为 index.html
-- 不要对这个文件的内容做任何修改
-- 从 system1 上，任何人都可以浏览 private 的内容，但是从其他系统不能访问这个目录的内容
+    - 从 http://server1.groupX.example.com/materails/private.html 下载一个文件副本到这个目录，并且得命名为 index.html
+    - 不要对这个文件的内容做任何修改
+    - 从 system1 上，任何人都可以浏览 private 的内容，但是从其他系统不能访问这个目录的内容
+
+
+描述：
+
+在 server0 上的 web 服务器的 DocumentRoot 目录下创建一个名为 secret 的目录，要求如下：
+
+- 从 http://rhgls.domain1.example.com/materials/private.html 下载一个文件副本到这个目录，并且重命名为 index.html，不要对这个文件的内容做任何修改。
+- 从 server0 上，任何人都可以浏览 secret 的内容，但是从其它系统不能访问这个目录的内
+
+
 
 server0:
 
@@ -457,6 +480,7 @@ server0:
     Listen 8998
     [root@server0 ~]# mkdir -p /var/www/webapp
     [root@server0 ~]# chcon -R -t httpd_sys_content_t /var/www/webapp
+    [root@server0 ~]# semanage port -a -t httpd_port_t -p tcp 8990
     [root@server0 ~]# cd /var/www/webapp/
     [root@server0 webapp]# wget -O webapp.wsgi http://rhgls.domain1.example.com/materials/webapp.wsgi
     [root@server0 webapp]# cat webapp.wsgi
@@ -498,6 +522,22 @@ server0:
     /root/foo.sh redhat|fedora
 
 
+.. code-block:: bash
+
+    cd /root
+    vim foo.sh
+    #!/bin/bash
+    case $1 in
+    redhat)
+    echo ' fedora '
+    ;;
+    fedora)
+    echo ' redhat '
+    ;;
+    *)
+    echo '/root/script redhat|fedora '
+    esac
+
 
 
 创建一个添加用户的脚本试题概述：
@@ -513,6 +553,29 @@ server0:
 - 创建的用户登陆 Shell 为/bin/false，此脚本不需要为用户设置密码
 - 您可以从下面的 URL 获取用户名列表作为测试用： http://server1.groupX.example.com/materials/userlist
 
+.. code-block:: sh
+
+    cd /root
+    vim batchusers
+    #!/bin/bash
+    if [ $# -eq 0 ];then
+    echo 'Usage: /root/batchusers userfile'
+    exit 1
+    fi
+    if [ ! -f $1 ];then
+    echo 'Input file not found'
+    exit 1
+    fi
+    while read line
+    do
+    useradd -s /bin/false $line
+    done < $1
+
+    vim userlist
+    tom
+    bob
+    jack
+
 
 配置 iSCSI 服务端试题概述：
 ==============================================
@@ -523,6 +586,29 @@ server0:
 - 使用 iscsi_store 作其后端卷，其大小为 3GiB
 - 此服务只能被 system2.groupX.example.com 访问
 
+.. code-block:: sh
+    :linenos:
+
+    fdisk /dev/vdb   分区3G
+
+    yum -y install targetcli
+    targetcli
+    /> ls
+    /> backstores/block create iscsi_store /dev/vdb1
+    /> iscsi/ create iqn.2016-02.com.example:server0
+    /> /iscsi/iqn.2016-02.com.example:server0/tpg1/acls create iqn.2016-02.com.example:desktop0
+    /> /iscsi/iqn.2016-02.com.example:server0/tpg1/luns create /backstores/block/iscsi_store
+    /> /iscsi/iqn.2016-02.com.example:server0/tpg1/portals create 172.25.0.11
+    /> saveconfig
+    /> exit
+
+    systemctl restart target
+    systemctl enable target
+
+    firewall-cmd --permanent --add-port=3260/tcp
+    firewall-cmd --reload
+    firewall-cmd --list-all
+
 
 配置 iSCSI 客户端试题概述：
 ==============================================
@@ -531,6 +617,58 @@ server0:
 
 - iSCSI 设备在系统启动的期间自动加载
 - 块设备 iSCSI 上包含一个大小为 2100MiB 的分区，并格式化为 ext4 文件系统,此分区挂载在/mnt/data 上，同时在系统启动的期间自动挂载
+
+.. code-block:: bash
+
+
+    yum -y install iscsi-initiator-utils
+
+    vim /etc/iscsi/initiatorname.iscsi
+    InitiatorName=iqn.2016-02.com.example:desktop0
+
+
+    iscsiadm -m discovery -t st -p server0
+    iscsiadm -m node -T iqn.2016-02.com.example:server0 -p 172.25.0.11 -l
+
+    systemctl restart iscsi iscsid
+    systemctl enable iscsi iscsid
+
+    lsblk
+
+    fdisk /dev/sda 分2100M
+
+    mkfs.ext4 /dev/sda1
+
+    mkdir /mnt/data
+    blkid /dev/sda1
+
+    vim /etc/fstab
+    UUID="088fd0f5-554e-48b3-ab20-5dd060d8c7ee"  /mnt/data ext4 _netdev 0 0
+
+    mount -a
+    iscsiadm -m discovery -t st -p server0
+    iscsiadm -m node -T iqn.2016-02.com.example:server0 -p 172.25.0.11 -l
+
+    sync ; reboot -f
+
+    方法2
+    yum -y install iscsi*
+    yum repolist
+    yum -y install iscsi*
+    vim /etc/iscsi/initiatorname.iscsi
+    systemctl restart iscsid
+    systemctl enable iscsid
+    iscsiadm -m discovery -t st -p server0
+    systemctl restart iscsi
+    systemctl enable iscsi
+    lsblk
+    blkid /dev/sda1
+    vim /etc/fstab
+    mkdir /mnt/data
+    mount -a
+    df -h
+    reboot
+
 
 配置一个数据库试题概述：
 ==============================================
@@ -542,6 +680,41 @@ server0:
 - 除了 root 用户，此数据库只能被用户 Raikon 查询，此用户密码为 atenorth
 - root 用户的密码为 atenorth，同时不允许空密码登陆。
 
+.. code-block:: sh
+
+    yum -y install mariadb-server mariadb
+    vim /etc/my.cnf
+    skip-networking
+
+    systemctl restart mariadb
+    systemctl enable mariadb
+
+    mysqladmin -u root -p password 'redhat'
+    mysql -u root -p
+
+    CREATE DATABASE Contacts;
+    GRANT select ON Contacts.* to Raikon@localhost IDENTIFIED BY 'redhat';
+    DELETE FROM mysql.user WHERE Password='';
+    QUIT
+
+    wget http://classroom/pub/materials/mariadb/mariadb-users.sql -O users.sql
+    vim users.sql
+    use Contacts;
+
+    create table if not exists base (id INT PRIMARY KEY auto_increment NOT NULL, name VARCHAR(100), password VARCHAR (100));
+    create table if not exists location (id INT PRIMARY KEY auto_increment NOT NULL, name VARCHAR(100), city VARCHAR (100));
+
+    insert into base(name,password) values ('bobo','123');
+    insert into base(name,password) values ('harry','456');
+    insert into base(name,password) values ('natasha','789');
+    insert into base(name,password) values ('Barbara','solicitous');
+    insert into location(name,city )values ('bobo','beijing');
+    insert into location(name,city )values ('harry','shanghai');
+    insert into location(name,city )values ('natasha','tianjin');
+    insert into location(name,city )values ('Barbara','Sunnyvale');
+
+
+    mysql -u root -p Contacts < users.sql
 
 
 数据库查询（填空） 试题概述：
@@ -555,6 +728,9 @@ server0:
 
 
 
+::
 
+    SELECT name FROM base WHERE password='solicitous';
 
+    SELECT count(*) FROM base,location WHERE base.name='Barbara' AND location.city='Sunnyvale' AND base.id=location.id;
 

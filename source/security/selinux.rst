@@ -167,3 +167,26 @@ bool值是启动或禁用一组策略的开关。
 
     setsebool zabbix_can_network on
     getsebool zabbix_can_network #然后再查看验证一下。
+
+对指定端口设置context
+============================
+我们在apache服务上又监听了一个端口8998，需要在selinux里为这个端口设置httpd_port_t的context才能启动服务。
+
+.. code-block:: sh
+
+    semanage port -a -t http_port_t -p tcp 8998
+
+查看所有端口的context
+=============================
+
+.. code-block:: sh
+
+    semanage port -l
+
+selinux日志/排错
+=========================
+
+.. code-block:: sh
+
+    yum install setroubleshoot
+    sealert -a /var/log/audit/audit.log
