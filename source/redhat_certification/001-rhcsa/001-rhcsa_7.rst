@@ -25,12 +25,13 @@
 修改ip地址
 ---------------
 
-::
+.. code-block:: bash
 
     [root@server0 ~]# nmcli conn show
     [root@server0 ~]# nmcli conn modify eth0 ipv4.addresses	'172.25.0.11/24	172.25.0.254' ipv4.dns 172.25.254.254	ipv4.method manual
     [root@server0 ~]# nmcli connection modify eth0 connection.autoconnect yes
-    [root@server0 ~]# nmcli conn up eth0 [root@server0 ~]# nmcli conn show eth0
+    [root@server0 ~]# nmcli conn up eth0
+    [root@server0 ~]# nmcli conn show eth0
 
 ping 测试
 
@@ -69,9 +70,9 @@ YUM 的软件库源为 http://rhgls.domainX.example.com/pub/x86_64/Server.将此
 调整逻辑卷的大小
 ------------------
 
-请按照以下要求调整本地逻辑卷 lvm1 的容量：调整后的逻辑卷及文件系统大小为 770MiB 调整后确保文件系统中已存在的内容不能被破坏调整后的容量可能出现误差，
+请按照以下要求调整本地逻辑卷 lvm1 的容量：
 
-只要在 730MiB - 805MiB 之间都是允许的调整后，保证其挂载目录不改变，文件系统完成
+- 调整后的逻辑卷及文件系统大小为 770MiB 调整后确保文件系统中已存在的内容不能被破坏调整后的容量可能出现误差，只要在 730MiB - 805MiB 之间都是允许的调整后，保证其挂载目录不改变，文件系统完成
 
 考试时候系统中只有一块硬盘 vda，而且已经使用三个分区 vda1 vda2 vda3。
 

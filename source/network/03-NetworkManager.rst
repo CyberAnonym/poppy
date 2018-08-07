@@ -42,6 +42,16 @@ nmcli connection 这里主要是操作管理配置文件的，启用/停用、�
     IP6.ADDRESS[1]:                         fe80::20c:29ff:fefe:3833/64
     IP6.GATEWAY:                            --
 
+显示各种状态
+=================
+
+
+- 显示所有网络连接：nmcli con show
+- 显示活动网络连接：nmcli con show -active
+- 显示指定网络连接的详情：nmcli con show eno16777728
+- 显示网络设备连接状态：nmcli dev status
+- 显示所有网络设备的详情：nmcli dev show
+- 显示指定网络设备的详情：nmcli dev show eno16777728
 
 查看connection
 ===================
@@ -54,6 +64,28 @@ nmcli connection 这里主要是操作管理配置文件的，启用/停用、�
     ens34  5e2bcc3b-ea61-41b9-a7f8-c1588ee5595e  802-3-ethernet  ens34
     ens38  be9e2b6b-674b-771d-7251-f3b49b3d23e0  802-3-ethernet  ens38
 
+
+修改网络连接单项参数
+=========================
+
+::
+
+    nmcli con mod IF-NAME connection.autoconnect yes修改为自动连接
+    nmcli con mod IF-NAME ipv4.method manual | dhcp修改IP地址是静态还是DHCP
+    nmcli con mod IF-NAME ipv4.addresses “172.25.X.10/24 172.25.X.254”修改IP配置及网关
+    nmcli con mod IF-NAME ipv4.gateway 10.1.0.1修改默认网关
+    nmcli con mod IF-NAME +ipv4.addresses 10.10.10.10/16添加第二个IP地址
+    nmcli con mod IF-NAME ipv4.dns 114.114.114.114添加dns1
+    nmcli con mod IF-NAME +ipv4.dns  8.8.8.8添加dns2
+    nmcli con mod IF-NAME -ipv4.dns  8.8.8.8删除dns
+
+修改connection名
+=========================
+将connection System eth0的名字改为eth0
+
+.. code-block:: bash
+
+    nmcli connection modify 'System eth0' connection.id eth0
 
 
 配置链路聚合
@@ -94,6 +126,53 @@ nmcli connection 这里主要是操作管理配置文件的，启用/停用、�
 
     grep NETWORKING_IPV6=yes /etc/sysconfig/network || echo NETWORKING_IPV6=yes >> /etc/sysconfig/network
     grep net.ipv6.conf.all.disable_ipv6=0 /etc/sysctl.conf || echo net.ipv6.conf.all.disable_ipv6=0 >> /etc/sysctl.conf
+
+
+
+nmcli命令修改所对应的文件条目
+==============================
+
+::
+
+    nmcli con mod           ifcfg-* 文件
+    ipv4.method manual       BOOTPROTO=none
+    ipv4.method auto         BOOTPROTO=dhcp
+    connection.id eth0        NAME=eth0
+    (ipv4.addresses          IPADDR0=192.0.2.1
+    “192.0.2.1/24           PREFIX0=24
+    192.0.2.254”)           GATEWAY0=192.0.2.254
+    ipv4.dns 8.8.8.8        DNS0=8.8.8.8
+    pv4.dns-search example.com   DOMAIN=example.com
+    pv4.ignore-auto-dns true    PEERDNS=no
+    connection.autoconnect yes   ONBOOT=yes
+    connection.interface-name eth0 DEVICE=eth0
+    802-3-ethernet.mac-address... HWADDR=...
+
+
+停止网络连接（可被自动激活）
+==============================
+::
+
+    nmcli con down eno33554960
+
+禁用网卡，防止被自动激活
+=============================
+
+::
+
+    nmcli dev dis eth0
+
+删除网络连接的配置文件
+===========================
+::
+
+    nmcli con del eno33554960
+
+重新加载配置网络配置文件
+=========================
+::
+
+    nmcli con reload
 
 使用图形化的方式配置IP
 ==============================
