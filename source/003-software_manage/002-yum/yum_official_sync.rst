@@ -1,5 +1,6 @@
 搭建同步官方的yum源服务器
 ###############################
+Alvin是搭建在自己的一台虚拟机里，那台虚拟机主机名是dc.alv.pub，也可以dns可以解析的域名。
 
 准备篇：
 ```````````````
@@ -110,7 +111,7 @@ rsync://mirrors.kernel.org/fedora-epel
 
     chmod +x /home/crontab/yum_rsync.sh #添加脚本执行权限
 
-查看目录列表
+- 查看目录列表
 
 ::
 
@@ -153,13 +154,11 @@ rsync://mirrors.kernel.org/fedora-epel
 添加脚本定时执行任务
 ----------------------------------------------------
 
-vi /etc/crontab  #在最后一行添加以下代码
+.. code-block:: bash
 
-0 1 * * * root /home/crontab/yum_rsync.sh #设置每天凌晨1点整开始执行脚本
-
-:wq! #保存退出
-
-service crond restart #重启
+    # vi /etc/crontab  #在最后一行添加以下代码
+    0 1 * * * root /home/crontab/yum_rsync.sh #设置每天凌晨1点整开始执行脚本
+    # service crond restart #重启
 
 测试篇：
 ```````````````````

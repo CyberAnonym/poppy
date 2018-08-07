@@ -22,6 +22,9 @@ RHCE 7 参考
 
 练习服务器（提供 DNS/YUM/认证/素材.. ..）：http://classroom.example.com
 
+example.com: 172.25.0.0/24
+
+alv.pub:    172.24.2.0/24
 
 配置 SELinux
 =================
@@ -42,7 +45,7 @@ RHCE 7 参考
 按以下要求配置 SSH 访问：
 
 - 用户能够从域 groupX.example.com 内的客户端 SSH 远程访问您的两个虚拟机系统
-- 在域 my133t.org 内的客户端不能访问您的两个虚拟机系统
+- 在域 alv.pub 内的客户端不能访问您的两个虚拟机系统
 
 
 自定义用户环境（别名设置） 试题概述：
@@ -293,7 +296,7 @@ desktop0:
 - 将文件 index.html 拷贝到您的 web 服务器的 DocumentRoot 目录下
 - 不要对文件 index.html 的内容进行任何修改
 - 来自于 groupX.example.com 域的客户端可以访问此 Web 服务
-- 来自于 my133t.org 域的客户端拒绝访问此 Web 服务
+- 来自于 alv.pub 域的客户端拒绝访问此 Web 服务
 
 
 server0:
