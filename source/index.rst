@@ -13,7 +13,7 @@ Welcome to Alvin's document center Poppy !
     :maxdepth: 2
     :caption: Contents:
 
-    001-introduction
+    001-introduction/readme
     002-user_management/readme
     003-software_manage/readme
     004-common_system_funtion/readme

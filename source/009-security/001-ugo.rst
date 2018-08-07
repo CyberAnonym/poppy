@@ -2,7 +2,7 @@ ugo
 ########
 ugo权限，就是user group other 对于文件的权限。
 
-.. image:: ../_static/images/ugo1.png
+.. image:: ../../images/ugo1.png
 
 针对文件来说，有三种权限，分别是r，w，x
 
@@ -26,7 +26,7 @@ ll是ls -l的间歇，执行ll，可以查看当前目录下的文件和目录�
 
 d后面的3个字母代表该文件所有者对该文件的权限，再后面的三个字母代表该文件所属组对该文件的权限，最后的三个字母代表其他用户对该文件的权限。
 
-.. image:: ../_static/images/ugo2.png
+.. image:: ../../images/ugo2.png
 
 增值修改权限
 ==============
@@ -37,7 +37,7 @@ d后面的3个字母代表该文件所有者对该文件的权限，再后面的
 
     chmod u+x file
 
-.. image:: ../_static/images/ugo3.jpg
+.. image:: ../../images/ugo3.jpg
 
 减值修改
 ============

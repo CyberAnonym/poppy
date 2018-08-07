@@ -44,4 +44,4 @@
 
     yum repolist
 
-.. image:: ../../_static/images/yum_local_iso.jpg
+.. image:: ../../../images/yum_local_iso.jpg

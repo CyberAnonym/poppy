@@ -3,11 +3,11 @@ root密码破解
 
 重启后，按e编辑启动参数
 
-.. image:: ../_static/images/password_break1.jpg
+.. image:: ../../images/password_break1.jpg
 
 然后修改linux16那一行的内容，将ro后面的内容都删掉，然后添加 rd.break console=tty0, 然后按Ctrl+x键。
 
-.. image:: ../_static/images/password_break2.jpg
+.. image:: ../../images/password_break2.jpg
 
 然后执行以下命令
 
@@ -21,8 +21,8 @@ root密码破解
     exit # 退出当前shell
     reboot #重启。
 
-.. image:: ../_static/images/password_break3.jpg
+.. image:: ../../images/password_break3.jpg
 
 重启后，用新的密码，成功登录系统。
 
-.. image:: ../_static/images/password_break4.jpg
+.. image:: ../../images/password_break4.jpg

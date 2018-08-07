@@ -504,7 +504,7 @@ server0:
     [root@server0 ~]# firewall-cmd --reload success
     [root@server0 ~]# firewall-config
 
-.. image:: ../../_static/images/rhce1.jpg
+.. image:: ../../../images/rhce1.jpg
 
 .. code-block:: bash
 

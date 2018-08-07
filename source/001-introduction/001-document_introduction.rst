@@ -8,7 +8,7 @@ Poppy也是Alvin家小博美的名字，Alvin家的小博美Poppy是在2018年7�
 如果你愿意帮助Alvin完善这个文档，可以提交pull request到该项目的github地址:https://github.com/AlvinWanCN/poppy, 非常感谢！
 
 
-.. image::  ./_static/images/etlucency.png
+.. image::  ../../images/etlucency.png
 
 .. note:: 欢迎学习这里的知识或继续添加知识到这里。
 

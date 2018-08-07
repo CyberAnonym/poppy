@@ -173,9 +173,9 @@ Now search LDAP DIT for all records
     bash-4.2$     #测试成功
 
 
-.. image:: ../_static/images/ldap1.bmp
-.. image:: ../_static/images/ldap2.jpg
-.. image:: ../_static/images/ldap3.jpg
+.. image:: ../../images/ldap1.bmp
+.. image:: ../../images/ldap2.jpg
+.. image:: ../../images/ldap3.jpg
 
 以上是通过图形化的方式配置，也可以通过命令直接配置
 ------------------------------------------------------

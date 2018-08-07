@@ -206,4 +206,4 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
 
-html_logo = '_static/images/et-80.png'
+html_logo = '../images/et-80.png'

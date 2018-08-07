@@ -67,4 +67,4 @@ iftop可以用来监控网卡的实时流量（可以指定网段）、反向解
 按q退出监控。
 
 
-.. image:: ../../_static/images/iftop1.jpg
+.. image:: ../../../images/iftop1.jpg
