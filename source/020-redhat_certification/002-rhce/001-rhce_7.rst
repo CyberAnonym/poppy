@@ -22,9 +22,9 @@ RHCE 7 参考
 
 练习服务器（提供 DNS/YUM/认证/素材.. ..）：http://classroom.example.com
 
-example.com: 172.25.0.0/24
+example.com,groupX.example.com: 172.25.0.0/24
 
-alv.pub:    172.24.2.0/24
+alv.pub:    172.24.3.0/24
 
 配置 SELinux
 =================
@@ -47,6 +47,12 @@ alv.pub:    172.24.2.0/24
 - 用户能够从域 groupX.example.com 内的客户端 SSH 远程访问您的两个虚拟机系统
 - 在域 alv.pub 内的客户端不能访问您的两个虚拟机系统
 
+.. code-block:: bash
+
+    echo "sshd : 172.25.0.0/24">> /etc/hosts.allow
+    echo "sshd : 172.24.3.0/24" >>/etc/hosts.deny
+
+
 
 自定义用户环境（别名设置） 试题概述：
 ==============================================
@@ -55,6 +61,14 @@ alv.pub:    172.24.2.0/24
 在系统 system1 和 system2 上创建自定义命令为 qstat，此自定义命令将执行以下命令：
 
 /bin/ps -Ao pid,tt,user,fname,rsz 此命令对系统中所有用户有效。
+
+参考解答：
+
+.. code-block:: bash
+
+    echo "alias qtast='/bin/ps -Ao pid,tt,user,fname,rsz'">>/etc/bashrc
+    source /etc/bashrc
+    qsast
 
 
 配置防火墙端口转发试题概述：
@@ -65,6 +79,10 @@ alv.pub:    172.24.2.0/24
 此设置必须永久有效
 [注：推荐 firewall-config 图形配置工具]
 
+.. code-block:: bash
+
+    firewall-cmd --add-forward-port=port=5423:proto=tcp:toport:80 --permanent
+    firewall-cmd --reload
 
 配置链路聚合试题概述：
 ==============================================
@@ -78,6 +96,49 @@ alv.pub:    172.24.2.0/24
 - 此链路在系统重启之后依然保持正常状态
 
 
+system1:
+
+.. code-block:: bash
+    :linenos:
+
+    ##建立新的聚合连
+    nmcli connection add con-name team0 type team ifname team0 config '{"runner":{"name":"activebackup"}}'
+    ##指定成员网卡 1
+    nmcli connection add con-name team0-p1 type team-slave ifname eth1 master team0
+    ##指定成员网卡 2
+    nmcli connection add con-name team0-p2 type team-slave ifname eth2 master team0
+    ##为聚合连接配置 IP 地址
+    nmcli  connection modify team0 ipv4.method manual ipv4.address "172.16.0.20/24"
+    ##激活聚合连
+    nmcli connection up team0
+    ## 激活成员连接1（备用)
+    nmcli connection up team0-p1
+    ## 激活成员连接 2（备用)
+    nmcli connection up team0-p2
+    teamdctl team0 state
+
+system2:
+
+.. code-block:: bash
+    :linenos:
+
+    ##建立新的聚合连
+    nmcli connection add con-name team0 type team ifname team0 config '{"runner":{"name":"activebackup"}}'
+    ##指定成员网卡 1
+    nmcli connection add con-name team0-p1 type team-slave ifname eth1 master team0
+    ##指定成员网卡 2
+    nmcli connection add con-name team0-p2 type team-slave ifname eth2 master team0
+    ##为聚合连接配置 IP 地址
+    nmcli  connection modify team0 ipv4.method manual ipv4.address "172.16.0.25/24"
+    ##激活聚合连
+    nmcli connection up team0
+    ## 激活成员连接1（备用)
+    nmcli connection up team0-p1
+    ## 激活成员连接 2（备用)
+    nmcli connection up team0-p2
+    teamdctl team0 state
+
+
 
 配置 IPv6 地址试题概述：
 ==============================================
@@ -89,6 +150,25 @@ alv.pub:    172.24.2.0/24
 - 两个系统必须能与网络 2003:ac18/64 内的系统通信
 - 地址必须在重启后依旧生效
 - 两个系统必须保持当前的 IPv4 地址并能通信
+
+
+参考解答：
+
+
+system1
+
+.. code-block:: bash
+
+    nmcli connection modify "eth0" ipv6.method  manual ipv6.address 2003:ac18::305/64 ifname eth0
+    nmcli connection up "eth0"
+
+system2
+
+.. code-block:: bash
+
+    nmcli connection modify "eth0" ipv6.method  manual ipv6.address 2003:ac18::305/64 ifname eth0
+    nmcli connection up "eth0"
+
 
 配置本地邮件服务试题概述：
 ==============================================
