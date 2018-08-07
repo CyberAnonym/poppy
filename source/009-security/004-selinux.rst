@@ -139,9 +139,22 @@ restorecon命令是policycoreutil软件包的一部分；semanage是policycoreut
     [root@alvin ~]# ls -Z /alvin/
     -rw-r--r--. root root system_u:object_r:httpd_sys_content_t:s0 index.html
 
-更改SELinux上下文
-------------------------
+参考一个文件来给另一个文件设置context
+---------------------------------------------
+参考/var/www/html的context值给当前目录下的file设置context。
 
+
+.. code-block:: bash
+    :linenos:
+    :emphasize-lines: 5
+
+    [root@alvin ~]# touch file
+    [root@alvin ~]# ls -Z file
+    -rw-r--r--. root root unconfined_u:object_r:admin_home_t:s0 file
+    [root@alvin ~]#
+    [root@alvin ~]# chcon --reference=/var/www/html file -R
+    [root@alvin ~]# ls -Z file
+    -rw-r--r--. root root system_u:object_r:httpd_sys_content_t:s0 fi
 
 查看当前SELinux的布尔值
 ============================

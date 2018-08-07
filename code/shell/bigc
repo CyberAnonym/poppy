@@ -47,8 +47,8 @@ echo "Samba directory is /mnt/smb"
 
 }
 _DNS(){
-echo "作者：clear"
-echo "mail: clearfromchina@hotmail.com"
+echo "作者：Alvin Wan"
+echo "mail: alvin.wan.cn@hotmail.com"
 echo "本软件用于自动安装dns"
 echo "使用本软件前，请先确认您的系统是否符合一下几点："
 echo "1,当前系统是rhel6.4"

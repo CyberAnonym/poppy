@@ -59,3 +59,21 @@ ulimit 用于限制 shell 启动进程所占用的资源，支持以下各种类
     max user processes              (-u) 98304       #当前用户同时打开的进程（包括线程）的最大个数为98304。
     virtual memory          (kbytes, -v) unlimited   #没有限制进程的最大地址空间。
     file locks                      (-x) unlimited   #所能锁住的文件的最大个数没有限制。
+
+
+把允许最大打开的描述符修改为5000，只对当前终端打开的应用程序有效。
+===========================================================================
+
+
+.. code-block:: bash
+
+    ulimit -n 5000
+
+修改配置文件设置值
+======================
+
+.. code-block:: bash
+
+    vim /etc/security/limits.conf
+    *      soft    nofile     15000
+    *      hard    nofile     30000

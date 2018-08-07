@@ -4,6 +4,8 @@
 .. toctree::
     :maxdepth: 2
 
-    memory
-    ulimit
+    001-vim
+    002-history
+    003-memory
+    004-ulimit
     

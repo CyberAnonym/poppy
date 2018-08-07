@@ -147,8 +147,11 @@ YUM 的软件库源为 http://rhgls.domainX.example.com/pub/x86_64/Server.将此
 
 请按照以下要求创建用户、用户组：
 
-#. 新建一个名为 adminuser 的组，组 id 为 40000 新建一个名为 natasha 的用户，并将 adminuser 作为其附属组新建一个名为 harry 的用户，并将 adminuser 作为其附属组
-#. 新建一个名为 sarah 的用户，其不属于 adminuser 组，并将其 shell 设置为不可登陆 shell natasha、harry 和 sarah 三个用户的密码均设置为 glegunge
+#. 新建一个名为 adminuser 的组，组 id 为 40000
+#. 新建一个名为 natasha 的用户，并将 adminuser 作为其附属组
+#. 新建一个名为harry 的用户，并将 adminuser 作为其附属组
+#. 新建一个名为 sarah 的用户，其不属于 adminuser 组，并将其 shell 设置为不可登陆shell
+#. natasha、harry 和 sarah 三个用户的密码均设置为 alvin
 
 ::
 
@@ -156,9 +159,9 @@ YUM 的软件库源为 http://rhgls.domainX.example.com/pub/x86_64/Server.将此
     [root@server0 ~]# useradd -G adminuser natasha
     [root@server0 ~]# useradd -G adminuser harry
     [root@server0 ~]# useradd -s /sbin/nologin sarah
-    [root@server0 ~]# echo glegunge |passwd --stdin natasha Changing password for user natasha. passwd: all authentication tokens updated successfully.
-    [root@server0 ~]# echo glegunge |passwd --stdin harry Changing password for user harry. passwd: all authentication tokens updated successfully.
-    [root@server0 ~]# echo glegunge |passwd --stdin sarah Changing password for user sarah.
+    [root@server0 ~]# echo alvin |passwd --stdin natasha Changing password for user natasha. passwd: all authentication tokens updated successfully.
+    [root@server0 ~]# echo alvin |passwd --stdin harry Changing password for user harry. passwd: all authentication tokens updated successfully.
+    [root@server0 ~]# echo alvin |passwd --stdin sarah Changing password for user sarah.
     passwd: all authentication tokens updated successfully.
 
 文件权限设定
@@ -166,9 +169,14 @@ YUM 的软件库源为 http://rhgls.domainX.example.com/pub/x86_64/Server.将此
 
 复制文件/etc/fstab 到/var/tmp 目录下，并按照以下要求配置/var/tmp/fstab 文件的权限:
 
-该文件的所属人为 root
+#. 该文件的所属人为 root
+#. 该文件的所属组为 root
+#. 该文件对任何人均没有执行权限用户
+#. natasha对该文件有读和写的权限用户
+#. harry对该文件既不能读也不能写
+#. 所有其他用户（包括当前已有用户及未来创建的用户）对该文件都有读的权限
 
-该文件的所属组为 root 该文件对任何人均没有执行权限用户 natasha 对该文件有读和写的权限用户 harry 对该文件既不能读也不能写所有其他用户（包括当前已有用户及未来创建的用户）对该文件都有读的权限解答：
+参考解答：
 
 ::
 
@@ -185,10 +193,10 @@ YUM 的软件库源为 http://rhgls.domainX.example.com/pub/x86_64/Server.将此
 建立计划任务
 ---------------
 
-对 natasha 用户建立计划任务，要求在本地时间的每天 14：23 执行以下命令：/bin/echo
-"rhcsa"
+对 natasha 用户建立计划任务，要求在本地时间的每天 14：23 执行以下命令：/bin/echo "rhcsa"
 
-解答：
+参考解答：
+
 ::
 
     [root@server0 ~]# su - natasha
@@ -203,6 +211,7 @@ YUM 的软件库源为 http://rhgls.domainX.example.com/pub/x86_64/Server.将此
 -------------------
 
 在/home 目录下创建名为 admins 的子目录，并按以下要求设置权限：
+
 #. /home/admins 的所属组为 adminuser
 #. 该目录对 adminuser 组的成员可读可执行可写，但对其他用户没有任何权限，但 root 不受限制
 #. 在/home/admins 目录下所创建的文件的所属组自动被设置为 adminuser

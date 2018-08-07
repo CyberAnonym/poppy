@@ -1,0 +1,16 @@
+vim
+###
+
+设置一个tab的大小为4，
+============================
+
+.. code-block:: bash
+
+    grep "set ts=4" /etc/vimrc||echo "set ts=4" >> /etc/vimrc
+
+
+设置使用tab时将tab的实际内容变成空格
+===================================
+.. code-block:: bash
+
+    grep "set expandtab" /etc/vimrc||echo "set expandtab" >> /etc/vimrc
