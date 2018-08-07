@@ -5,8 +5,8 @@
     :maxdepth: 1
     :caption: Contents:
 
-    01-dhcp
-    02-network
-    03-NetworkManager
-    04-vpn/readme
-    05-route
+    001-dhcp
+    002-network
+    003-NetworkManager
+    004-vpn/readme
+    005-route
