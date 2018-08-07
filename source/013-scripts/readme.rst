@@ -4,5 +4,5 @@
 .. toctree::
     :maxdepth: 2
 
-    shell/readme.rst
-    python/readme.rst
+    001-shell/readme.rst
+    002-python/readme.rst

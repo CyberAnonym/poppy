@@ -4,7 +4,7 @@
 .. toctree::
     :maxdepth: 2
 
-    docker
-    kubernetes
-    kvm
-    openstack/readme.rst
+    001-docker
+    002-kubernetes
+    003-kvm
+    004-openstack/readme.rst

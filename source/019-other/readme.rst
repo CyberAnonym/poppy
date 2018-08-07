@@ -4,4 +4,4 @@
 .. toctree::
     :maxdepth: 2
 
-    sphinx
+    001-sphinx

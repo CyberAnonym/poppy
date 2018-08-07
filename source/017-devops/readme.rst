@@ -4,6 +4,6 @@
 .. toctree::
     :maxdepth: 2
 
-    jenkins/readme
-    saltstack/readme.rst
-    git
+    001-jenkins/readme
+    002-saltstack/readme.rst
+    003-git

@@ -4,6 +4,6 @@
 .. toctree::
     :maxdepth: 2
 
-    haproxy
-    lvs
-    keepalived
+    001-lvs
+    002-keepalived
+    003-haproxy

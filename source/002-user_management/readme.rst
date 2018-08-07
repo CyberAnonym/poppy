@@ -4,5 +4,5 @@
 .. toctree::
    :maxdepth: 2
 
-   user
-   ldap
+   001-user
+   002-ldap

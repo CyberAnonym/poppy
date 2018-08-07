@@ -4,5 +4,5 @@
 .. toctree::
     :maxdepth: 1
 
-    rpm
-    yum/readme
+    001-rpm
+    002-yum/readme
