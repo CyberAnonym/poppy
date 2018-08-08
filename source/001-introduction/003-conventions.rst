@@ -46,3 +46,8 @@ The Poppy documentation uses several typesetting conventions.
 命令前面使用# 提示符表示该命令需要root来执行，或是有sudo权限的用户在前面加上sudo 执行。
 
 #如果没有出现在最前面，比如出现在命令后面，则可能表示注释， ## 两个井号表示注释。
+
+
+.. note::
+
+    没有命令提示符的命令属于早期编写的文档，没有表明是用root还是普通用户执行。
