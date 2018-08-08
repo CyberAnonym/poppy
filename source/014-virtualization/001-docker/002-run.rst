@@ -1,0 +1,18 @@
+run
+#####
+
+docke run
+
+创建一个nginx容器
+=====================
+
+.. code-block:: bash
+
+    docker run -d -it  -p 80:80 -p 443:443 \
+    -v `pwd`/www:/www  \
+    -v `pwd`/config:/etc/nginx/conf.d \
+    -v `pwd`/logs:/var/log/nginx  \
+    -v /etc/localtime:/etc/localtime  \
+    --name nginx  \
+    --privileged=true \
+    --restart=always  nginx

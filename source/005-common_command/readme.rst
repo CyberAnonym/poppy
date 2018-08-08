@@ -9,3 +9,5 @@
     002-wget
     003-curl
     004-mail
+    005-kill
+    006-pkill
