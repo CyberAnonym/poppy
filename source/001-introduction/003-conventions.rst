@@ -4,38 +4,45 @@
 
 The Poppy documentation uses several typesetting conventions.
 
-Notices
-Notices take these forms:
+声明
+=========
 
- 注解
+以下形式的标志为注意项
 
 
 .. note::
 
-    A handy tip or reminder.
+    该种标识表示备注，或提醒读者注意。
+
 
 .. important::
 
-    Something you must be aware of before proceeding.
+    该种标识表示提示重要的信息。
 
 .. warning::
 
-    Critical information about the risk of data loss or security issues.
+    该种标识表示警告，注意，不注意可能会有问题。
 
-命令提示
+.. tip::
+
+    该种标识表示一个简单的提示，可能是告诉你一个小技巧。
+
+
+
+命令提示符
+===============
 
 .. code-block:: bash
 
     $ command
 
-Any user, including the root user, can run commands that are prefixed with the $ prompt.
-
-包括``root`` 用户在内的任何用户，都可以运行前缀为``$``提示符的命令。
+命令前面使用$ 提示符表示该命令的执行者可以是包括root在内的任何用户。
 
 .. code-block:: bash
 
     # command
 
-The root user must run commands that are prefixed with the # prompt. You can also prefix these commands with the sudo command, if available, to run them.
 
-root 用户必须运行前缀为``#``提示符的命令. 如果可以，你也可以在这些命令前使用`sudo`命令，来运行它们。
+命令前面使用# 提示符表示该命令需要root来执行，或是有sudo权限的用户在前面加上sudo 执行。
+
+#如果没有出现在最前面，比如出现在命令后面，则可能表示注释， ## 两个井号表示注释。
