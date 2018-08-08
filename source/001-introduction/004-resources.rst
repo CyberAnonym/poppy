@@ -82,7 +82,7 @@
 
 .. |rs10| replace:: rpmfind
 .. |url10| replace:: http://rpmfind.net
-.. |cm10| replace:: 查看rpm包的地方
+.. |cm10| replace:: 查找rpm包的地方
 
 
 
