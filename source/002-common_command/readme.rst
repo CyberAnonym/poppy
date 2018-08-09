@@ -1,8 +1,6 @@
 常用系统命令
 ##################
-有些系统常用命令没有写在这里，那可能是写在了脚本-shell那一章，作为bash shell使用的命令去描述了。 `点击这里`_ 查看
 
-.. _点击这里 : ../013-scripts/001-shell/readme.html
 
 .. toctree::
     :maxdepth: 2

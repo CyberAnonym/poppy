@@ -16,3 +16,4 @@
     010-swapon
     011-swapoff
     012-iostat
+    013-du

@@ -1,0 +1,44 @@
+du
+#####
+
+du - estimate file space usage
+
+du一般用于查看磁盘每个目录的数据大小，用来判断是哪些目录占用了大量的空间。
+
+查看/var目录的数据总大小
+===========================
+
+.. code-block:: bash
+
+    [root@alvin ~]# du -sh /var/
+    4.0G
+
+
+查看/var目录下所有目录的数据大小
+===================================
+
+.. code-block:: bash
+
+    [root@alvin ~]# du -sh /var/*
+    0	/var/account
+    0	/var/adm
+    711M	/var/cache
+    0	/var/crash
+    8.0K	/var/db
+    0	/var/empty
+    0	/var/games
+    0	/var/gopher
+    0	/var/kerberos
+    3.2G	/var/lib
+    0	/var/local
+    0	/var/lock
+    50M	/var/log
+    0	/var/mail
+    0	/var/nis
+    0	/var/opt
+    0	/var/preserve
+    0	/var/run
+    984K	/var/spool
+    32M	/var/tmp
+    19M	/var/www
+    0	/var/yp

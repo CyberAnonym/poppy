@@ -4,7 +4,7 @@
 
 
 ============    ==============   ==========
-资源             链接                备注
+资源名             链接                备注
 ============    ==============   ==========
 |rs1|            |url1|             |cm1|
 |rs2|            |url2|             |cm2|
@@ -59,8 +59,8 @@
 
 
 .. |rs6| replace:: openstack
-.. |url6| replace:: www.openstack.org
-.. |cm6| replace:: 主流的私有云
+.. |url6| replace:: https://www.openstack.org
+.. |cm6| replace:: 美国NASA发起的开源私有云项目
 
 
 .. |rs7| replace:: pypi
