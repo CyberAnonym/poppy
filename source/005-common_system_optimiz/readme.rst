@@ -8,4 +8,7 @@
     002-history
     003-memory
     004-ulimit
-    
+    005-bash-completion
+
+
+

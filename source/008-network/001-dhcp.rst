@@ -74,3 +74,11 @@ dhcp
         max-lease-time 7200; #最大租约时间
     }
     }
+
+启动dhcp服务
+================
+
+.. code-block:: bash
+
+    # systemctl enable dhcpd
+    # systemctl start dhcpd
