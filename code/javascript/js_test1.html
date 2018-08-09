@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jstest</title>
+    <style type="text/css"></style>
+    {#    js数据类型#}
+    <script>
+        //变量的声明不能使用关键字，不能使用数字开头。
+        //字符串类型
+        var ad = 'Hello';
+        //数字类型
+        var b = 20;
+        //布尔类型
+        var c = true;
+        var d = false;
+        //数组类型, 如果我们要取下面数组中第二个值，也就是那个4，那我们可以找e[1],第一个值是0,和python的索引是一样的。
+        var e = new Array(1,4,66,'Alvin Wan');
+        //对象类型，像是一个组，字典，单独调用下面的cc后面的22这个值，可以使用f.cc，就得到22了。
+        var f ={
+            cc:22,
+            dd:33,
+            ee:55,
+        }
+        //Undefined类型
+        var g ; //没有给值，就是undefined类型。
+        //NULL类型
+        var h = null;
+
+        //字符串截取
+        var i = '105449@qq.com'
+
+
+        function cc() {
+            alert(f.dd)
+
+        }
+{#        alert(j)#}
+
+
+    </script>
+    {#    js运算符#}
+    <script>
+    var a1 = 9;
+    var a2 = 4;
+{#    变量相加#}
+    var a3 = a1+a2;
+    var a4 = a1-a2;
+    var a5 = a1*a2
+    var a6 = a1/a2
+    var a7 = a1%a2 //取余
+    var a8 = new Array(a3,a4,a5,a6,a7)
+{#    变量自加+1或减1#}
+    var a9 = 1
+    var a10 = a9++ //先把自己的值1赋值给a10,然后a9自己加1变成2.
+    var a11 = ++a9 //先把自己+1，然后+1得到的3赋值给a11，自己这时也已经变成3了。
+{#    字符串拼接。当+号前后有字符串时，结果就变成了拼接，组成一个新的字符串。#}
+    var a12=4396;
+    var a13='Alvin Wan'
+    var a14=a12+a13
+
+
+    </script>
+    {#    条件判断#}
+    <script>
+        var b1=10
+        var b2='10'
+        {#        >是大于，==是等于，<是小于，===三个等于号是恒等，恒等会去判断他的数据类型 #}
+        if (b1===b2){
+
+        }else{
+
+        }
+        {#        &&是与，||是或，!是非，下面的表达式中，5确实是大于4的，4确实是小于5的，所以两边的条件都成立，所以b3的值是True#}
+        var b3=(5>4)&&(4<5)
+        {#        这里!true也就是不是true，不是true那就是false了，所以b4的值是false#}
+        var b4=!true
+        {#      ,逗号运算符，在一条语句中执行多个操作，下面我们给多给变量赋值  #}
+        var b5=100,b6=700,b7=800
+        {#        最简单的if判断，用?, 下面的表达式的意思是，如果5大于4，那么就赋值yes,否则就赋值no给b8，一个简单的if判断 #}
+        var b8 = 5>4?'yes':'no';
+
+
+
+    </script>
+
+    {#    流程控制语句#}
+    <script>
+        //if(){}else{}
+        var c1 = Number(null)
+        if(c1==0){
+            {#            alert(0)#}
+        }else {
+            {#            alert(c1)#}
+        }
+        var c2 = 33;
+{#        if else的用法#}
+        if (c2 >=90){
+            alert('完美！')
+        }else if(c2>=80){
+            alert('优秀！')
+        }else if(c2>=60){
+            alert('及格！')
+        }else{
+        {#            alert('不及格!')#}
+        }
+        var c3 =1;
+        {#        case的用法，必须要加berak，如果不加，会在匹配一个case后，继续执行下面的内容，所以加berak防止语句穿透#}
+        switch (c3){
+            case 1:
+{#                alert('one');#}
+                break;
+            case 2:
+                alert('two')
+                break;
+            case 3:
+                alert('three')
+                break;
+        }
+        {#        while的用法#}
+        var c4 = 1;
+        while(c4<=5){
+        {#            alert(c4);#}
+            c4++
+        }
+
+        var myDate = new Date();//获取系统当前时间
+{#        var mytime=myDate.toLocaleTimeString();#}
+        alert(myDate)
+    </script>
+</head>
+<body>
+<p onclick="">This is js test page</p>
+
+</body>
+</html>

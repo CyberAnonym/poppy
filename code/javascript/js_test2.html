@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>java script 1</title>
+    <script type="text/javascript">
+        function PeopleNameAge(name,age) {
+           alert('你的名字：' +
+               name +
+                '你的年龄：' +
+                age);
+        }
+        PeopleNameAge('alvin',25)
+        //驼峰式命名:PeopleNameAge 每个单词首字母大写
+        //小驼峰式命名：Peoplenameage 单词的首字母大写
+        //函数可以有参数，也可以没有参数。函数的名称可以覆盖，同样命名的函数，后面的会覆盖前面的。
+        function aza() {
+            return(1)
+        }
+{#       alert( aza())#}
+    </script>
+    {#    js的object#}
+    <script type="text/javascript" >
+        //object就和python字典一样
+        //使用new运算符创建Object
+        var people = new Object();
+        people.name='alvin';
+        people.age=25;
+        //new关键字可以省略
+        var people = Object();
+        people.name='alvin';
+        people.age=25;
+        //使用字面量方式创建Object
+        var people = {
+            name:'alvin',
+            age:25   //最后一个属性不要加逗号
+        }
+        //赋值方式
+        var people = {};
+        people.name='alvin'
+        people.age = 25;
+        //输出方式
+{#        alert(people.name);#}
+{#        alert(people['name'])#}
+        //为对象创建方法
+        var people = {
+            run : function () { //run是它的名称，function是指函数
+                return '跑步中'
+            }
+        }
+        people.fly = function () {
+            return 'fly'
+        }
+{#        alert(people.run())#}
+{#        alert(people.fly())#}
+    </script>
+{#    js的数组（和python的list一样#}
+    <script type="text/javascript">
+        //使用new关键字创建数组
+        var box = new Array();
+        var box = new Array(10);
+        var box = new Array('alvin',18,'nice');
+        //以上三种方法，可以省略new关键字
+        var box = Array();
+        //声明采用字面量的方式,就和python的list数据类型一样
+        var box = [];
+        var box = ['alvin',18,'nice'];
+
+        // 使用索引下标来取数组的值，也和python一样。
+{#        alert(box[2])#}
+        //修改指定索引下的内容
+        box[2]='happy';  //javascript 里面写不写分号都可以。
+{#        alert(box.length)  //数组的长度#}
+        // 数组里单个元素的值也可以是对象，也就是字典,下面我们定义一个复杂的数组
+        var box = [
+            {
+                name:'alvin',
+                age :18,
+                run:function () {
+                    return '跑步中...';
+                }
+            },
+            ['百度','淘宝','腾讯'],
+            'alvin',
+            18
+        ]
+{#        alert(box[0].run()) //取9号索引的run()属性。#}
+{#        alert(box[1][2]) //取1号索引的值里面的2号索引#}
+    </script>
+        {#    js BOM#}
+    <script type="text/javascript">
+        {#        js的三种弹窗，一个确认框，confirm,一个提示框prompt,还有一个用的最多的警告框。#}
+        var w = window.innerWidth; //获取浏览器宽度
+        var h = window.innerHeight; //获取浏览器高度
+        {#        alert(w)#}
+        {#        if(confirm("你喜欢我吗？")){#}
+        {#             alert('Yes I like!')#}
+        {#        }else {#}
+        {#            alert('No I do not like ')#}
+        {#        }#}
+{#        var name = prompt('请输入你的名字');#}
+        if(name){
+{#            alert('welcome'+name)#}
+        }
+    </script>
+    {#    JavaScript 计时事件#}
+    <script type="text/javascript">
+        //语法，setInterval(函数体，执行时间）时间单位毫秒
+        {#        setInterval(function () {#}
+        {#            document.write(1);#}
+        {#        },1000)#}
+
+        {#        setInterval(function () {#}
+        {#            document.write('1')#}
+        {##}
+        {#        },1000)#}
+
+        function ad() {
+            var d = new Date();
+            var t = d.toTimeString() //获得时间
+            document.getElementById('clock').innerHTML="<h1>"+t+" </h1>";  //设置使用id为clock的标签，添加内部html "<h1>"+t+" </h1>"，也可以通过innerText设置文本
+{#            document.write('now time is '+d)#}
+            {#            alert(t);#}
+        }
+{#        setInterval('ad()',1000);#}
+        var time1 = new Date();
+    </script>
+    {#    页面延迟加载，document更多方法,js操作属性样式#}
+    <script type="text/javascript">
+        window.onload=function(){
+            document.getElementById("betaa").setAttribute('style','font-size:40px;color:red');
+
+
+{#            var ad=document.getElementById("ad").getAttribute('name') ; //获取使用id为ad的表情的name属性的值，赋值给ad。#}
+{#            document.getElementById('alpha').setAttribute('style','color:red');#}
+{#            alert(ad)#}
+            ad = document.getElementById("ad");
+            ad.style.color="blue"
+            ad.style.fontSize="30px"  //原本我们设置字体大小是font-size,但这里是不能用-的，所以格式上是把-后面的首字母大写，然后把-去掉，font-size变成fontSize，设置有效。
+        }
+
+    </script>
+
+</head>
+<body>
+{#<input type="text " value="aaa" id="clock">#}
+
+
+<div id="betaa" >
+    666666
+</div>
+<div id="ad"> hello ad</div>
+
+</body>
+</html>

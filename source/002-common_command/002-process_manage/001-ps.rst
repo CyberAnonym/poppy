@@ -1,0 +1,43 @@
+ps
+##
+
+查看进程的最常用命令，最常用的比如 ps -ef, ps aux
+
+rss ,代表物理内存，pmem代表 物理内存百分比，
+
+       c     cmd          simple name of executable
+       C     pcpu         cpu utilization
+       f     flags        flags as in long format F field
+       g     pgrp         process group ID
+       G     tpgid        controlling tty process group ID
+       j     cutime       cumulative user time
+       J     cstime       cumulative system time
+       k     utime        user time
+       m     min_flt      number of minor page faults
+       M     maj_flt      number of major page faults
+       n     cmin_flt     cumulative minor page faults
+       N     cmaj_flt     cumulative major page faults
+       o     session      session ID
+       p     pid          process ID
+       P     ppid         parent process ID
+       r     rss          resident set size
+       R     resident     resident pages
+       s     size         memory size in kilobytes
+       S     share        amount of shared pages
+       t     tty          the device number of the controlling tty
+       T     start_time   time process was started
+       U     uid          user ID number
+       u     user         user name
+       v     vsize        total VM size in KiB
+       y     priority     kernel scheduling priority
+
+
+
+常看进程
+==========
+
+查看最占用物理内存的前20个进程。 rss代表物理内存，args代表这条进程的内容，也就是命令，pid代表进程id，这里没写出来。
+
+.. code-block:: bash
+
+    ps -eo rss,pmem,pcpu,vsize,args | sort -k 1 -r -n |head -20|nl

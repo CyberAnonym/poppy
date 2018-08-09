@@ -9,7 +9,7 @@ pkill
 
     .. code-block:: bash
 
-        ps -ef|grep zabbix_server
+        # pgrep zabbix_server
 
 #. 然后杀掉进程
 
@@ -17,7 +17,7 @@ pkill
 
     .. code-block:: bash
 
-        kill zabbix_server
+        # pkill zabbix_server
 
 强行杀进程
 ===============
@@ -26,4 +26,22 @@ pkill
 
     .. code-block:: bash
 
-        kill -9 zabbix_sever
+        # pkill -9 zabbix_sever
+
+
+杀死同一终端下的进程
+============================
+杀死tty2下的所有进程
+
+.. code-block:: bash
+
+    # pkill -t tty2
+
+
+杀死指定用户进程
+==========================
+
+.. code-block:: bash
+
+    # pkill -u alvin
+

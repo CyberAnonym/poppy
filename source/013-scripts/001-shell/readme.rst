@@ -1,13 +1,10 @@
 shell
 =========
+shell脚本的使用就是对系统命令的使用。
 
 .. toctree::
     :maxdepth: 2
 
-    01-awk
-    02-sed
-    03-find
-    04-date
-    05-sort
-    06-uniq
-    07-grep
+    001-if
+    002-case
+    003-for

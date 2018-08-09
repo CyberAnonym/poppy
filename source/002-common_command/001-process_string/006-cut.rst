@@ -1,0 +1,13 @@
+cut
+###
+指定分割符截取字符串
+
+.. code-block:: bash
+
+
+    [root@alvin ~]# echo "a b c"|cut -d " " -f2
+    b
+    [root@alvin ~]# echo "a b c"|cut -d "b" -f2
+     c
+    [root@alvin ~]# echo "a b c"|cut -d "b" -f1
+    a

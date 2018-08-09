@@ -1,0 +1,20 @@
+cp
+###
+复制文件
+
+
+复制目录
+=============
+
+.. code-block:: bash
+
+    $ cp -r dir1 /tmp
+
+复制文件保留原属性
+========================
+保留原文件的权限，所属者、所属组。
+
+.. code-block:: bash
+
+    $ cp -p /home/alvin/poppy /tmp/
+

@@ -1,0 +1,21 @@
+tar
+####
+
+打包文件
+
+将/etc/sysconfig/目录下的内容打包为文件sysconfig.tar.gz
+=======================================================================
+打包类型为gzip.
+
+.. code-block:: bash
+
+    $ tar czvf sysconfig.tar.gz /etc/sysconfig/
+
+
+
+解压文件sysconfig.tar.gz
+====================================
+
+.. code-block:: bash
+
+    $ tar xf sysconfig.tar.gz

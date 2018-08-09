@@ -1,0 +1,9 @@
+wc
+###
+
+
+统计文件alvin.log有多少行
+============================
+.. code-block:: bash
+
+    $ wc -l  original-ks.cfg

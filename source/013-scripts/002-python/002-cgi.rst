@@ -1,0 +1,19 @@
+cgi
+###
+
+
+python2版本启动cgi服务
+===========================
+指定8066端口
+
+.. code-block:: bash
+
+    /usr/bin/python -m CGIHTTPServer 8066
+
+python3版本启动cgi服务
+==========================
+指定8001端口
+
+.. code-block:: bash
+
+    /usr/bin/python3 -m http.server --cgi 8001

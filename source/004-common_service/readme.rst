@@ -9,3 +9,4 @@
     002-chrony
     003-ssh
     004-cron
+    005-ldap

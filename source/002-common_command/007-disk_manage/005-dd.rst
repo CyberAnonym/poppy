@@ -1,0 +1,9 @@
+dd
+##
+
+创建一个200MB的文件
+=======================
+
+.. code-block:: bash
+
+    $ dd if=/dev/zero of=1.txt bs=1M count=200
