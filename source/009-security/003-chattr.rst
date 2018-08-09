@@ -19,7 +19,7 @@ chattr [+-=] [acdeijstu]  filename
 
 ::
 
-    [root@leopard test]# man chattr
+    [root@alvin test]# man chattr
 
     append only (a),        只允许追加，不允许删除，移动
     com-pressed  (c),

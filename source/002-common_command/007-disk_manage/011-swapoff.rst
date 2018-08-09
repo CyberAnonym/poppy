@@ -1,4 +1,4 @@
-swappoff
+swapoff
 ############
 
 关闭磁盘的swap
