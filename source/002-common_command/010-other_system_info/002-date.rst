@@ -72,16 +72,23 @@ Example
 
 指定前一天
 ````````````
-date -d '1 days ago' +%Y%m%d
+
+.. code-block:: bash
+
+    $ date -d '1 days ago' +%Y%m%d
 
 
 指定前一个月
 ``````````````````
 
-date -d '1 month ago' +%Y%m%d
+.. code-block:: bash
+
+    $ date -d '1 month ago' +%Y%m%d
 
 指定前五分钟
 `````````````````````
 
-date -d '5 minute ago' +%Y%m%d-%H:%M:%S
+.. code-block:: bash
+
+    $ date -d '5 minute ago' +%Y%m%d-%H:%M:%S
 

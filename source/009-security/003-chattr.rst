@@ -38,7 +38,7 @@ chattr [+-=] [acdeijstu]  filename
 
 .. code-block:: bash
 
-    [root@dhcp tmp]# ls -l
+    [root@alvin tmp]# ls -l
     total 0
     -rw-r--r-- 1 root root 0 Jul 25 13:36 cup
     drwxr-xr-x 2 root root 6 Jul 25 13:36 hello
@@ -48,7 +48,7 @@ chattr [+-=] [acdeijstu]  filename
 
 .. code-block:: bash
 
-    [root@dhcp tmp]# lsattr
+    [root@alvin tmp]# lsattr
     ---------------- ./cup
     ---------------- ./hello
 
@@ -57,7 +57,7 @@ chattr [+-=] [acdeijstu]  filename
 
 .. code-block:: bash
 
-    [root@dhcp tmp]# lsattr cup
+    [root@alvin tmp]# lsattr cup
     ---------------- cup
 
 查看目录hello的隐藏权限
@@ -66,14 +66,14 @@ chattr [+-=] [acdeijstu]  filename
 
 .. code-block:: bash
 
-    [root@dhcp tmp]# lsattr -d hello
+    [root@alvin tmp]# lsattr -d hello
     ---------------- hello
 
 查看目录hello下的所有文件的隐藏权限
 
 .. code-block:: bash
 
-    [root@dhcp tmp]# lsattr  hello
+    [root@alvin tmp]# lsattr  hello
     ---------------- hello/file
     ---------------- hello/file2
 
@@ -123,16 +123,16 @@ chattr [+-=] [acdeijstu]  filename
 
 ::
 
-    [root@dhcp tmp]# lsattr cup     #查看权限
+    [root@alvin tmp]# lsattr cup     #查看权限
     ---------------- cup
-    [root@dhcp tmp]#
-    [root@dhcp tmp]# chattr +a cup  #添加隐藏权限a
-    [root@dhcp tmp]# lsattr cup     #再次查看权限
+    [root@alvin tmp]#
+    [root@alvin tmp]# chattr +a cup  #添加隐藏权限a
+    [root@alvin tmp]# lsattr cup     #再次查看权限
     -----a---------- cup
-    [root@dhcp tmp]# rm -f cup  #尝试删除文件，确认无法删除
+    [root@alvin tmp]# rm -f cup  #尝试删除文件，确认无法删除
     rm: cannot remove ‘cup’: Operation not permitted
-    [root@dhcp tmp]# echo hello >> cup  #尝试追加内容到该文件，确认可以追加
-    [root@dhcp tmp]# echo hello > cup  #尝试覆盖该文件，确认无法覆盖
+    [root@alvin tmp]# echo hello >> cup  #尝试追加内容到该文件，确认可以追加
+    [root@alvin tmp]# echo hello > cup  #尝试覆盖该文件，确认无法覆盖
     -bash: cup: Operation not permitted
 
 

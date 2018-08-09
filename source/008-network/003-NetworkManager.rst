@@ -9,7 +9,7 @@ nmcli device  可以确认你可以对哪些网卡配置，以及这些硬件设
 
 .. code-block:: bash
 
-    [root@dc ~]# nmcli device status
+    [root@alvin ~]# nmcli device status
     DEVICE  TYPE      STATE      CONNECTION
     ens33   ethernet  connected  ens33
     ens34   ethernet  connected  ens34
@@ -23,7 +23,7 @@ nmcli connection 这里主要是操作管理配置文件的，启用/停用、�
 
 .. code-block:: bash
 
-    [root@dc ~]# nmcli device show ens33
+    [root@alvin ~]# nmcli device show ens33
     GENERAL.DEVICE:                         ens33
     GENERAL.TYPE:                           ethernet
     GENERAL.HWADDR:                         00:0C:29:FE:38:33
@@ -58,7 +58,7 @@ nmcli connection 这里主要是操作管理配置文件的，启用/停用、�
 
 .. code-block:: bash
 
-    [root@dc ~]# nmcli connection show
+    [root@alvin ~]# nmcli connection show
     NAME   UUID                                  TYPE            DEVICE
     ens33  4df6c9b1-8af2-45cc-8f3a-a0f3be223b1d  802-3-ethernet  ens33
     ens34  5e2bcc3b-ea61-41b9-a7f8-c1588ee5595e  802-3-ethernet  ens34

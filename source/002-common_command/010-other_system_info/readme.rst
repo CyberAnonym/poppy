@@ -7,3 +7,4 @@
     001-uptime
     002-date
     003-uname
+    004-lspci

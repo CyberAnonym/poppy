@@ -45,7 +45,7 @@ rpm卸载软件
 
 .. code-block:: bash
 
-    [root@dns ~]# rpm -qf /usr/bin/sar
+    [root@alvin ~]# rpm -qf /usr/bin/sar
     sysstat-10.1.5-13.el7.x86_64
 
 其他详细资料

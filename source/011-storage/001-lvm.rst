@@ -42,13 +42,13 @@ LVM基本术语
 
 .. code-block:: bash
 
-    [root@teacher Desktop]# ls /dev/sdb
+    [root@alvin Desktop]# ls /dev/sdb
     /dev/sdb
-    [root@teacher Desktop]# ls /dev/sdc
+    [root@alvin Desktop]# ls /dev/sdc
     /dev/sdc
-    [root@teacher Desktop]# ls /dev/sdc*
+    [root@alvin Desktop]# ls /dev/sdc*
     /dev/sdc  /dev/sdc1  /dev/sdc2
-    [root@teacher Desktop]# ls /dev/sdd
+    [root@alvin Desktop]# ls /dev/sdd
     /dev/sdd
 
 
@@ -57,9 +57,9 @@ LVM基本术语
 
 .. code-block:: bash
 
-    [root@teacher Desktop]# pvcreate /dev/sdb
-    [root@teacher Desktop]# pvcreate  /dev/sdc2
-    [root@teacher Desktop]# pvs
+    [root@alvin Desktop]# pvcreate /dev/sdb
+    [root@alvin Desktop]# pvcreate  /dev/sdc2
+    [root@alvin Desktop]# pvs
       PV         VG   Fmt  Attr PSize  PFree
       /dev/sdb        lvm2 a--  80.00g 80.00g
       /dev/sdc2       lvm2 a--  39.99g 39.99g
@@ -75,9 +75,9 @@ vgcreate 参数说明
 
 .. code-block:: bash
 
-    [root@teacher Desktop]# vgcreate /dev/vg0 /dev/sdb /dev/sdc2
+    [root@alvin Desktop]# vgcreate /dev/vg0 /dev/sdb /dev/sdc2
       Volume group "vg0" successfully created
-    [root@teacher Desktop]# vgs
+    [root@alvin Desktop]# vgs
       VG   #PV #LV #SN Attr   VSize   VFree
       vg0    2   0   0 wz--n- 119.98g 119.98g
 
@@ -96,9 +96,9 @@ vgcreate 参数说明
 
 .. code-block:: bash
 
-    [root@teacher Desktop]# lvcreate -L 10G -n /dev/vg0/lv01 /dev/vg0
+    [root@alvin Desktop]# lvcreate -L 10G -n /dev/vg0/lv01 /dev/vg0
       Logical volume "lv01" created
-    [root@teacher Desktop]# lvs
+    [root@alvin Desktop]# lvs
       LV   VG   Attr      LSize  Pool Origin Data%  Move Log Cpy%Sync Convert
       lv01 vg0  -wi-a---- 10.00g
 
@@ -106,30 +106,30 @@ vgcreate 参数说明
 ================
 .. code-block:: bash
 
-    [root@teacher Desktop]# mkfs.ext4 /dev/vg0/lv01
-    [root@teacher Desktop]# mkdir /mnt/lv01
-    [root@teacher Desktop]# mount /dev/vg0/lv01 /mnt/lv01
-    [root@teacher Desktop]# vim /etc/fstab                         --设置开机自动挂载
+    [root@alvin Desktop]# mkfs.ext4 /dev/vg0/lv01
+    [root@alvin Desktop]# mkdir /mnt/lv01
+    [root@alvin Desktop]# mount /dev/vg0/lv01 /mnt/lv01
+    [root@alvin Desktop]# vim /etc/fstab                         --设置开机自动挂载
 
 
 查看逻辑卷状态
 ===================
 .. code-block:: bash
 
-    [root@teacher lv01]# pvs
+    [root@alvin lv01]# pvs
       PV         VG   Fmt  Attr PSize  PFree
       /dev/sdb   vg0  lvm2 a--  80.00g 70.00g
       /dev/sdc2  vg0  lvm2 a--  39.98g 39.98g
-    [root@teacher lv01]# vgs
+    [root@alvin lv01]# vgs
       VG   #PV #LV #SN Attr   VSize   VFree
       vg0    2   1   0 wz--n- 119.98g 109.98g
-    [root@teacher lv01]# lvs
+    [root@alvin lv01]# lvs
       LV   VG   Attr      LSize  Pool Origin Data%  Move Log Cpy%Sync Convert
       lv01 vg0  -wi-ao--- 10.00g
 
     ******************************************************************************************
 
-    [root@teacher lv01]# pvdisplay /dev/sdb                        --详细显示pv状态
+    [root@alvin lv01]# pvdisplay /dev/sdb                        --详细显示pv状态
       --- Physical volume ---
       PV Name               /dev/sdb
       VG Name               vg0
@@ -142,7 +142,7 @@ vgcreate 参数说明
       PV UUID               Jqgzop-F0rK-gf8g-EwSZ-YsrM-eGYE-QojNTq
 
     *********************************************************************************************
-    [root@teacher lv01]# vgdisplay vg0                            --详细显示卷组的信息
+    [root@alvin lv01]# vgdisplay vg0                            --详细显示卷组的信息
       --- Volume group ---
       VG Name               vg0
       System ID
@@ -164,7 +164,7 @@ vgcreate 参数说明
       Free  PE / Size       28155 / 109.98 GiB
       VG UUID               VQ56JI-lHJs-yHhk-p1fD-oj0a-mWcV-FQMzGd
     *********************************************************************************************
-    [root@teacher lv01]# lvdisplay /dev/vg0/lv01                        --详细显示逻辑卷的信息
+    [root@alvin lv01]# lvdisplay /dev/vg0/lv01                        --详细显示逻辑卷的信息
       --- Logical volume ---
       LV Path                /dev/vg0/lv01
       LV Name                lv01
@@ -188,16 +188,16 @@ vgcreate 参数说明
 ==========
 .. code-block:: bash
 
-    [root@teacher lv01]# pvcreate /dev/sdd
+    [root@alvin lv01]# pvcreate /dev/sdd
       Physical volume "/dev/sdd" successfully created
-    [root@teacher lv01]# pvs
+    [root@alvin lv01]# pvs
       PV         VG   Fmt  Attr PSize  PFree
       /dev/sdb   vg0  lvm2 a--  80.00g 70.00g
       /dev/sdc2  vg0  lvm2 a--  39.98g 39.98g
       /dev/sdd        lvm2 a--  80.00g 80.00g
-    [root@teacher lv01]# vgextend vg0 /dev/sdd                --向vg中添加pv
+    [root@alvin lv01]# vgextend vg0 /dev/sdd                --向vg中添加pv
       Volume group "vg0" successfully extended
-    [root@teacher lv01]# vgs
+    [root@alvin lv01]# vgs
       VG   #PV #LV #SN Attr   VSize   VFree
       vg0    3   1   0 wz--n- 199.98g 189.98g
 
@@ -207,9 +207,9 @@ vgcreate 参数说明
 ====================
 .. code-block:: bash
 
-    [root@teacher lv01]# vgreduce vg0 /dev/sdd
+    [root@alvin lv01]# vgreduce vg0 /dev/sdd
       Removed "/dev/sdd" from volume group "vg0"
-    [root@teacher lv01]# vgs
+    [root@alvin lv01]# vgs
       VG   #PV #LV #SN Attr   VSize   VFree
       vg0    2   1   0 wz--n- 119.98g 109.98g
 
@@ -218,9 +218,9 @@ vgcreate 参数说明
 ==========
 .. code-block:: bash
 
-    [root@teacher lv01]# pvremove /dev/sdd
+    [root@alvin lv01]# pvremove /dev/sdd
       Labels on physical volume "/dev/sdd" successfully wiped
-    [root@teacher lv01]# pvs
+    [root@alvin lv01]# pvs
       PV         VG   Fmt  Attr PSize  PFree
       /dev/sdb   vg0  lvm2 a--  80.00g 70.00g
       /dev/sdc2  vg0  lvm2 a--  39.98g 39.98g
@@ -229,20 +229,20 @@ vgcreate 参数说明
 ====================
 .. code-block:: bash
 
-    [root@teacher lv01]# lvextend -v -L +10G /dev/vg0/lv01
+    [root@alvin lv01]# lvextend -v -L +10G /dev/vg0/lv01
                     -v:显示创建过程
                     -L:指定扩展的大小 （+10G:扩展10G,30G:扩展到30G）
-    [root@teacher lv01]# lvs
+    [root@alvin lv01]# lvs
       LV   VG   Attr      LSize  Pool Origin Data%  Move Log Cpy%Sync Convert
       lv01 vg0  -wi-ao--- 20.00g
-    [root@teacher lv01]# df -h | grep lv01                        --df查看没变化
+    [root@alvin lv01]# df -h | grep lv01                        --df查看没变化
     /dev/mapper/vg0-lv01  9.9G  151M  9.2G   2% /mnt/lv01
 
 
-    [root@teacher lv01]# resize2fs /dev/vg0/lv01                    --在线扩展文件系统
+    [root@alvin lv01]# resize2fs /dev/vg0/lv01                    --在线扩展文件系统
             --如果报以下错误：please run "e2fsck -f /dev/vg0/lv01" first
             --直接执行提示的命令即可(e2fsck -f /dev/vg0/lv01)
-    [root@teacher lv01]# df -h | grep lv01
+    [root@alvin lv01]# df -h | grep lv01
     /dev/mapper/vg0-lv01   20G  156M   19G   1% /mnt/lv01
 
 回缩逻辑卷
@@ -250,25 +250,25 @@ vgcreate 参数说明
 .. code-block:: bash
 
     生产环境中要先备份数据，再回缩文件系统
-    [root@teacher ~]# resize2fs /dev/vg0/lv01 10G                    --回缩文件系统
-    [root@teacher ~]# e2fsck -f /dev/vg0/lv01                        --磁盘检测
-    [root@teacher ~]# lvreduce -v -L 10G /dev/vg0/lv01                --回缩逻辑卷（回缩到10G）
-    [root@teacher ~]# lvs
+    [root@alvin ~]# resize2fs /dev/vg0/lv01 10G                    --回缩文件系统
+    [root@alvin ~]# e2fsck -f /dev/vg0/lv01                        --磁盘检测
+    [root@alvin ~]# lvreduce -v -L 10G /dev/vg0/lv01                --回缩逻辑卷（回缩到10G）
+    [root@alvin ~]# lvs
       LV   VG   Attr      LSize  Pool Origin Data%  Move Log Cpy%Sync Convert
       lv01 vg0  -wi-a---- 10.00g
-    [root@teacher ~]# mount /dev/vg0/lv01 /mnt/lv01
-    [root@teacher ~]# df -h
+    [root@alvin ~]# mount /dev/vg0/lv01 /mnt/lv01
+    [root@alvin ~]# df -h
 
 拆除逻辑卷的过程
 ====================
 .. code-block:: bash
 
-    [root@teacher ~]# umount /mnt/lv01                        --卸载
-    [root@teacher ~]# vim /etc/fstab                             --清除开机自动启动项
-    [root@teacher ~]# lvremove /dev/vg0/lv01                     --删除lv
-    [root@teacher ~]# vgremove vg0                            --删除vg
-    [root@teacher ~]# pvremove /dev/sdc2                        --删除pv
-    [root@teacher ~]# pvremove /dev/sdb                        --删除pv
+    [root@alvin ~]# umount /mnt/lv01                        --卸载
+    [root@alvin ~]# vim /etc/fstab                             --清除开机自动启动项
+    [root@alvin ~]# lvremove /dev/vg0/lv01                     --删除lv
+    [root@alvin ~]# vgremove vg0                            --删除vg
+    [root@alvin ~]# pvremove /dev/sdc2                        --删除pv
+    [root@alvin ~]# pvremove /dev/sdb                        --删除pv
 
 
 
@@ -276,7 +276,7 @@ vgcreate 参数说明
 =======================
 .. code-block:: bash
 
-    [root@teacher ~]# lsblk -f                            --查看lv的物理分布
+    [root@alvin ~]# lsblk -f                            --查看lv的物理分布
     NAME   FSTYPE    LABEL                   UUID                                   MOUNTPOINT
     sda
     ├─sda1 ext4                              7631883b-5824-4ed5-a730-b8d2ea45c14d   /boot

@@ -6,7 +6,7 @@ vmstat
 .. code-block:: bash
     :linenos:
 
-    [root@dns ~]# vmstat 1
+    [root@alvin ~]# vmstat 1
     procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
      r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
      1  0      0 466468   2108 365500    0    0     3     2   49   46  0  0 100  0  0

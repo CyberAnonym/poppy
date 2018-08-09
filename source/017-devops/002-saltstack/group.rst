@@ -22,7 +22,7 @@ salt的分组
 
 .. code-block:: bash
 
-    [root@saltstack ~]# salt -C 'P@os:CentOS' test.ping
+    [root@alvin ~]# salt -C 'P@os:CentOS' test.ping
     db2.alv.pub:
         True
     db1.alv.pub:
@@ -54,21 +54,21 @@ salt的分组
 
 .. code-block:: bash
 
-    [root@saltstack ~]# vim /etc/salt/master
+    [root@alvin ~]# vim /etc/salt/master
     nodegroups:
       dbs: 'L@db1.alv.pub,db2.alv.pub,db3.alv.pub'
       zabbix: 'zabbix.alv.pub'
     ```
     测试test.ping 效果如下
     ```bash
-    [root@saltstack ~]# salt -N dbs test.ping
+    [root@alvin ~]# salt -N dbs test.ping
     db1.alv.pub:
         True
     db2.alv.pub:
         True
     db3.alv.pub:
         True
-    [root@saltstack ~]# salt -N zabbix test.ping
+    [root@alvin ~]# salt -N zabbix test.ping
     zabbix.alv.pub:
         True
 
@@ -85,7 +85,7 @@ nodegroup分组时可以用到的语法关键字有G、E、P、L、I、S、R、D
 
 .. code-block:: bash
 
-    [root@saltstack ~]# salt -C 'db1.alv.pub or db2.alv.pub' test.ping
+    [root@alvin ~]# salt -C 'db1.alv.pub or db2.alv.pub' test.ping
     db2.alv.pub:
         True
     db1.alv.pub:
@@ -97,7 +97,7 @@ nodegroup分组时可以用到的语法关键字有G、E、P、L、I、S、R、D
 
 .. code-block:: bash
 
-    [root@saltstack ~]# salt -C 'S@192.168.127.0/24' test.ping
+    [root@alvin ~]# salt -C 'S@192.168.127.0/24' test.ping
     ansible.alv.pub:
         True
     maxscale.alv.pub:
@@ -126,7 +126,7 @@ nodegroup分组时可以用到的语法关键字有G、E、P、L、I、S、R、D
 
 .. code-block:: bash
 
-    [root@saltstack ~]# salt -C 'S@192.168.127.0/24 and db*' test.ping
+    [root@alvin ~]# salt -C 'S@192.168.127.0/24 and db*' test.ping
     db1.alv.pub:
         True
     db2.alv.pub:

@@ -42,7 +42,7 @@ ulimit 用于限制 shell 启动进程所占用的资源，支持以下各种类
 
 .. code-block:: bash
 
-    [root@localhost ~]# ulimit -a
+    [root@alvin ~]# ulimit -a
     core file size          (blocks, -c) 0           #core文件的最大值为100 blocks。
     data seg size           (kbytes, -d) unlimited   #进程的数据段可以任意大。
     scheduling priority             (-e) 0

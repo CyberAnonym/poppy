@@ -164,7 +164,7 @@ ping命令使用的是icmp协议，所以如果要禁止别人来ping我们的�
 
 ::
 
-    [root@dhcp ~]# ping 192.168.127.51
+    [root@alvin ~]# ping 192.168.127.51
     PING 192.168.127.51 (192.168.127.51) 56(84) bytes of data.
     64 bytes from 192.168.127.51: icmp_seq=1 ttl=64 time=0.232 ms
     64 bytes from 192.168.127.51: icmp_seq=2 ttl=64 time=0.317 ms
@@ -185,7 +185,7 @@ ping命令使用的是icmp协议，所以如果要禁止别人来ping我们的�
 
 ::
 
-    [root@dhcp ~]# ping 192.168.127.51 -c 2
+    [root@alvin ~]# ping 192.168.127.51 -c 2
     PING 192.168.127.51 (192.168.127.51) 56(84) bytes of data.
     From 192.168.127.51 icmp_seq=1 Destination Host Prohibited
     From 192.168.127.51 icmp_seq=2 Destination Host Prohibited
@@ -225,7 +225,7 @@ ping命令使用的是icmp协议，所以如果要禁止别人来ping我们的�
 
 ::
 
-    [root@dc ~]# ping dhcp.alv.pub -c 2
+    [root@alvin ~]# ping dhcp.alv.pub -c 2
     PING dhcp.alv.pub (192.168.127.1) 56(84) bytes of data.
     From 192.168.127.1 (192.168.127.1) icmp_seq=1 Destination Net Unreachable
     From 192.168.127.1 (192.168.127.1) icmp_seq=2 Destination Net Unreachable
@@ -249,7 +249,7 @@ ping命令使用的是icmp协议，所以如果要禁止别人来ping我们的�
 
 ::
 
-    [root@dc ~]# ping dhcp.alv.pub -c 2
+    [root@alvin ~]# ping dhcp.alv.pub -c 2
     PING dhcp.alv.pub (192.168.127.1) 56(84) bytes of data.
 
     --- dhcp.alv.pub ping statistics ---

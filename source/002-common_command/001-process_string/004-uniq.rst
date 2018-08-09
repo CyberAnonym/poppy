@@ -4,7 +4,7 @@ uniq
 
 .. code-block:: bash
 
-    [root@dc tmp]# cat file
+    [root@alvin tmp]# cat file
     aaa
     aaa
     aaa
@@ -12,24 +12,24 @@ uniq
     bbbbb
     cc
     aaa
-    [root@dc tmp]# uniq file
+    [root@alvin tmp]# uniq file
     aaa
     bbbbb
     cc
     aaa
-    [root@dc tmp]# uniq -c file
+    [root@alvin tmp]# uniq -c file
           3 aaa
           2 bbbbb
           1 cc
           1 aaa
-    [root@dc tmp]#
+    [root@alvin tmp]#
 
 一般我们可以配合sort使用，如果想让不相连的行也合并唯一。
 -----------------------------------------------------------------
 
 .. code-block:: bash
 
-    [root@dc tmp]# cat file
+    [root@alvin tmp]# cat file
     aaa
     aaa
     aaa
@@ -37,8 +37,8 @@ uniq
     bbbbb
     cc
     aaa
-    [root@dc tmp]# sort file |uniq -c
+    [root@alvin tmp]# sort file |uniq -c
           4 aaa
           2 bbbbb
           1 cc
-    [root@dc tmp]#
+    [root@alvin tmp]#

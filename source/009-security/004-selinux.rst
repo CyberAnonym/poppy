@@ -24,28 +24,28 @@ SELinux有三种模式， 强制模式，许可模式和禁用模式
 
 .. code-block:: bash
 
-    [root@saltstack ~]# getenforce
+    [root@alvin ~]# getenforce
     Enforcing
 
 - 将默认的SELinux模式改为许可模式，并重新启动
 
 .. code-block:: bash
 
-    [root@saltstack ~]# sed -i 's/SELINUX=.*/SELINUX=permissive/' /etc/selinux/config
-    [root@saltstack ~]# grep '^SELINUX'  /etc/selinux/config
+    [root@alvin ~]# sed -i 's/SELINUX=.*/SELINUX=permissive/' /etc/selinux/config
+    [root@alvin ~]# grep '^SELINUX'  /etc/selinux/config
     SELINUX=permissive
     SELINUXTYPE=targeted
-    root@saltstack ~]# reboot
+    root@alvin ~]# reboot
 
 - 将默认SELinux更改为强制模式
 
 .. code-block:: bash
 
-    [root@saltstack ~]# sed -i 's/SELINUX=.*/SELINUX=enforcing/' /etc/selinux/config
-    [root@saltstack ~]# grep '^SELINUX'  /etc/selinux/config
+    [root@alvin ~]# sed -i 's/SELINUX=.*/SELINUX=enforcing/' /etc/selinux/config
+    [root@alvin ~]# grep '^SELINUX'  /etc/selinux/config
     SELINUX=enforcing
     SELINUXTYPE=targeted
-    [root@saltstack ~]# reboot
+    [root@alvin ~]# reboot
 
 
 更改SELinux上下文

@@ -31,7 +31,7 @@
 
 .. code-block:: bash
 
-    [root@localhost ~]# free -m
+    [root@alvin ~]# free -m
 		        total   	    used 	free 	shared 	buffers 	cached
     Mem: 	1010 	    981 		29 		0 		145 		649
     -/+ buffers/cache: 	186 		824
@@ -67,7 +67,7 @@
 
 .. code-block:: bash
 
-    [root@localhost ~]# vmstat
+    [root@alvin ~]# vmstat
     procs -----------memory----------           ---swap--   -----io---- 	--system-- -----cpu------
     r b 	swpd   free   buff       cache     	si 	so     	bi 	bo 	in 	 cs 	       us sy id wa st
     0 0 	0 	    48584 118300 663564   	0  	0  	        12 23 	60  240 	   3  2   95 0  0
@@ -147,10 +147,10 @@ kswapd负责说什么时候搬数据，但是干活儿的不是pdflush了
     dirty_background_ratio     dirty_ratio
     dirty_bytes                dirty_writeback_centisecs
 
-    [root@localhost ~]# cat /proc/sys/vm/dirty_expire_centisecs   //想知道这里面是什么可以使用下面的man或者kernel-doc查看
+    [root@alvin ~]# cat /proc/sys/vm/dirty_expire_centisecs   //想知道这里面是什么可以使用下面的man或者kernel-doc查看
     2999        //单位百分之一秒，这里也就是30秒，30秒之后标记为脏数据，意味着用户写的数据在30秒之后才有可能被刷入磁盘，在这期间断电可能会丢数据
 
-    [root@localhost ~]# cat /proc/sys/vm/dirty_writeback_centisecs
+    [root@alvin ~]# cat /proc/sys/vm/dirty_writeback_centisecs
     499         //  5秒钟往硬盘同步一次数据5秒同步一次脏数据（在缓存中的）
 
     假如我内存1G
@@ -159,7 +159,7 @@ kswapd负责说什么时候搬数据，但是干活儿的不是pdflush了
     3秒  400M
     4秒  400M
     还没到5秒，但是内存使用已经超过1G了，这时候怎么办？下面的文件来解决
-    [root@localhost ~]# cat /proc/sys/vm/dirty_ratio
+    [root@alvin ~]# cat /proc/sys/vm/dirty_ratio
     40          //如果单个进程占用的buffer/cache达到内存总量的40%,立刻同步。
 
     假如我内存1G，一个进程
@@ -168,7 +168,7 @@ kswapd负责说什么时候搬数据，但是干活儿的不是pdflush了
     3秒  4M
     4秒  40M
     那要是1000个进程呢？这时候怎么办？下面的文件来解决
-    [root@localhost ~]# cat /proc/sys/vm/dirty_background_ratio
+    [root@alvin ~]# cat /proc/sys/vm/dirty_background_ratio
     10          //所有进程占用的buffer/cache使得剩余内存低于内存总量的10%，立刻同步
 
     # cat /proc/sys/vm/dirty_background_bytes //上面的ratio文件用百分比，这个用字节限制，但是百分比存在的时候，字节不生效
@@ -181,7 +181,7 @@ kswapd负责说什么时候搬数据，但是干活儿的不是pdflush了
 =======================
 .. code-block:: bash
 
-    [root@localhost ~]# cat /proc/sys/vm/drop_caches
+    [root@alvin ~]# cat /proc/sys/vm/drop_caches
     0
     1 释放buffer
     3 buffer/cache都释放
@@ -435,7 +435,7 @@ VIRT就是程序运行的时候说申请的虚拟内存，RES就是映射的内�
 ==============================================
 
 查看内存使用情况
-[root@localhost ~]# sar -r 1 1
+[root@alvin ~]# sar -r 1 1
 01时31分38秒   kbmemfree kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit
 01时31分39秒   6045368     1917916        24.08        67236       649020     2435764     17.73
 

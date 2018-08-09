@@ -8,10 +8,10 @@ autofs
 
 .. code-block:: bash
 
-    [root@dc ~]# cat /etc/exports
+    [root@alvin ~]# cat /etc/exports
     /ldapUserData/alvin	*(rw,async)
 
-    [root@dc ~]# showmount -e  dc.alv.pub
+    [root@alvin ~]# showmount -e  dc.alv.pub
     Export list for dc.alv.pub:
     /ldapUserData/alvin *
 

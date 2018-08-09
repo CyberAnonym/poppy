@@ -18,8 +18,8 @@ Install salt-master
 
 ::
 
-    [root@saltstack ~]# yum install salt-master -y
-    [root@saltstack ~]# salt --version
+    [root@alvin ~]# yum install salt-master -y
+    [root@alvin ~]# salt --version
     salt 2015.5.10 (Lithium)
 
 Install salt-minion
@@ -73,7 +73,7 @@ interface 前面同样有两个空格，否则启动的时候会报错。
 
 .. code:: bash
 
-    [root@saltstack _modules]# salt-key -L
+    [root@alvin _modules]# salt-key -L
     Accepted Keys:
     Denied Keys:
     Unaccepted Keys:
@@ -117,7 +117,7 @@ Master上创建存放模块的目录：
 
 ::
 
-    [root@saltstack _modules]#  salt '*' saltutil.sync_modules
+    [root@alvin _modules]#  salt '*' saltutil.sync_modules
     db1.alv.pub:
         - modules.hello_module
     saltstack.alv.pub:
@@ -128,7 +128,7 @@ hello\_module.say\_hello来执行此自定义module
 
 ::
 
-    [root@saltstack _modules]# salt '*' hello_module.say_hello
+    [root@alvin _modules]# salt '*' hello_module.say_hello
     saltstack.alv.pub:
         hello salt
     db1.alv.pub:
@@ -142,7 +142,7 @@ hello\_module.say\_hello来执行此自定义module
 
 ::
 
-    [root@saltstack _modules]# vim whoyou.py
+    [root@alvin _modules]# vim whoyou.py
     #!/usr/bin/python
     #coding:utf-8
     import socket,subprocess
@@ -157,7 +157,7 @@ hello\_module.say\_hello来执行此自定义module
 
 .. code:: bash
 
-    [root@saltstack _modules]# salt 'db1.alv.pub' saltutil.sync_modules
+    [root@alvin _modules]# salt 'db1.alv.pub' saltutil.sync_modules
 
     db1.alv.pub:
         - modules.whoyou
@@ -167,7 +167,7 @@ hello\_module.say\_hello来执行此自定义module
 
 .. code:: bash
 
-    [root@saltstack _modules]# salt 'db1.alv.pub' whoyou.whathere
+    [root@alvin _modules]# salt 'db1.alv.pub' whoyou.whathere
     db1.alv.pub:
         This is db1.alv.pub and user is root
 
@@ -176,7 +176,7 @@ hello\_module.say\_hello来执行此自定义module
 
 .. code:: bash
 
-    [root@saltstack _modules]# salt '*' whoyou.whathere
+    [root@alvin _modules]# salt '*' whoyou.whathere
     db1.alv.pub:
         This is db1.alv.pub and user is root
     saltstack.alv.pub:
@@ -185,7 +185,7 @@ hello\_module.say\_hello来执行此自定义module
 
 指定主机名时也可以使用匹配
 
-\`\`\`bash [root@saltstack \_modules]# salt '\*.alv.pub' whoyou.whathere
+\`\`\`bash [root@alvin \_modules]# salt '\*.alv.pub' whoyou.whathere
 db1.alv.pub: This is db1.alv.pub and user is root saltstack.alv.pub:
 Module 'whoyou' is not available. ERROR: Minions returned with non-zero
 exit code
@@ -200,7 +200,7 @@ test.ping
 
 .. code:: bash
 
-    [root@saltstack _modules]# salt '*' test.ping
+    [root@alvin _modules]# salt '*' test.ping
     saltstack.alv.pub:
         True
     db1.alv.pub:
@@ -211,7 +211,7 @@ cmd.run, 直接运行系统命令。
 
 ::
 
-    [root@saltstack ~]# salt '*' cmd.run 'hostname'
+    [root@alvin ~]# salt '*' cmd.run 'hostname'
     saltstack.alv.pub:
         saltstack.alv.pub
     db1.alv.pub:

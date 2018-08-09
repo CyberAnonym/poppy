@@ -14,7 +14,7 @@ ll等于ls -l , ll是ls -l的别名，用alias做的.
 .. code-block:: bash
 
 
-    [root@db1 ~]# ll
+    [root@alvin ~]# ll
     total 3672
     -rw-r--r--  1 root root      16 Jul 12 13:08 1
     -rwxr-xr-x  1 root root     291 Mar 28 14:39 1.py
@@ -33,9 +33,9 @@ ll等于ls -l , ll是ls -l的别名，用alias做的.
 
 .. code-block:: bash
 
-    [root@db1 ~]# ls -Z 1.py
+    [root@alvin ~]# ls -Z 1.py
     -rwxr-xr-x root root ?                                1.py
-    [root@db1 ~]# ls -Z anaconda-ks.cfg
+    [root@alvin ~]# ls -Z anaconda-ks.cfg
     -rw-------. root root system_u:object_r:admin_home_t:s0 anaconda-ks.cfg
 
 查看目录的context值

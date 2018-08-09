@@ -43,7 +43,7 @@ grep
 
 .. code-block:: bash
 
-    [root@dc tmp]# cat file
+    [root@alvin tmp]# cat file
     aaa
     aaa
     aaa
@@ -51,7 +51,7 @@ grep
     bbbbb
     cc
     aaa
-    [root@dc tmp]# grep aa file
+    [root@alvin tmp]# grep aa file
     aaa
     aaa
     aaa
@@ -62,7 +62,7 @@ grep
 ===========================
 .. code-block:: bash
 
-    [root@dc tmp]# grep -v aa file
+    [root@alvin tmp]# grep -v aa file
     bbbbb
     bbbbb
     cc
@@ -72,7 +72,7 @@ grep
 
 .. code-block:: bash
 
-    [root@dc tmp]# grep -Ev "aa|bb" file
+    [root@alvin tmp]# grep -Ev "aa|bb" file
     cc
 
 
