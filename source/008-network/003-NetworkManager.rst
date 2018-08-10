@@ -81,11 +81,22 @@ nmcli connection 这里主要是操作管理配置文件的，启用/停用、�
 
 修改connection名
 =========================
-将connection System eth0的名字改为eth0
+将Wired connection 1的名字改为ens34
 
 .. code-block:: bash
+    :linenos:
+    :emphasize-lines: 5
 
-    nmcli connection modify 'System eth0' connection.id eth0
+    [alvin@poppy ~]$ nmcli connection show
+    NAME                UUID                                  TYPE            DEVICE
+    Wired connection 1  e883e44c-256b-3291-b022-c75329490a50  802-3-ethernet  ens34
+    ens32               01672caa-571a-4fca-8c69-58ff2f66665f  802-3-ethernet  ens32
+    [alvin@poppy ~]$ sudo nmcli connection modify 'Wired connection 1' connection.id ens34
+    [alvin@poppy ~]$
+    [alvin@poppy ~]$ nmcli connection show
+    NAME   UUID                                  TYPE            DEVICE
+    ens32  01672caa-571a-4fca-8c69-58ff2f66665f  802-3-ethernet  ens32
+    ens34  e883e44c-256b-3291-b022-c75329490a50  802-3-ethernet  ens34
 
 
 配置链路聚合

@@ -15,7 +15,6 @@ Welcome to Alvin's document center Poppy !
 
     001-introduction/readme
     002-common_command/readme
-    003-common_system_funtion/readme
     004-common_service/readme
     005-common_system_optimiz/readme
     006-software_manage/readme

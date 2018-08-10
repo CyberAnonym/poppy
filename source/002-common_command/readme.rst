@@ -17,3 +17,4 @@
     011-access_network_resource/readme
     012-mail
     013-journalctl
+    014-alias

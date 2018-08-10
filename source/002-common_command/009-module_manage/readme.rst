@@ -7,3 +7,4 @@
     001-lsmod
     002-modprobe
     003-modinfo
+    004-rmmod
