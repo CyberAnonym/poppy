@@ -1,6 +1,6 @@
 
 
-.. contents::
+
 
 需求
 ``````````
@@ -47,6 +47,7 @@ systemd是Linux下的一款系统和服务管理器，兼容 SysV 和 LSB 的启
 
 systemd的特性有：支持并行化任务；同时采用socket式与D-Bus总线式激活服务；按需启动守护进程（daemon）；利用 Linux 的 cgroups 监视进程；
 支持快照和系统恢复；维护挂载点和自动挂载点；各服务间基于依赖关系进行精密控制。
+
 
 
 systemd文件示例：

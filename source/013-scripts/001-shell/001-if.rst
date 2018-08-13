@@ -1,2 +1,45 @@
 if
 ###
+
+
+if else
+============
+
+.. note::
+
+    下面 == 两边的比较内容与[]中括号之间要有空格，如果没空格会报错。
+
+.. code-block:: bash
+
+    [alvin@poppy ~]$ cat if.sh
+    #!/bin/bash
+
+    name='alvin'
+    if [ $name == 'alvin' ];then
+        echo 'nice alvin'
+    else
+        echo 'no alvin'
+    fi
+    [alvin@poppy ~]$ ./if.sh
+    nice alvin
+
+
+if elif
+==============
+
+.. code-block:: bash
+
+    [alvin@poppy ~]$ cat if.sh
+    #!/bin/bash
+
+    #name='alvin'
+    name='ophira'
+    if [ $name == 'alvin' ];then
+        echo 'nice alvin'
+    elif [ $name == 'ophira' ];then
+        echo 'ophira'
+    else
+        echo 'no alvin'
+    fi
+    [alvin@poppy ~]$ ./if.sh
+    ophira

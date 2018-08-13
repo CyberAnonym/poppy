@@ -3,14 +3,16 @@ grep
 
 过滤文本
 
+echo 可以使用正则，正则语法 `点击这里`_
 
+.. _点击这里 : ./011-regular.html
 
 参数解释
 ==============
 
 .. code-block:: text
 
-    -E 指定多个多个过滤条件，如grep -E "aa|bb" file
+    -E 开启正则匹配，如过滤包含aa或bb，使用grep -E "aa|bb" file
     -v 反向指定，过滤出不包含指定值的行， grep -v aa file
     -i 不区分大小写
     grep -a

@@ -25,30 +25,62 @@ ssh - Secure Shell
     DenyUsers *@192.168.127.*
 
 
-连接目标ssh服务
-====================
+ssh客户端
+===============
 
-- ssh客户端需要安装想用的工具，这里我们安装openssh-clients
+安装openssh-clients
+----------------------------
+,ssh客户端需要安装该软件
 
-.. code-block:: bash
+    .. code-block:: bash
 
-    yum install openssh-clients
+        yum install openssh-clients
+
+ssh命令参数
+-----------------
+
+    .. code-block:: text
+
+        -1：强制使用ssh协议版本1；
+        -2：强制使用ssh协议版本2；
+        -4：强制使用IPv4地址；
+        -6：强制使用IPv6地址；
+        -A：开启认证代理连接转发功能；
+        -a：关闭认证代理连接转发功能；
+        -b：使用本机指定地址作为对应连接的源ip地址；
+        -C：请求压缩所有数据；
+        -F：指定ssh指令的配置文件；
+        -f：后台执行ssh指令；
+        -g：允许远程主机连接主机的转发端口；
+        -i：指定身份文件；
+        -l：指定连接远程服务器登录用户名；
+        -N：不执行远程指令；
+        -o：指定配置选项；
+        -p：指定远程服务器上的端口；
+        -q：静默模式；
+        -X：开启X11转发功能；
+        -x：关闭X11转发功能；
+        -y：开启信任X11转发功能。
+
+
+ssh连接示例
+-----------------
 
 - 这里我们连接dc.alv.pub的ssh服务，使用默认端口
 
-.. code-block:: bash
+    .. code-block:: bash
 
-    ssh dc.alv.pub
+        ssh dc.alv.pub
 
 - 如果ssh服务端口有修改，比如修改成了662，那么这里我们使用662端口去访问ssh服务
 
-.. code-block:: bash
+    .. code-block:: bash
 
-    ssh -p 662 dc.alv.pub
+        ssh -p 662 dc.alv.pub
 
 - 指定端口使用scp复制
 
-.. code-block:: bash
+    .. code-block:: bash
 
-    scp -P662 dc.alv.puub:/tmp/file.txt /tmp/file.txt
+        scp -P662 dc.alv.puub:/tmp/file.txt /tmp/file.txt
 

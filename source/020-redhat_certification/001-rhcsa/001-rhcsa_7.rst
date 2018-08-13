@@ -1,3 +1,11 @@
+虚拟机系统信息
+
+- Hostname: server0.example.com
+- IP address: 172.25.0.11
+- Netmask: 255.255.255.0
+- Gateway: 172.25.0.254
+- Name server: 172.25.0.254
+
 重设root 密码
 ------------------
 

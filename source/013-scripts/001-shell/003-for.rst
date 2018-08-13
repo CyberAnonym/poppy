@@ -1,2 +1,20 @@
 for
 ###
+
+
+.. code-block:: bash
+
+    [alvin@poppy ~]$ vim for.sh
+    [alvin@poppy ~]$ chmod +x for.sh
+    [alvin@poppy ~]$ cat for.sh
+    #!/bin/bash
+
+    name='alvin ophira'
+
+    for i in $name
+    do
+        echo "name is $i"
+    done
+    [alvin@poppy ~]$ ./for.sh
+    name is alvin
+    name is ophira
