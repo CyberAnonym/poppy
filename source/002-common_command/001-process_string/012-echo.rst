@@ -25,3 +25,41 @@ echo
     hello
     world
 
+显示结果定向至文件
+=========================
+.. code-block:: bash
+
+    [alvin@poppy ~]$ echo 'Alvin Daily' > file
+    [alvin@poppy ~]$ cat file
+    Alvin Daily
+
+显示结果追加至文件
+=========================
+.. code-block:: bash
+    :linenos:
+    :emphasize-lines: 3
+
+    [alvin@poppy ~]$ cat file
+    Alvin Daily
+    [alvin@poppy ~]$ echo 'Yes this is Alvin' >> file
+    [alvin@poppy ~]$ cat file
+    Alvin Daily
+    Yes this is Alvin
+
+原样输出字符串，不进行转义或取变量(用单引号)
+======================================================
+
+.. code-block:: bash
+
+    [alvin@poppy ~]$ name='alvin'
+    [alvin@poppy ~]$ echo '$name\"'
+    $name\"
+
+显示命令执行结果
+======================
+
+.. code-block:: bash
+
+    [alvin@poppy ~]$ echo `date`
+    Mon Aug 13 17:14:20 CST 2018
+
