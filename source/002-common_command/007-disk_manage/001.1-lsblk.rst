@@ -1,0 +1,104 @@
+lsblk
+##########
+
+NAME
+====
+
+    lsblk - list block devices
+
+SYNOPSIS
+=========
+
+    lsblk [options] [device...]
+
+DESCRIPTION
+===============
+
+    lsblk lists information about all available or the specified block devices.  The lsblk command reads the sysfs filesystem to gather information.
+
+    The command prints all block devices (except RAM disks) in a tree-like format by default.  Use lsblk --help to get a list of all available columns.
+
+    The  default output, as well as the default output from options like --fs and --topology, is subject to change.  So whenever possible, you should avoid using default outputs in your scripts.  Always explicitly define expected columns by using --output col‐umns-list in environments where a stable output is required.
+
+
+OPTIONS
+========
+
+   -a, --all
+          Also list empty devices.  (By default they are skipped.)
+
+   -b, --bytes
+          Print the SIZE column in bytes rather than in a human-readable format.
+
+   -D, --discard
+          Print information about the discarding capabilities (TRIM, UNMAP) for each device.
+
+   -d, --nodeps
+          Do not print holder devices or slaves.  For example, lsblk --nodeps /dev/sda prints information about the sda device only.
+
+   -e, --exclude list
+          Exclude the devices specified by the comma-separated list of major device numbers.  Note that RAM disks (major=1) are excluded by default.  The filter is applied to the top-level devices only.
+
+   -f, --fs
+          Output info about filesystems.  This option is equivalent to -o NAME,FSTYPE,LABEL,MOUNTPOINT.  The authoritative information about filesystems and raids is provided by the blkid(8) command.
+
+   -h, --help
+          Print a help text and exit.
+
+   -I, --include list
+          Include devices specified by the comma-separated list of major device numbers.  The filter is applied to the top-level devices only.
+
+   -i, --ascii
+          Use ASCII characters for tree formatting.
+
+   -l, --list
+          Produce output in the form of a list.
+
+   -m, --perms
+          Output info about device owner, group and mode.  This option is equivalent to -o NAME,SIZE,OWNER,GROUP,MODE.
+
+   -n, --noheadings
+          Do not print a header line.
+
+   -o, --output list
+          Specify which output columns to print.  Use --help to get a list of all supported columns.
+
+          The default list of columns may be extended if list is specified in the format +list (e.g. lsblk -o +UUID).
+
+   -P, --pairs
+          Produce output in the form of key="value" pairs.  All potentially unsafe characters are hex-escaped (\x<code>).
+
+   -p, --paths
+          Print full device paths.
+
+   -r, --raw
+          Produce output in raw format.  All potentially unsafe characters are hex-escaped (\x<code>) in the NAME, KNAME, LABEL, PARTLABEL and MOUNTPOINT columns.
+
+   -S, --scsi
+          Output info about SCSI devices only.  All partitions, slaves and holder devices are ignored.
+
+
+
+EXAMPLE
+===========
+
+.. code-block:: bash
+    :linenos:
+
+    [alvin@poppy ~]$ lsblk
+    NAME                MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+    sda                   8:0    0   20G  0 disk
+    ├─sda1                8:1    0  500M  0 part /boot
+    ├─sda2                8:2    0    1G  0 part [SWAP]
+    └─sda3                8:3    0 18.5G  0 part
+      └─vg_root-lv_root 253:0    0 18.5G  0 lvm  /
+    sdb                   8:16   0  300G  0 disk
+    └─sdb1                8:17   0   20G  0 part /data
+    [alvin@poppy ~]$ lsblk -S
+    NAME HCTL       TYPE VENDOR   MODEL             REV TRAN
+    sda  2:0:0:0    disk VMware,  VMware Virtual S 1.0  spi
+    sdb  2:0:1:0    disk VMware,  VMware Virtual S 1.0  spi
+    [alvin@poppy ~]$ lsblk /dev/sdb
+    NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+    sdb      8:16   0  300G  0 disk
+    └─sdb1   8:17   0   20G  0 part /data

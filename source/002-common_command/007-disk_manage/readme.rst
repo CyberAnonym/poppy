@@ -4,6 +4,7 @@
 .. toctree::
     :maxdepth: 2
 
+    001.1-lsblk
     001-fdisk
     002-parted
     003-df

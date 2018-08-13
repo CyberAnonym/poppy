@@ -1,2 +1,78 @@
 df
 ##
+
+
+查看各文件系统磁盘空间
+============================
+
+.. code-block:: bash
+
+    [alvin@alvin ~]$ df
+    Filesystem     1K-blocks    Used Available Use% Mounted on
+    /dev/vda1       41151808 3132916  35905460   9% /
+    devtmpfs          498576       0    498576   0% /dev
+    tmpfs             508080       0    508080   0% /dev/shm
+    tmpfs             508080     648    507432   1% /run
+    tmpfs             508080       0    508080   0% /sys/fs/cgroup
+    tmpfs             101620       0    101620   0% /run/user/0
+    [alvin@alvin ~]$
+
+以便读的方式查看容量
+================================
+-h参数 --human-readable
+这里对容量的计算方式是1MB=1024KB
+
+.. code-block:: bash
+
+    [alvin@alvin ~]$ df -h
+    Filesystem      Size  Used Avail Use% Mounted on
+    /dev/vda1        40G  3.0G   35G   9% /
+    devtmpfs        487M     0  487M   0% /dev
+    tmpfs           497M     0  497M   0% /dev/shm
+    tmpfs           497M  648K  496M   1% /run
+    tmpfs           497M     0  497M   0% /sys/fs/cgroup
+    tmpfs           100M     0  100M   0% /run/user/0
+
+以1MB=1000KB的方式查看磁盘
+=================================
+.. code-block:: bash
+
+    [alvin@alvin ~]$ df -H
+    Filesystem      Size  Used Avail Use% Mounted on
+    /dev/vda1        43G  3.3G   37G   9% /
+    devtmpfs        511M     0  511M   0% /dev
+    tmpfs           521M     0  521M   0% /dev/shm
+    tmpfs           521M  664k  520M   1% /run
+    tmpfs           521M     0  521M   0% /sys/fs/cgroup
+    tmpfs           105M     0  105M   0% /run/user/0
+
+以MB为单位显示
+=====================
+
+.. code-block:: bash
+
+    [alvin@alvin ~]$ df -M
+    df: invalid option -- 'M'
+    Try 'df --help' for more information.
+    [alvin@alvin ~]$ df -m
+    Filesystem     1M-blocks  Used Available Use% Mounted on
+    /dev/vda1          40188  3060     35064   9% /
+    devtmpfs             487     0       487   0% /dev
+    tmpfs                497     0       497   0% /dev/shm
+    tmpfs                497     1       496   1% /run
+    tmpfs                497     0       497   0% /sys/fs/cgroup
+    tmpfs                100     0       100   0% /run/user/0
+
+查看各文件系统inode使用情况
+===================================
+
+.. code-block:: bash
+
+    [alvin@alvin ~]$ df -hi
+    Filesystem     Inodes IUsed IFree IUse% Mounted on
+    /dev/vda1        2.5M   83K  2.5M    4% /
+    devtmpfs         122K   334  122K    1% /dev
+    tmpfs            125K     1  125K    1% /dev/shm
+    tmpfs            125K   469  124K    1% /run
+    tmpfs            125K    16  125K    1% /sys/fs/cgroup
+    tmpfs            125K     1  125K    1% /run/user/0

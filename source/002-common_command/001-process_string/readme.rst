@@ -27,3 +27,10 @@
 .. code-block:: bash
 
     for file in $(for DAY in {1..30};do ls catalina.out.`date -d "$DAY day ago" +%Y-%m-%d`.log ;done);do grep "userid\":\"" $file |awk -F "userid\":\"" '{print $2}'|awk -F '"' '{print $1}'|sort -nr|uniq >> /tmp/user.log;done
+
+#. 查找本书poppy里面用了多少linux下系统命令。
+
+.. code-block:: bash
+
+    $ cd poppy/source
+    $ a=1;for i in `find . -name '*.rst'|awk -F "/" '{print $NF}'|awk -F "-" '{print $2}'|sed '/^$/d'|sed 's/.rst//'`;do which $i 2>/dev/null && ((a++));done|sort |cat -n
