@@ -1,6 +1,15 @@
 sphinx
 ############
 
+安装sphinx
+==================
+
+.. code-block:: bash
+
+    $ sudo pip install rst
+    $ sudo pip instal sphinx
+    $ sudo pip install sphinx_rtd_theme
+
 sphinx编写语法
 =====================
 

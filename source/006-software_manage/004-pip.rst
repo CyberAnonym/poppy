@@ -1,0 +1,42 @@
+pip
+###
+
+pip是安装python模块的一个命令。
+
+安装好pip后有默认的软件源，如果默认软件源速度慢或网络不可达，我们也可以自己配置对于我们当前网络而言速度更快的源。
+
+比如我的mac的默认pip源是files.pythonhosted.org，在我们当前网络下访问这个地址速度就很慢，所以我换个国内地址，速度快好几倍。
+
+默认的pipy源还有 https://pypi.python.org/simple
+
+
+有的朋友要改pypi源 mac没有.pip文件夹很正常 因为要自己建
+
+在终端进入目录：cd ~/
+
+如果没有 .pip 文件夹，那么就要新建这个文件夹，mkdir .pip
+
+然后在.pip 文件夹内新建一个文件 touch pip.conf，
+
+
+阿里云的pip源： http://mirrors.aliyun.com/pypi/simple/
+
+将下面内容写入 pip.conf
+
+.. code-block:: bash
+
+    [global]
+    index-url = http://mirrors.aliyun.com/pypi/simple/
+    [install]
+    trusted-host=mirrors.aliyun.com
+
+清华大学的pip源： https://pypi.tuna.tsinghua.edu.cn/simple
+
+.. code-block:: bash
+
+    [global]
+    index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+    [install]
+    trusted-host=pypi.tuna.tsinghua.edu.cn
+
+

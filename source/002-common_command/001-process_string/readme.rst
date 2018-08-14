@@ -17,6 +17,7 @@
     011-regular
     012-echo
     013-read
+    014-seq
 
 
 
