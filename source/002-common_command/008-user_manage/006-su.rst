@@ -1,0 +1,16 @@
+su
+####
+
+切换用户
+
+
+切换到用户alvin并使用alvin的环境变量
+===============================================
+su 后面加上-，表示使用目标用户的环境变量，也会进入到目标用户的home目录，否则，环境变量不会切换，当前目录也不会改变。
+
+.. code-block:: bash
+
+    [poppy@poppy ~]$ su - alvin
+    Password:
+    Last login: Tue Aug 14 11:58:23 CST 2018 from 192.168.127.38 on pts/0
+    [alvin@poppy ~]$

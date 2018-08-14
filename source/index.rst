@@ -23,14 +23,13 @@ Welcome to Alvin's document center Poppy !
     010-database/readme
     011-storage/readme
     012-monitor/readme
-    013-scripts/readme
-    014-virtualization/readme
+    013-develop/readme
+    014-cloud&virtualization/readme
     015-ha&lb/readme
     016-web/readme
     017-devops/readme
     018-open_source/readme
     019-other/readme
     020-redhat_certification/readme
-
 
 

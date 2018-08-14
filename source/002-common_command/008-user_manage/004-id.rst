@@ -1,0 +1,10 @@
+id
+###
+查看用户的id等信息
+
+
+查看alvin的uid和gid
+===============================
+
+[alvin@poppy ~]$ id alvin
+uid=10001(alvin) gid=10001(sophiroth) groups=10001(sophiroth),10(wheel)

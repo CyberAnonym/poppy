@@ -10,12 +10,39 @@ sphinx
     $ sudo pip instal sphinx
     $ sudo pip install sphinx_rtd_theme
 
+创建一个sphinx项目
+============================
+下面的命令会自动生成一个默认的Sphinx模板
+
+.. code-block:: bash
+
+    mkdir yourdir
+    cd yourdir
+    sphinx-quickstart
+
+执行期间，它会一步步的询问对模板的设置，除了一些必须填写的选项，大部分填写默认值就行了，你会遇到这样一条叫autodoc的，需要选择yes
+
+.. code-block:: bash
+
+    - yourdir/ # 刚才新建的目录
+        - source/ # 存放Sphinx工程源码
+        - build/ # 存放生成的文档
+        Makefile
+
+现在执行如下指令，就会生成一份空文档，存放在/build/html里，点击index.html就可以打开一个空的网页，虽然没有内容，但是整体的结构还是在的
+
+.. code-block:: bash
+
+    sphinx-build -b html source build
+    make html
+
 sphinx编写语法
 =====================
 
 .. note:: 做主目录数用的toctree和其下面的参数
 
      ..toctree
+          :glob:      #开启正则可以*匹配
           :maxdepth: 2 #最大展开2层
           :numbered:  #生成编号
           :caption: Contents: （Centents是我们写在这里的内容，我们写什么，目录上面的标题就是什么）
@@ -53,3 +80,5 @@ sphinx编写语法
 This is a paragraph that contsains `a link`_
 
 .. _a link: http://example.com/
+
+

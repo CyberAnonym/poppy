@@ -8,3 +8,5 @@ docker
     001-installation
     002-run
     003-common_function
+    004-exec
+    005-logs
