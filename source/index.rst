@@ -10,7 +10,7 @@ Welcome to Alvin's document center Poppy !
 如需联系Alvin，可发邮件至 alvin.wan.cn@hotmail.com, 谢谢。 :)
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
     :caption: Contents:
 
     001-introduction/readme
