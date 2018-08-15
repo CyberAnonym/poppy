@@ -17,5 +17,6 @@ mariadb
     011-drop
     012-modify
     013-mysqldump
+    014-function
 
 

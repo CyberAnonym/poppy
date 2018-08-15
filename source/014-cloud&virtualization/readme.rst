@@ -5,6 +5,6 @@
     :maxdepth: 2
 
     001-docker/readme
-    002-kubernetes
+    002-kubernetes/readme
     003-kvm
     004-openstack/readme.rst

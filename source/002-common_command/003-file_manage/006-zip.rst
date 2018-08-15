@@ -1,2 +1,6 @@
 zip
 ###
+
+
+
+zip FileName.zip DirName
