@@ -105,22 +105,51 @@ suid权限
 
 普通用户使用具有suid权限的命令，会获得此权限所有者的身份，换句话说等同于所有者在运行这条命令
 
-::
+通过字母s可以表示suid。
 
-    chmod u+s file
+.. code-block:: bash
+
+    [root@poppy ~]# touch alvin
+    [root@poppy ~]# ls -l alvin
+    -rw-r--r--. 1 root root 0 Aug 16 09:14 alvin
+    [root@poppy ~]#
+    [root@poppy ~]# chmod u+s alvin
+    [root@poppy ~]#
+    [root@poppy ~]# ls -l alvin
+    -rwSr--r--. 1 root root 0 Aug 16 09:14 alvin
+    [root@poppy ~]#
+
+通过数字4也可以表示suid
+
+.. code-block:: bash
+
+    [root@poppy ~]# touch ophira
+    [root@poppy ~]#
+    [root@poppy ~]# ls -l ophira
+    -rw-r--r--. 1 root root 0 Aug 16 09:22 ophira
+    [root@poppy ~]#
+    [root@poppy ~]# chmod 4644 ophira
+    [root@poppy ~]#
+    [root@poppy ~]# ls -l ophira
+    -rwSr--r--. 1 root root 0 Aug 16 09:22 ophira
+
 
 sgid权限
 -------------
 【新建文件继承目录的属组—-sgid权限只针对目录】
 
-::
+.. code-block:: bash
 
-    mkdir /home/hr
-    chgrp hr /home/hr/
-    chmod g+s /home/hr
-    ll -d /home/hr/
-    touch /home/hr/file9
-    ll /home/hr/
+    [root@poppy ~]# mkdir /home/hr
+    [root@poppy ~]# chgrp hr /home/hr/
+    [root@poppy ~]# chmod g+s /home/hr
+    [root@poppy ~]# ll -d /home/hr/
+    drwxr-sr-x. 2 root hr 6 Aug 16 09:47 /home/hr/
+    [root@poppy ~]# touch /home/hr/file9
+    [root@poppy ~]# ll /home/hr/
+    total 0
+    -rw-r--r--. 1 root hr 0 Aug 16 09:47 file9
+
 
 可以发现新建的文件继承了目录的属组，而不是root组
 
@@ -128,13 +157,45 @@ sticky权限
 ------------------
 【用户只能删除自己的文件—–该权限只针对目录】
 
-::
+.. code-block:: bash
 
-    mkdir /home/dir1
-    chmod 777 /home/dir1
-    user1在/home/dir1建立文件, user2尝试删除！
-    chmod o+t /home/dir1
-    ll -d /home/dir1
+    [root@poppy ~]# mkdir /home/dir1
+    [root@poppy ~]# chmod 777 /home/dir1
+    [root@poppy ~]# chmod o+t /home/dir1
+    [root@poppy ~]# ll -d /home/dir1
+    drwxrwxrwt. 2 root root 6 Aug 16 09:48 /home/dir1
+
+
+poppy用户创建文件，alvin尝试删除，会发现删除不了。  而如果没有设置t权限，是可以删除的，因为其他用户对该目录有所有权限。
+
+.. code-block:: bash
+
+    [root@poppy ~]# su - poppy
+    [poppy@poppy ~]$ cd /home/dir1/
+    [poppy@poppy dir1]$ ll
+    total 0
+    [poppy@poppy dir1]$ touch file
+    [poppy@poppy dir1]$ ll
+    total 0
+    -rw-r--r--. 1 poppy sophiroth 0 Aug 16 09:49 fil
+    [poppy@poppy dir1]$ su - alvin
+    Password:
+    [alvin@poppy ~]$ cd /home/dir1/
+    [alvin@poppy dir1]$ ll
+    total 0
+    -rw-r--r--. 1 poppy sophiroth 0 Aug 16 09:49 file
+    [alvin@poppy dir1]$ ls -ld .
+    drwxrwxrwt. 2 root root 18 Aug 16 09:49 .
+    [alvin@poppy dir1]$ touch file
+    touch: cannot touch ‘file’: Permission denied
+    [alvin@poppy dir1]$ touch alvin
+    [alvin@poppy dir1]$ ll
+    total 0
+    -rw-r--r--. 1 alvin sophiroth 0 Aug 16 09:50 alvi
+    [alvin@poppy dir1]$ rm -f file
+    rm: cannot remove ‘file’: Operation not permitted
+
+
 
 谁可以删除：
 

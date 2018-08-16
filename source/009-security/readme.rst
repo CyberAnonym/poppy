@@ -4,12 +4,11 @@
 .. toctree::
     :maxdepth: 2
 
-    001-ugo
-    002-acl
-    003-chattr
-    004-selinux
-    005-password_break
-    006-iptables
-    007-firewalld
-
-
+    001-sudo
+    002-ugo
+    003-acl
+    004-chattr
+    005-selinux
+    006-password_break
+    007-iptables
+    008-firewalld
