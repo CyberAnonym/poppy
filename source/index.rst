@@ -23,7 +23,7 @@ Welcome to Alvin's document center Poppy !
     010-database/readme
     011-storage/readme
     012-monitor/readme
-    013-develop/readme
+    013-scripts&develop/readme
     014-cloud&virtualization/readme
     015-ha&lb/readme
     016-web/readme

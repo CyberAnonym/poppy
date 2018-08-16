@@ -206,7 +206,7 @@ desktop端验证：
 
 .. code-block:: bash
 
-    mail - u student
+    mail -u student
 
 验证该实验
 

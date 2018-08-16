@@ -33,6 +33,7 @@ telnet(选项)（参数）
 
 - 远程主机:指定要登录进行管理的远程主机
 - Port: The port number of specified telnet protocol.
+
 检测是否能够访问目标服务器指定端口
 =======================================
 检测是否能访问qq.com 的1723端口。
