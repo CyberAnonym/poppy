@@ -82,3 +82,6 @@ This is a paragraph that contsains `a link`_
 .. _a link: http://example.com/
 
 
+下面是直接来文字超链接
+
+`alv.pub的主页 <https:alv.pub>`__
