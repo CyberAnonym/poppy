@@ -247,7 +247,7 @@ k8s.alv.pub enviroment
     cd kubernetes/server/bin/
     for i in k8s1 k8s2 k8s3;do ssh $i "mkdir -p /opt/bin";done
     for i in k8s1 k8s2 k8s3;do scp kube-apiserver kube-controller-manager kube-scheduler $i:/opt/bin/;done
-    for i in k8s1 k8s2 k8s3;do scp kubelet kubectl kube-proxy $i:/opt/bin;done``
+    for i in k8s1 k8s2 k8s3;do scp kubelet kubectl kube-proxy $i:/opt/bin;done
 
 创建 TLS Bootstrapping Token Token auth file Token可以是任意的包涵128
 bit的字符串，可以使用安全的随机数发生器生成。
@@ -380,7 +380,7 @@ etcd的github地址：https://github.com/coreos/etcd/releases
 
 .. code-block:: bash
 
-    for i in u1 u2 u3;do ssh $i 'mkdir -p /var/lib/etcd';done
+    for i in k8s1 k8s2 k8s3;do ssh $i 'mkdir -p /var/lib/etcd';done
 
 - 创建启动启动脚本
 
@@ -522,12 +522,6 @@ flannel的历史版本在这里 https://github.com/coreos/flannel/releases
 -  编写配置文件
 -  公共配置文件
 
-先设置证书权限允许kube读取
-
-::
-
-    id kube || useradd kube -s /sbin/nologin
-    setfacl -m u:kube:r /etc/kubernetes/ssl/ca-key.pem
 
 .. code:: bash
 
@@ -768,7 +762,7 @@ flannel的历史版本在这里 https://github.com/coreos/flannel/releases
     # KUBELET_PORT="--port=10250"
 
     # You may leave this blank to use the actual hostname
-    KUBELET_HOSTNAME="--hostname-override=k8s1"
+    KUBELET_HOSTNAME="--hostname-override=k8s2"
 
     # location of the api-server
     #KUBELET_API_SERVER="--api-servers=http://192.168.127.94:8080"
