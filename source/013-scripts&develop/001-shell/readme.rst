@@ -17,7 +17,7 @@ $*	    输入的参数的具体内容（将输入的参数作为一个单词）
 
 各种常用shell文本处理命令，`点击这里查看`_
 
-.. _点击这里查看: ../../002-common_command/001-process_string/readme.html
+.. _点击这里查看: ../../003-common_command/001-process_string/readme.html
 
 .. toctree::
     :glob:
@@ -27,7 +27,7 @@ $*	    输入的参数的具体内容（将输入的参数作为一个单词）
     002-case
     003-for
     004-while
-    ../../002-common_command/001-process_string/0*
+    ../../003-common_command/001-process_string/0*
 
 
 
