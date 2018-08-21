@@ -5,3 +5,4 @@
     :maxdepth: 2
 
     001-elk/readme
+    002-etcd/readme

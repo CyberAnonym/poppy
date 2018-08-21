@@ -19,3 +19,8 @@ Example
 
     journalctl -f -u pptpd
 
+
+
+- 将指定服务kubelet的日志输出到文件a.log
+
+journalctl -xeu kubelet > a.log

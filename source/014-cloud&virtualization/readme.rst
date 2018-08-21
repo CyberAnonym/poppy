@@ -6,5 +6,6 @@
 
     001-docker/readme
     002-kubernetes/readme
-    003-kvm
+    003-kvm/readme.rst
     004-openstack/readme.rst
+    005-openshift/readme.rst

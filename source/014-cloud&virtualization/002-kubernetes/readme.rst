@@ -4,4 +4,5 @@ kubernetes
 .. toctree::
     :maxdepth: 2
 
-    installation
+    001-introduction
+    002-installation

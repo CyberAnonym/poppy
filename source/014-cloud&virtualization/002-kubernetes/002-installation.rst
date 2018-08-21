@@ -1,3 +1,7 @@
+k8s1.6.2在ubuntu16.04的二进制部署
+##########################################
+
+.. contents::
 
 安装环境
 ============
@@ -16,7 +20,7 @@ k8s.alv.pub enviroment
     192.168.127.95 k8s2.alv.pub k8s2
     192.168.127.96 k8s3.alv.pub k8s3
 
--  三台服务器系统版本都是centos7.4。
+-  三台服务器系统版本都是ubuntu16.04。
 
 **master服务器信息**  Hostname: k8s1.alv.pub IP: 192.168.127.94
 
@@ -267,7 +271,7 @@ bit的字符串，可以使用安全的随机数发生器生成。
     for i in k8s1 k8s2 k8s3;do scp token.csv  $i:/etc/kubernetes;done
 
 创建 Kubelet Bootstrapping Kubeconfig 文件
-''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------
 
 .. code:: bash
 
@@ -516,10 +520,12 @@ flannel的历史版本在这里 https://github.com/coreos/flannel/releases
 
        curl -s https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/shell/k8s/syncFlannelToDocker_k8s.sh|bash
 
-   安装k8s的master
-   ===============
+安装k8s的master
+=====================
 
--  编写配置文件
+编写配置文件
+----------------------
+
 -  公共配置文件
 
 
@@ -690,7 +696,8 @@ flannel的历史版本在这里 https://github.com/coreos/flannel/releases
     [Install]
     WantedBy=multi-user.target
 
--  启动服务
+启动服务
+----------------
 
 ::
 
@@ -721,7 +728,7 @@ flannel的历史版本在这里 https://github.com/coreos/flannel/releases
 -  角色绑定
 
 现在要去master上做角色绑定
-==========================
+------------------------------------
 
 .. code:: bash
 
@@ -747,7 +754,7 @@ flannel的历史版本在这里 https://github.com/coreos/flannel/releases
 -  编写kubelet的配置文件
 
 不同的node上在IP和NAME上都写自己的。
-====================================
+---------------------------------------------
 
 .. code:: bash
 
