@@ -62,7 +62,7 @@ kubernetes是master/nodes 的模式，nodes节点也成为worker节点，用来�
 
 
 #. master
-
+    master: API Server,Scheduler,Controller-Manager
     负责总的管理，master是整个集群的大脑，它有三个核心组件。
 
 #. apiserver，负责接受和处理请求的。
@@ -120,7 +120,7 @@ kubernetes是master/nodes 的模式，nodes节点也成为worker节点，用来�
     创建pod的时候，可以给pod添加标签，方便我们能快速的找到相应的pod，因为当我们想找到同一类pod的时候，比如我们创建的nginx要运行4个pod，而每个pod的名字都是不一样的，如何直接一次性找到这四个pod呢？給它贴标签，然后用标签来挑它出来就好了。
 
 #. node
-
+    node: kubelet,docker,
     node是kubernetes集群里面的工作节点，负责运行由master指派的各种任务，而最根本的是，它的最核心的任务就是以pod的形式去运行容器的，理论上讲，node可以是任何形式的计算设备，只有能够有传统意义上的CPU、内存、存储空间，
     并且能够装上kubernetes的集群代理程序，它都可以作为整个kubernetes的一份子去进行工作。
 
