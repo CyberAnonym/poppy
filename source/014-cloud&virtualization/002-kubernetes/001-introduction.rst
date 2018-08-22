@@ -124,3 +124,5 @@ kubernetes是master/nodes 的模式，nodes节点也成为worker节点，用来�
     node是kubernetes集群里面的工作节点，负责运行由master指派的各种任务，而最根本的是，它的最核心的任务就是以pod的形式去运行容器的，理论上讲，node可以是任何形式的计算设备，只有能够有传统意义上的CPU、内存、存储空间，
     并且能够装上kubernetes的集群代理程序，它都可以作为整个kubernetes的一份子去进行工作。
 
+#. kubelet
+    与apiserver交互的核心组件

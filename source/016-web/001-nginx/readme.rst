@@ -9,3 +9,4 @@ nginx
     001-installation
     002-virtual_host
     003-optimization
+    004-proxy_pass
