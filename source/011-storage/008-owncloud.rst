@@ -18,7 +18,7 @@ Install owncloud
 
 .. code-block:: bash
 
-    yum install httpd owncloud owncloud-httpd-y
+    yum install httpd owncloud owncloud-httpd -y
 
 Configure owncloud
 `````````````````````
