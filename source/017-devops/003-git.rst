@@ -3,3 +3,9 @@ git
 
 代码管理软件，常用的github和gitlab, github是共有的，gitlab是自己搭建的私有的git服务器。
 
+
+将本地修改过的代码重置为上次从git上拉取的代码。
+
+.. code-block:: bash
+
+    git reset --hard origin
