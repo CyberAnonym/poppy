@@ -79,3 +79,24 @@ yum升级指定包
 .. code-block:: bash
 
     yum groupinstall "Server with GUI"
+
+指定软件版本
+===================
+
+这里我们安装docker-ce， 直接使用docker-ce，会安装18.06版本。
+
+.. code-block:: bash
+
+    $ sudo yum install docker-ce
+
+但是kubernetes建议用17版本，所以我们不用18版本，就用17版本，那么我们可以执行下面的命令，手动直接17版本，
+
+.. code-block:: bash
+
+    $ sudo yum install docker-ce-17*        ##通过这样，可以安装17版本，这里我们使用了通配符。
+
+或者，写完整的版本也可以。
+
+.. code-block:: bash
+
+    $ sudo yum install docker-ce-17.12.1.ce    #这样也可以安装17版本，我们指定的版本docker-ce-17.12.1

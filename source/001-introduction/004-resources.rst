@@ -28,6 +28,7 @@
 |rs20|            |url20|             |cm20|
 |rs21|            |url21|             |cm21|
 |rs22|            |url22|             |cm22|
+|rs23|            |url23|             |cm23|
 ============    ==============   ==========
 
 
@@ -145,3 +146,7 @@
 .. |rs22| replace:: uniapp
 .. |url22| replace:: http://uniapp.dcloud.io/
 .. |cm22| replace:: 是一个使用 Vue.js 开发跨平台应用的前端框架,不用学那么多的平台开发技术、研究那么多前端框架，学会基于vue的uni-app就够了。
+
+.. |rs23| replace:: 清华镜像
+.. |url23| replace:: https://mirrors.tuna.tsinghua.edu.cn/
+.. |cm23| replace:: 清华大学开源软件镜像站

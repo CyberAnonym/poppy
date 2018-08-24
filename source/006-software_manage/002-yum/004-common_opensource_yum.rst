@@ -28,3 +28,10 @@ mariadb10.3 stable版官方源
 
 .. literalinclude:: ../../../code/yum.repos.d/mariadb10.3.repo
     :lines: 1-
+
+docker-ce 的阿里云yum源
+====================================
+从网络下载：  wget -P /etc/yum.repos.d/ https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+
+.. literalinclude:: ../../../code/yum.repos.d/docker-ce.repo
+    :lines: 1-

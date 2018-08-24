@@ -6,3 +6,4 @@ kubernetes
 
     001-introduction
     002-installation
+    003-kubeadm
