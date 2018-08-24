@@ -1,0 +1,125 @@
+ss
+###
+
+
+语法
+====
+
+.. code-block:: bash
+
+    ss(选项)
+
+选项
+=====
+
+.. code-block:: bash
+
+-h    :显示帮助信息；
+-V    :显示指令版本信息；
+-n    :不解析服务名称，以数字方式显示；
+-a    :显示所有的套接字；
+-l    :显示处于监听状态的套接字；
+-o    :显示计时器信息；
+-m    :显示套接字的内存使用情况；
+-p    :显示使用套接字的进程信息；
+-i    :显示内部的TCP信息；
+-4    :只显示ipv4的套接字；
+-6    :只显示ipv6的套接字；
+-t    :只显示tcp套接字；
+-u    :只显示udp套接字；
+-d    :只显示DCCP套接字；
+-w    :仅显示RAW套接字；
+-x    :仅显示UNIX域套接字。
+
+
+实例
+======
+
+显示ICP连接
+----------------
+
+.. code-block:: bash
+
+    [root@k8s3 ~]# ss -t -a
+    State      Recv-Q Send-Q            Local Address:Port                             Peer Address:Port
+    LISTEN     0      128                           *:sunrpc                                      *:*
+    LISTEN     0      128                           *:ssh                                         *:*
+    LISTEN     0      128                           *:44988                                       *:*
+    LISTEN     0      128                           *:zabbix-agent                                *:*
+    ESTAB      0      0                192.168.127.96:41108                          192.168.127.61:ldap
+    ESTAB      0      0                192.168.127.96:corba-iiop-ssl                 192.168.127.54:nfs
+    ESTAB      0      0                192.168.127.96:42718                          192.168.127.59:4505
+    ESTAB      0      0                192.168.127.96:55862                          192.168.127.59:4506
+    ESTAB      0      0                192.168.127.96:41134                          192.168.127.61:ldap
+    ESTAB      0      52               192.168.127.96:ssh                            192.168.127.38:57147
+    ESTAB      0      0                192.168.127.96:41132                          192.168.127.61:ldap
+    ESTAB      0      0                192.168.127.96:41138                          192.168.127.61:ldap
+    ESTAB      0      0                192.168.127.96:41140                          192.168.127.61:ldap
+    LISTEN     0      128                          :::58799                                      :::*
+    LISTEN     0      128                          :::sunrpc                                     :::*
+    LISTEN     0      128                          :::ssh                                        :::*
+    LISTEN     0      128                          :::zabbix-agent                               :::*
+    [root@k8s3 ~]#
+
+
+显示 Sockets 摘要
+-------------------------
+
+.. code-block:: bash
+
+    [root@k8s3 ~]#  ss -s
+    Total: 548 (kernel 1071)
+    TCP:   17 (estab 9, closed 0, orphaned 0, synrecv 0, timewait 0/0), ports 0
+
+    Transport Total     IP        IPv6
+    *	  1071      -         -
+    RAW	  1         0         1
+    UDP	  12        7         5
+    TCP	  17        13        4
+    INET	  30        20        10
+    FRAG	  0         0         0
+
+
+列出所有打开的网络连接端口
+------------------------------
+
+.. code-block:: bash
+
+    [root@k8s3 ~]# ss -l
+
+
+查看进程使用的socket
+-------------------------
+
+.. code-block:: bash
+
+    [root@k8s3 ~]# ss -pl
+
+
+找出打开套接字/端口应用程序
+----------------------------------
+
+.. code-block:: bash
+
+     ss -pl | grep 3306
+
+
+显示所有UDP Sockets
+-------------------------------
+
+.. code-block:: bash
+
+    [root@k8s3 ~]# ss -u -a
+    State       Recv-Q Send-Q Local Address:Port                 Peer Address:Port
+    UNCONN      0      0                 *:39451                           *:*
+    UNCONN      0      0                 *:bootpc                          *:*
+    UNCONN      0      0                 *:sunrpc                          *:*
+    UNCONN      0      0         127.0.0.1:323                             *:*
+    UNCONN      0      0         127.0.0.1:727                             *:*
+    UNCONN      0      0                 *:846                             *:*
+    UNCONN      0      0                 *:58456                           *:*
+    UNCONN      0      0                :::31788                          :::*
+    UNCONN      0      0                :::sunrpc                         :::*
+    UNCONN      0      0                :::53566                          :::*
+    UNCONN      0      0               ::1:323                            :::*
+    UNCONN      0      0                :::846                            :::*

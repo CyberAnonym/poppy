@@ -8,3 +8,10 @@
 .. code-block:: bash
 
     $ sudo docker restart nginx
+
+
+查看当前启动的docker信息
+
+.. code-block:: bash
+
+    $ sudo docker info
