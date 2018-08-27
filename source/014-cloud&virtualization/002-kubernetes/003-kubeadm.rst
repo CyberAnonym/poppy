@@ -52,15 +52,13 @@ k8s1的操作
 .. code-block:: bash
 
     # yum install docker-ce kubelet kubeadm kubectl
-    # systemctl start docker
-    # systemctl enable docker
     # vim /usr/lib/systemd/system/docker.service
     Environment="HTTPS_PROXY=http://www.ik8s.io:10080"
     Environment="NO_PROXY=127.0.0.0/8,172.20.0.0/16"
-
     # vim /etc/sysconfig/kubelet
     KUBELET_EXTRA_ARGS="--fail-swap-on=false"
-
+    # systemctl start docker
+    # systemctl enable docker
 初始化kubernetes
 =======================
 
