@@ -1,0 +1,52 @@
+run
+#####
+
+查看kubectl run的帮助
+==============================
+
+::
+
+    kubectl run --help
+
+
+
+创建一个最简单的deployment,里面是nginx pod
+=================================
+
+.. code-block:: bash
+
+    [root@k8s1 ~]# kubectl run nginx --image=nginx
+    deployment.apps/nginx created
+    [root@k8s1 ~]# kubectl get deployments
+    NAME      DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+    nginx     1         1         1            1           2m
+    [root@k8s1 ~]# kubectl get pod -o wide
+    NAME                     READY     STATUS    RESTARTS   AGE       IP           NODE               NOMINATED NODE
+    busybox                  1/1       Running   0          40m       10.244.1.2   k8s2.shenmin.com   <none>
+    nginx-64f497f8fd-mk2vr   1/1       Running   0          3m        10.244.1.3   k8s2.shenmin.com   <none>
+    [root@k8s1 ~]# curl 10.244.1.3
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>Welcome to nginx!</title>
+    <style>
+        body {
+            width: 35em;
+            margin: 0 auto;
+            font-family: Tahoma, Verdana, Arial, sans-serif;
+        }
+    </style>
+    </head>
+    <body>
+    <h1>Welcome to nginx!</h1>
+    <p>If you see this page, the nginx web server is successfully installed and
+    working. Further configuration is required.</p>
+
+    <p>For online documentation and support please refer to
+    <a href="http://nginx.org/">nginx.org</a>.<br/>
+    Commercial support is available at
+    <a href="http://nginx.com/">nginx.com</a>.</p>
+
+    <p><em>Thank you for using nginx.</em></p>
+    </body>
+    </html>
