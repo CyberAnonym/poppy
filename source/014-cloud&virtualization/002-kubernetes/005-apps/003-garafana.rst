@@ -1,18 +1,7 @@
-监控
-######
+garafana
+##############
 
-
-官方yaml地址：
-
-https://github.com/kubernetes/heapster/tree/master/deploy/kube-config/influxdb
-
-raw地址：
-
-
-https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/influxdb.yaml
 https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/grafana.yaml
-https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/heapster.yaml
-
 
 
 
@@ -100,8 +89,3 @@ grafana这里我们也是下载文件后修改一下
 
 
 这里我们是将service的 spec.type的值设置为了NodePort, 然后添加了nodePort:30110
-这里heapster我们可以直接创建
-
-.. code-block:: bash
-
-    $ kubectl create -f

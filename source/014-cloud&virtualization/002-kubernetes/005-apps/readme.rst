@@ -9,3 +9,4 @@ k8s应用
     002-influxdb
     003-garafana
     004-heapster
+    005-istio
