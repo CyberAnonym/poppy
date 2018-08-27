@@ -51,6 +51,7 @@ k8s1的操作
 
 .. code-block:: bash
 
+    # python -c "$(curl -fsSL https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/common_tools/pullLocalYum.py)"  ##添加我的内网仓库
     # yum install docker-ce-17.12.1.ce kubelet kubeadm kubectl
     # vim /usr/lib/systemd/system/docker.service
     Environment="HTTPS_PROXY=http://www.ik8s.io:10080"
@@ -59,6 +60,8 @@ k8s1的操作
     KUBELET_EXTRA_ARGS="--fail-swap-on=false"
     # systemctl start docker
     # systemctl enable docker
+
+
 初始化kubernetes
 =======================
 
@@ -161,7 +164,7 @@ coreDNS是1.11开始使用的。
 
 .. code-block:: bash
 
-    # yum install docker-ce kubelet kubeadm kubectl
+    # yum install docker-ce-17.12.1.ce kubelet kubeadm kubectl
 
 将前面配置好的master上的相关通用配置文件拷贝到node节点上去
 ==========================================================================
