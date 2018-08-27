@@ -1,0 +1,5 @@
+[queens]
+name=queens
+baseurl=http://dc.alv.pub/centos/7.5.1804/cloud/x86_64/openstack-queens/
+gpgcheck=0
+enabled=1

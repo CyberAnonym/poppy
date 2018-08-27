@@ -1,0 +1,5 @@
+[openstack_pick_centos7]
+name=openstack_pick_centos7
+baseurl=http://dc.alv.pub/openstack_pick_centos7
+gpgcheck=0
+enabled=1

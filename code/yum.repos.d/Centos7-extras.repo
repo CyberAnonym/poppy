@@ -1,0 +1,5 @@
+[centos7extras]
+name=centos7-extras
+baseurl=http://mirrors.aliyun.com/centos/7/extras/x86_64/
+gpgcheck=0
+enabled=1

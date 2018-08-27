@@ -4,5 +4,5 @@
 
 .. code-block:: bash
 
-    # yum install docker-latest
+     # yum install docker-ce-17.12.1.ce
 
