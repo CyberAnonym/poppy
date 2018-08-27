@@ -70,7 +70,7 @@ nmcli connection 这里主要是操作管理配置文件的，启用/停用、�
 
 ::
 
-    nmcli con mod IF-NAME connection.autoconnect yes修改为自动连接
+    nmcli con mod IF-NAME connection.autoconnect yes修改为自动连接,开机自动启动
     nmcli con mod IF-NAME ipv4.method manual | dhcp修改IP地址是静态还是DHCP
     nmcli con mod IF-NAME ipv4.addresses “172.25.X.10/24 172.25.X.254”修改IP配置及网关
     nmcli con mod IF-NAME ipv4.gateway 10.1.0.1修改默认网关
@@ -191,3 +191,4 @@ nmcli命令修改所对应的文件条目
 .. code-block:: bash
 
     nm-connection-editor
+
