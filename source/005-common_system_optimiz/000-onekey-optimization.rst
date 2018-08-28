@@ -37,3 +37,10 @@
     python -c "$(curl -fsSL https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/common_tools/joinNatashaLDAP.py)"
 
 
+常用的系统优化
+=================================
+包括vim，history,bash-completion
+
+.. code-block:: bash
+
+    curl -fsSL https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/common_tools/optimize_system.py|python
