@@ -1,6 +1,8 @@
 run
 #####
 
+run 创建的是deployment， deployment简写可以写deploy。
+
 查看kubectl run的帮助
 ==========================================
 
@@ -10,43 +12,63 @@ run
 
 
 
-创建一个最简单的deployment,里面是nginx pod
-=====================================================================
+创建一个指定多个参数的deployment
+=======================================
+
+这里run后面的nginx-deploy是本次创建的deploy的名称。
+
+--image=指定的是镜像名和版本，
+
+nginx是镜像名，冒号:后面的是镜像版本。
+
+--port是指定容器的打开端口。
+
+--replicas=2 代表启动并保持2个pod。
+
+下面的kubectl get 的状态里， Running表示pod已经在运行了。   ContainerCreating表示pod正在创建，一般是pod所分配到的node上还没有下载好镜像，正在下载镜像，等待一会在get查看就好了。
 
 .. code-block:: bash
 
-    [root@k8s1 ~]# kubectl run nginx --image=nginx
-    deployment.apps/nginx created
-    [root@k8s1 ~]# kubectl get deployments
-    NAME      DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-    nginx     1         1         1            1           2m
+    [root@k8s1 ~]# kubectl run nginx-deploy --image=nginx:1.14-alpine --port=80 --replicas=2
+    deployment.apps/nginx-deploy created
+    [root@k8s1 ~]#
+    [root@k8s1 ~]# kubectl get deployment
+    NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+    nginx-deploy   2         2         2            1           6s
+    [root@k8s1 ~]#
+    [root@k8s1 ~]# kubectl get pod
+    NAME                          READY     STATUS              RESTARTS   AGE
+    nginx-deploy-5b595999-cqwkd   0/1       ContainerCreating   0          9s
+    nginx-deploy-5b595999-f4m8x   1/1       Running             0          9s
+    [root@k8s1 ~]#
     [root@k8s1 ~]# kubectl get pod -o wide
-    NAME                     READY     STATUS    RESTARTS   AGE       IP           NODE               NOMINATED NODE
-    busybox                  1/1       Running   0          40m       10.244.1.2   k8s2.shenmin.com   <none>
-    nginx-64f497f8fd-mk2vr   1/1       Running   0          3m        10.244.1.3   k8s2.shenmin.com   <none>
-    [root@k8s1 ~]# curl 10.244.1.3
-    <!DOCTYPE html>
-    <html>
-    <head>
-    <title>Welcome to nginx!</title>
-    <style>
-        body {
-            width: 35em;
-            margin: 0 auto;
-            font-family: Tahoma, Verdana, Arial, sans-serif;
-        }
-    </style>
-    </head>
-    <body>
-    <h1>Welcome to nginx!</h1>
-    <p>If you see this page, the nginx web server is successfully installed and
-    working. Further configuration is required.</p>
+    NAME                          READY     STATUS              RESTARTS   AGE       IP            NODE               NOMINATED NODE
+    nginx-deploy-5b595999-cqwkd   0/1       ContainerCreating   0          20s       <none>        k8s2.shenmin.com   <none>
+    nginx-deploy-5b595999-f4m8x   1/1       Running             0          20s       10.244.2.10   k8s3.shenmin.com   <none>
 
-    <p>For online documentation and support please refer to
-    <a href="http://nginx.org/">nginx.org</a>.<br/>
-    Commercial support is available at
-    <a href="http://nginx.com/">nginx.com</a>.</p>
+    root@k8s1 ~]# kubectl get pod -o wide
+    NAME                          READY     STATUS    RESTARTS   AGE       IP            NODE               NOMINATED NODE
+    nginx-deploy-5b595999-cqwkd   1/1       Running   0          3m        10.244.1.9    k8s2.shenmin.com   <none>
+    nginx-deploy-5b595999-f4m8x   1/1       Running   0          3m        10.244.2.10   k8s3.shenmin.com   <none>
 
-    <p><em>Thank you for using nginx.</em></p>
-    </body>
-    </html>
+
+删除一个pod，验证其保持pod数量的功能
+=====================================================
+
+这里可以看到有两个pod，我们删除其中一个，然后再get查看，发现原有的那个pod已经被删除了，通过pod名称可以判断。然后又重新启动了一个pod。
+
+.. code-block:: bash
+
+    [root@k8s1 ~]# kubectl get pod -o wide
+    NAME                          READY     STATUS    RESTARTS   AGE       IP            NODE               NOMINATED NODE
+    nginx-deploy-5b595999-cqwkd   1/1       Running   0          3m        10.244.1.9    k8s2.shenmin.com   <none>
+    nginx-deploy-5b595999-f4m8x   1/1       Running   0          3m        10.244.2.10   k8s3.shenmin.com   <none>
+    [root@k8s1 ~]#
+    [root@k8s1 ~]# kubectl delete pod nginx-deploy-5b595999-cqwkd
+    pod "nginx-deploy-5b595999-cqwkd" deleted
+
+    [root@k8s1 ~]#
+    [root@k8s1 ~]# kubectl get pod -o wide
+    NAME                          READY     STATUS    RESTARTS   AGE       IP            NODE               NOMINATED NODE
+    nginx-deploy-5b595999-94z9p   1/1       Running   0          14s       10.244.1.10   k8s2.shenmin.com   <none>
+    nginx-deploy-5b595999-f4m8x   1/1       Running   0          5m        10.244.2.10   k8s3.shenmin.com   <none>

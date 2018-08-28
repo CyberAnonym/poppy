@@ -4,6 +4,7 @@
 .. toctree::
     :maxdepth: 2
 
+    000-onekey-optimization
     001-vim
     002-history
     003-memory
