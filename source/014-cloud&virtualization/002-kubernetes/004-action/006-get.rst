@@ -1,2 +1,266 @@
-006-get
-##########################################
+get
+########
+
+
+创建一个deployment和service
+===============================================
+
+.. code-block:: bash
+
+    [root@k8s1 ~]# kubectl run nginx-deploy --image=nginx:1.14-alpine --port=80 --replicas=2 -n poppy
+    deployment.apps/nginx-deploy created
+    [root@k8s1 ~]# kubectl expose deployment nginx-deploy --name=nginx --port=8000 --target-port=80 --protocol=TCP -n poppy
+    service/nginx exposed
+
+
+
+查看service,deployment和pod
+=====================================
+
+这里我用简称查询
+
+.. code-block:: bash
+
+    [root@k8s1 ~]# kubectl get svc,deploy,po -n poppy
+    NAME            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+    service/nginx   ClusterIP   10.103.107.199   <none>        8000/TCP   33s
+
+    NAME                                 DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+    deployment.extensions/nginx-deploy   2         2         2            2           46s
+
+    NAME                              READY     STATUS    RESTARTS   AGE
+    pod/nginx-deploy-5b595999-g8txz   1/1       Running   0          46s
+    pod/nginx-deploy-5b595999-tmpsp   1/1       Running   0          46s
+
+
+
+-o wide 查看更信息，包括IP和所在节点，
+===============================================
+
+.. code-block:: bash
+
+    [root@k8s1 ~]# kubectl get pod -n poppy -o wide
+    NAME                          READY     STATUS    RESTARTS   AGE       IP            NODE               NOMINATED NODE
+    nginx-deploy-5b595999-g8txz   1/1       Running   0          3h        10.244.1.13   k8s2.shenmin.com   <none>
+    nginx-deploy-5b595999-tmpsp   1/1       Running   0          3h        10.244.2.12   k8s3.shenmin.com   <none>
+
+
+-o yaml 查看yaml文件
+============================
+
+.. code-block:: bash
+
+    [root@k8s1 ~]# kubectl get pod -n poppy -o yaml
+    apiVersion: v1
+    items:
+    - apiVersion: v1
+      kind: Pod
+      metadata:
+        creationTimestamp: 2018-08-28T05:23:02Z
+        generateName: nginx-deploy-5b595999-
+        labels:
+          pod-template-hash: "16151555"
+          run: nginx-deploy
+        name: nginx-deploy-5b595999-g8txz
+        namespace: poppy
+        ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: ReplicaSet
+          name: nginx-deploy-5b595999
+          uid: 6f33424b-aa82-11e8-9d8a-5254006eb43c
+        resourceVersion: "128935"
+        selfLink: /api/v1/namespaces/poppy/pods/nginx-deploy-5b595999-g8txz
+        uid: 6f354266-aa82-11e8-9d8a-5254006eb43c
+      spec:
+        containers:
+        - image: nginx:1.14-alpine
+          imagePullPolicy: IfNotPresent
+          name: nginx-deploy
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+            name: default-token-nnvxp
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        nodeName: k8s2.shenmin.com
+        priority: 0
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: default
+        serviceAccountName: default
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+          tolerationSeconds: 300
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+          tolerationSeconds: 300
+        volumes:
+        - name: default-token-nnvxp
+          secret:
+            defaultMode: 420
+            secretName: default-token-nnvxp
+      status:
+        conditions:
+        - lastProbeTime: null
+          lastTransitionTime: 2018-08-28T05:23:02Z
+          status: "True"
+          type: Initialized
+        - lastProbeTime: null
+          lastTransitionTime: 2018-08-28T05:23:02Z
+          status: "True"
+          type: Ready
+        - lastProbeTime: null
+          lastTransitionTime: null
+          status: "True"
+          type: ContainersReady
+        - lastProbeTime: null
+          lastTransitionTime: 2018-08-28T05:23:02Z
+          status: "True"
+          type: PodScheduled
+        containerStatuses:
+        - containerID: docker://ce781f2c9c844b540540258248b63e387ec2c8d005416ee86487882522a5da86
+          image: nginx:1.14-alpine
+          imageID: docker-pullable://nginx@sha256:3d36a2c9513a5aa6aa6c41b076201d468bdb94c4f2b4c6e55d32a461ac8f00ee
+          lastState: {}
+          name: nginx-deploy
+          ready: true
+          restartCount: 0
+          state:
+            running:
+              startedAt: 2018-08-28T05:23:02Z
+        hostIP: 192.168.1.52
+        phase: Running
+        podIP: 10.244.1.13
+        qosClass: BestEffort
+        startTime: 2018-08-28T05:23:02Z
+    - apiVersion: v1
+      kind: Pod
+      metadata:
+        creationTimestamp: 2018-08-28T05:23:02Z
+        generateName: nginx-deploy-5b595999-
+        labels:
+          pod-template-hash: "16151555"
+          run: nginx-deploy
+        name: nginx-deploy-5b595999-tmpsp
+        namespace: poppy
+        ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: ReplicaSet
+          name: nginx-deploy-5b595999
+          uid: 6f33424b-aa82-11e8-9d8a-5254006eb43c
+        resourceVersion: "128940"
+        selfLink: /api/v1/namespaces/poppy/pods/nginx-deploy-5b595999-tmpsp
+        uid: 6f368317-aa82-11e8-9d8a-5254006eb43c
+      spec:
+        containers:
+        - image: nginx:1.14-alpine
+          imagePullPolicy: IfNotPresent
+          name: nginx-deploy
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+            name: default-token-nnvxp
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        nodeName: k8s3.shenmin.com
+        priority: 0
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: default
+        serviceAccountName: default
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+          tolerationSeconds: 300
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+          tolerationSeconds: 300
+        volumes:
+        - name: default-token-nnvxp
+          secret:
+            defaultMode: 420
+            secretName: default-token-nnvxp
+      status:
+        conditions:
+        - lastProbeTime: null
+          lastTransitionTime: 2018-08-28T05:23:02Z
+          status: "True"
+          type: Initialized
+        - lastProbeTime: null
+          lastTransitionTime: 2018-08-28T05:23:03Z
+          status: "True"
+          type: Ready
+        - lastProbeTime: null
+          lastTransitionTime: null
+          status: "True"
+          type: ContainersReady
+        - lastProbeTime: null
+          lastTransitionTime: 2018-08-28T05:23:02Z
+          status: "True"
+          type: PodScheduled
+        containerStatuses:
+        - containerID: docker://43a8c4467bba2ac5b9f0605730d1c08ffa25ace63b012cedc48a96b810eeeb50
+          image: nginx:1.14-alpine
+          imageID: docker-pullable://nginx@sha256:3d36a2c9513a5aa6aa6c41b076201d468bdb94c4f2b4c6e55d32a461ac8f00ee
+          lastState: {}
+          name: nginx-deploy
+          ready: true
+          restartCount: 0
+          state:
+            running:
+              startedAt: 2018-08-28T05:23:02Z
+        hostIP: 192.168.1.53
+        phase: Running
+        podIP: 10.244.2.12
+        qosClass: BestEffort
+        startTime: 2018-08-28T05:23:02Z
+    kind: List
+    metadata:
+      resourceVersion: ""
+      selfLink: ""
+    [root@k8s1 ~]#
+
+
+--show-labels 查看标签
+=============================
+
+.. code-block:: bash
+
+    [root@k8s1 ~]# kubectl get pod -n poppy -o wide --show-labels
+    NAME                          READY     STATUS    RESTARTS   AGE       IP            NODE               NOMINATED NODE   LABELS
+    nginx-deploy-5b595999-g8txz   1/1       Running   0          3h        10.244.1.13   k8s2.shenmin.com   <none>           pod-template-hash=16151555,run=nginx-deploy
+    nginx-deploy-5b595999-tmpsp   1/1       Running   0          3h        10.244.2.12   k8s3.shenmin.com   <none>           pod-template-hash=16151555,run=nginx-deploy
+
+
+指定标签查看pod
+======================
+
+.. code-block:: bash
+
+    [root@k8s1 ~]# kubectl get pod -n poppy  -l run=nginx-deploy
+    NAME                          READY     STATUS    RESTARTS   AGE
+    nginx-deploy-5b595999-g8txz   1/1       Running   0          3h
+    nginx-deploy-5b595999-tmpsp   1/1       Running   0          3h
