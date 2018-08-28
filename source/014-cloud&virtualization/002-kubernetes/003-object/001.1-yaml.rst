@@ -1,86 +1,273 @@
 yaml文件编写
 #####################
 
+YAML 基础
+=================
+YAML是专门用来写配置文件的语言，非常简洁和强大，使用比json更方便。它实质上是一种通用的数据串行化格式。后文会说明定义YAML文件创建Pod和创建Deployment。
 
-kubernetes对象概述
-==========================
-kubernetes中的对象是一些持久化的实体，可以理解为是对集群状态的描述或期望。
+YAML语法规则：
+    - 大小写敏感
+    - 使用缩进表示层级关系
+    - 缩进时不允许使用Tal键，只允许使用空格
+    - 缩进的空格数目不重要，只要相同层级的元素左侧对齐即可
+    - ”#” 表示注释，从这个字符一直到行尾，都会被解析器忽略
 
-包括：
+在Kubernetes中，只需要知道两种结构类型即可：
+    - Lists
+    - Maps
 
-- 集群中哪些node上运行了哪些容器化应用
-- 应用的资源是否满足使用
-- 应用的执行策略，例如重启策略、更新策略、容错策略等。
+使用YAML用于K8s的定义带来的好处包括：
+    - 便捷性：不必添加大量的参数到命令行中执行命令
+    - 可维护性：YAML文件可以通过源头控制，跟踪每次操作
+    - 灵活性：YAML可以创建比命令行更加复杂的结构
 
-kubernetes的对象是一种意图（期望）的记录，kubernetes会始终保持预期创建的对象存在和保持集群运行在预期的状态下。
-
-操作kubernetes对象（增删改查）需要通过kubernetes API，一般有以下几种方式：
-
-- kubectl命令工具
-- Client library的方式，例如 client-go
-
-Spec and Status
-====================
-每个kubernetes对象的结构描述都包含spec和status两个部分。
-
-- spec：该内容由用户提供，描述用户期望的对象特征及集群状态。
-- status：该内容由kubernetes集群提供和更新，描述kubernetes对象的实时状态。
-
-
-任何时候，kubernetes都会控制集群的实时状态status与用户的预期状态spec一致。
-
-例如：当你定义Deployment的描述文件，指定集群中运行3个实例，那么kubernetes会始终保持集群中运行3个实例，如果任何实例挂掉，kubernetes会自动重建新的实例来保持集群中始终运行用户预期的3个实例。
-
-
-对象描述文件
-=====================
-
-
-当你要创建一个kubernetes对象的时候，需要提供该对象的描述信息spec，来描述你的对象在kubernetes中的预期状态。
-
-一般使用kubernetes API来创建kubernetes对象，其中spec信息可以以JSON的形式存放在request body中，也可以以.yaml文件的形式通过kubectl工具创建。
-
-例如，以下为Deployment对象对应的yaml文件：
+YAML Maps
+===============
+Map顾名思义指的是字典，即一个Key:Value 的键值对信息。例如：
 
 ::
 
-    apiVersion: apps/v1beta2 # for versions before 1.8.0 use apps/v1beta1
+    ---
+    apiVersion: v1
+    kind: Pod
+
+第一行的---是分隔符，是可选的，在单一文件中，可用连续三个连字号---区分多个文件。上述内容表示有两个键apiVersion和kind，分别对应的值为v1和Pod。
+
+Maps的value既能够对应字符串也能够对应一个Maps。例如：
+
+::
+
+    ---
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: kube100-site
+      labels:
+        app: web
+
+注：上述的YAML文件中，metadata这个KEY对应的值为一个Maps，而嵌套的labels这个KEY的值又是一个Map。实际使用中可视情况进行多层嵌套。
+
+​YAML处理器根据行缩进来知道内容之间的关联。上述例子中，使用 **两个空格作为缩进，但空格的数据量并不重要，只是至少要求一个空格并且所有缩进保持一致的空格数** 。例如，name和labels是相同缩进级别，因此YAML处理器知道他们属于同一map；它知道app是lables的值因为app的缩进更大。
+
+**注意：在YAML文件中绝对不要使用tab键**
+
+
+YAML Lists
+===============
+
+List即列表，说白了就是数组，例如：
+
+::
+
+    args
+     -beijing
+     -shanghai
+     -shenzhen
+     -guangzhou
+
+可以指定任何数量的项在列表中，每个项的定义以破折号（-）开头，并且与父元素之间存在缩进。在JSON格式中，表示如下：
+
+::
+
+    {
+      "args": ["beijing", "shanghai", "shenzhen", "guangzhou"]
+    }
+
+当然Lists的子项也可以是Maps，Maps的子项也可以是List，例如：
+
+::
+
+    ---
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: kube100-site
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: front-end
+          image: nginx
+          ports:
+            - containerPort: 80
+        - name: flaskapp-demo
+          image: jcdemo/flaskapp
+          ports: 8080
+
+如上述文件所示，定义一个containers的List对象，每个子项都由name、image、ports组成，每个ports都有一个KEY为containerPort的Map组成，转成JSON格式文件：
+
+::
+
+    {
+      "apiVersion": "v1",
+      "kind": "Pod",
+      "metadata": {
+            "name": "kube100-site",
+            "labels": {
+                "app": "web"
+            },
+
+      },
+      "spec": {
+            "containers": [{
+                "name": "front-end",
+                "image": "nginx",
+                "ports": [{
+                    "containerPort": "80"
+                }]
+            }, {
+                "name": "flaskapp-demo",
+                "image": "jcdemo/flaskapp",
+                "ports": [{
+                    "containerPort": "5000"
+                }]
+            }]
+      }
+    }
+
+使用YAML创建Pod
+======================
+
+创建Pod
+-------------
+
+::
+
+    ---
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: kube100-site
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: front-end
+          image: nginx
+          ports:
+            - containerPort: 80
+        - name: flaskapp-demo
+          image: jcdemo/flaskapp
+          ports:
+            - containerPort: 5000
+
+上面定义了一个普通的Pod文件，简单分析下文件内容：
+    - apiVersion：此处值是v1，这个版本号需要根据安装的Kubernetes版本和资源类型进行变化，记住不是写死的。
+    - kind：此处创建的是Pod，根据实际情况，此处资源类型可以是Deployment、Job、Ingress、Service等。
+    - metadata：包含Pod的一些meta信息，比如名称、namespace、标签等信息。
+    - spec：包括一些 containers，storage，volumes，或者其他Kubernetes需要知道的参数，以及诸如是否在容器失败时重新启动容器的属性。你可以在特定Kubernetes API找到完整的Kubernetes Pod的属性。
+
+
+下面是一个典型的容器的定义：
+
+    ::
+
+        …
+        spec:
+          containers:
+            - name: front-end
+              image: nginx
+              ports:
+                - containerPort: 80
+        …
+
+
+    - 上述例子只是一个简单的最小定义：一个名字（front-end）、基于nginx的镜像，以及容器将会监听的指定端口号（80）。
+
+    - 除了上述的基本属性外，还能够指定复杂的属性，包括容器启动运行的命令、使用的参数、工作目录以及每次实例化是否拉取新的副本。 还可以指定更深入的信息，例如容器的退出日志的位置。容器可选的设置属性包括：
+
+        - name
+        - image
+        - command
+        - args
+        - workingDir
+        - ports
+        - env
+        - resources
+        - volumeMounts
+        - livenessProbe
+        - readinessProbe
+        - livecycle
+        - terminationMessagePath
+        - imagePullPolicy
+        - securityContext
+        - stdin
+        - stdinOnce
+        - tty
+
+
+了解了Pod的定义后，将上面创建Pod的YAML文件保存成pod.yaml，然后使用Kubectl创建Pod：
+
+
+::
+
+    $ kubectl create -f pod.yaml
+    pod "kube100-site" created
+
+可以使用Kubectl命令查看Pod的状态
+
+::
+
+    $ kubectl get pods
+    NAME           READY     STATUS    RESTARTS   AGE
+    kube100-site   2/2       Running   0          1m
+
+注： Pod创建过程中如果出现错误，可以使用kubectl describe 进行排查。
+
+创建Deployment
+======================
+
+上述介绍了如何使用YAML文件创建Pod实例，但是如果这个Pod出现了故障的话，对应的服务也就挂掉了，所以Kubernetes提供了一个Deployment的概念 ，目的是让Kubernetes去管理一组Pod的副本，也就是副本集 ，这样就能够保证一定数量的副本一直可用，不会因为某一个Pod挂掉导致整个服务挂掉。
+
+
+::
+
+    ---
+    apiVersion: extensions/v1beta1
     kind: Deployment
     metadata:
-      name: nginx-deployment
+      name: kube100-site
     spec:
-      replicas: 3
-      selector:
-        matchLabels:
-          app: nginx
+      replicas: 2
       template:
         metadata:
           labels:
-            app: nginx
+            app: web
         spec:
           containers:
-          - name: nginx
-            image: nginx:1.7.9
-            ports:
-            - containerPort: 80
+            - name: front-end
+              image: nginx
+              ports:
+                - containerPort: 80
+            - name: flaskapp-demo
+              image: jcdemo/flaskapp
+              ports:
+                - containerPort: 5000
+
+
+一个完整的Deployment的YAML文件如上所示，接下来解释部分内容：
+    - 注意这里apiVersion对应的值是extensions/v1beta1，同时也需要将kind的类型指定为Deployment。
+    - metadata指定一些meta信息，包括名字或标签之类的。
+    - spec 选项定义需要两个副本，此处可以设置很多属性，例如受此Deployment影响的Pod的选择器等
+    - spec 选项的template其实就是对Pod对象的定义
+    - 可以在Kubernetes v1beta1 API 参考中找到完整的Deployment可指定的参数列表
+
+将上述的YAML文件保存为deployment.yaml，然后创建Deployment：
 
 ::
 
-    # create command
-    kubectl create -f https://k8s.io/docs/user-guide/nginx-deployment.yaml --record
-    # output
-    deployment "nginx-deployment" created
+    $ kubectl create -f deployment.yaml
+    deployment "kube100-site" created
+
+可以使用如下命令检查Deployment的列表：
+
+::
+
+    $ kubectl get deployments
+    NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+    kube100-site   2         2         2            2           2m
 
 
-必须字段
-=============
+我们可以看到所有的 Pods 都已经正常运行了。
 
-在对象描述文件.yaml中，必须包含以下字段。
-
-apiVersion：kubernetes API的版本。
-
-kind：kubernetes对象的类型。
-
-metadata：唯一标识该对象的元数据，包括name，UID，可选的namespace。
-
-spec：标识对象的详细信息，不同对象的spec的格式不同，可以嵌套其他对象的字段。
+到这里我们就完成了使用 YAML 文件创建 Kubernetes Deployment 的过程，在了解了 YAML 文件的基础后，定义 YAML 文件其实已经很简单了，最主要的是要根据实际情况去定义 YAML 文件，所以查阅 Kubernetes 文档很重要

@@ -190,3 +190,20 @@ node节点加入kubernetes
 .. code-block:: bash
 
      kubeadm join 192.168.127.94:6443 --token u57o3n.hjoj7q5shutcldli --discovery-token-ca-cert-hash sha256:dd8a747519cc49cb2cce0ab993f6643c349f72b3e3771c0065b28416e69a9f53 --ignore-preflight-errors=Swap
+
+
+
+curl的方式访问api
+=========================
+
+.. code-block:: bash
+
+    $ curl  -k  https://192.168.1.51:6443 --cacert /etc/kubernetes/pki/apiserver.crt --key /etc/kubernetes/pki/apiserver-kubelet-client.key --cert  /etc/kubernetes/pki/apiserver-kubelet-client.crt
+
+
+查看指定namespacei的pod列表
+
+
+.. code-block:: bash
+
+    $ curl  -k  --cacert /etc/kubernetes/pki/apiserver.crt --key /etc/kubernetes/pki/apiserver-kubelet-client.key --cert  /etc/kubernetes/pki/apiserver-kubelet-client.crt  https://192.168.1.51:6443/api/v1/namespaces/poppy/pods/
