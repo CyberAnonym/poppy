@@ -5,7 +5,7 @@ api-resources
 查看帮助
 ==========
 
-.. code-block:: bash
+::
 
     [root@k8s1 ~]# kubectl api-resources --help
     Print the supported API resources on the server

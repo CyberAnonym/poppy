@@ -28,36 +28,37 @@ service 使用ipvs规则，把所有访问service cluster-ip的请求全部调�
 ======================================
 名称为nginx-deploy， labels就是标签，这里的标签是run=nginx-deploy，默认将名字赋值给run作为标签。
 
+.. code-block:: bash
 
-[root@k8s1 ~]# kubectl describe deploy nginx-deploy
-Name:                   nginx-deploy
-Namespace:              default
-CreationTimestamp:      Mon, 27 Aug 2018 17:18:41 +0800
-Labels:                 run=nginx-deploy
-Annotations:            deployment.kubernetes.io/revision=1
-Selector:               run=nginx-deploy
-Replicas:               2 desired | 2 updated | 2 total | 2 available | 0 unavailable
-StrategyType:           RollingUpdate
-MinReadySeconds:        0
-RollingUpdateStrategy:  25% max unavailable, 25% max surge
-Pod Template:
-  Labels:  run=nginx-deploy
-  Containers:
-   nginx-deploy:
-    Image:        nginx:1.14-alpine
-    Port:         80/TCP
-    Host Port:    0/TCP
-    Environment:  <none>
-    Mounts:       <none>
-  Volumes:        <none>
-Conditions:
-  Type           Status  Reason
-  ----           ------  ------
-  Progressing    True    NewReplicaSetAvailable
-  Available      True    MinimumReplicasAvailable
-OldReplicaSets:  <none>
-NewReplicaSet:   nginx-deploy-5b595999 (2/2 replicas created)
-Events:          <none>
+    [root@k8s1 ~]# kubectl describe deploy nginx-deploy
+    Name:                   nginx-deploy
+    Namespace:              default
+    CreationTimestamp:      Mon, 27 Aug 2018 17:18:41 +0800
+    Labels:                 run=nginx-deploy
+    Annotations:            deployment.kubernetes.io/revision=1
+    Selector:               run=nginx-deploy
+    Replicas:               2 desired | 2 updated | 2 total | 2 available | 0 unavailable
+    StrategyType:           RollingUpdate
+    MinReadySeconds:        0
+    RollingUpdateStrategy:  25% max unavailable, 25% max surge
+    Pod Template:
+      Labels:  run=nginx-deploy
+      Containers:
+       nginx-deploy:
+        Image:        nginx:1.14-alpine
+        Port:         80/TCP
+        Host Port:    0/TCP
+        Environment:  <none>
+        Mounts:       <none>
+      Volumes:        <none>
+    Conditions:
+      Type           Status  Reason
+      ----           ------  ------
+      Progressing    True    NewReplicaSetAvailable
+      Available      True    MinimumReplicasAvailable
+    OldReplicaSets:  <none>
+    NewReplicaSet:   nginx-deploy-5b595999 (2/2 replicas created)
+    Events:          <none>
 
 
 
