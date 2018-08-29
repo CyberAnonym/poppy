@@ -19,22 +19,25 @@ registry
 
 .. code-block:: bash
 
-    HOSTNAME='k8s1.shenmin.com'
-    mkdir -p /docker/certs
-    openssl req \
+    $ HOSTNAME='k8s1.shenmin.com'
+    $ sudo mkdir -p /docker/certs
+    $ sudo openssl req \
       -newkey rsa:4096 -nodes -sha256 -keyout /docker/certs/${HOSTNAME}.key \
       -x509 -days 365 -out /docker/certs/${HOSTNAME}.crt
+
+上面创建证书的步骤的时候主要是在Common Name (eg, your name or your server's hostname) []:k8s1.alv.pub 这一行的后面，写上我们的用于解析到我们这台服务器的域名。
+
 
 创建用于用户验证的相关文件和目录
 ========================================
 
 .. code-block:: bash
 
-    mkdir -p /docker/auth
-    docker run --entrypoint htpasswd registry:2 -Bbn user1 123456 >> /docker/auth/htpasswd
-    docker run --entrypoint htpasswd registry:2 -Bbn user2 123456 >> /docker/auth/htpasswd
+    $ sudo mkdir -p /docker/auth
+    $ sudo bash -c ' docker run --entrypoint htpasswd registry:2 -Bbn user1 123456 >> /docker/auth/htpasswd'
+    $ sudo bash -c ' docker run --entrypoint htpasswd registry:2 -Bbn user2 123456 >> /docker/auth/htpasswd'
 
-    sudo service docker restart
+    $ sudo service docker restart
 
 
 创建容器
@@ -42,7 +45,7 @@ registry
 
 .. code-block:: bash
 
-    docker run -d -p 5443:5000 --restart=always --name registry-ssl \
+    $ sudo docker run -d -p 5443:5000 --restart=always --name registry-ssl \
       -v /docker/auth:/auth \
       -e "REGISTRY_AUTH=htpasswd" \
       -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
@@ -61,7 +64,7 @@ registry
 
 .. code-block:: bash
 
-    scp ${hostname}.crt k8s2:~
+    $ scp /docker/certs/${HOSTNAME}.crt k8s2:~
 
 - 然后去k8s2上，将证书放到相应的目录下
 
@@ -71,18 +74,18 @@ ubuntu系统下这样操作：
 
     .. code-block:: bash
 
-        HOSTNAME='k8s1.alv.pub'
-        sudo mkdir -p /etc/docker/certs.d/${HOSTNAME}:5443
-        sudo cp ~/${HOSTNAME}.crt/etc/docker/certs.d/${HOSTNAME}:5443/
+        $ HOSTNAME='k8s1.alv.pub'
+        $ sudo mkdir -p /etc/docker/certs.d/${HOSTNAME}:5443
+        $ sudo cp ~/${HOSTNAME}.crt/etc/docker/certs.d/${HOSTNAME}:5443/
 
 
 centos系统下这样操作：
 
     .. code-block:: bash
 
-        HOSTNAME='k8s1.alv.pub'
-        sudo mkdir -p /etc/docker/certs.d/${HOSTNAME}:5443
-        sudo cp ${HOSTNAME}.crt /etc/docker/certs.d/${HOSTNAME}:5443
+        $ HOSTNAME='k8s1.alv.pub'
+        $ sudo mkdir -p /etc/docker/certs.d/${HOSTNAME}:5443
+        $ sudo cp ${HOSTNAME}.crt /etc/docker/certs.d/${HOSTNAME}:5443
 
 
 redhat系统下据说参考这个命令 ： cp ~/domain.crt /usr/local/share/ca-certificates/myregistrydomain.com.crt
@@ -99,7 +102,8 @@ redhat系统下据说参考这个命令 ： cp ~/domain.crt /usr/local/share/ca-
 .. code-block:: bash
 
     $ sudo vim /lib/systemd/system/docker.service
-
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl restart docker
 
 登录远程docker仓库
 ============================
@@ -119,4 +123,66 @@ redhat系统下据说参考这个命令 ： cp ~/domain.crt /usr/local/share/ca-
 
     .. code-block:: bash
 
-        $ sudo docker login  k8s1.alv.pub:5443 -uuser1 -p123456
+        [alvin@k8s2 ~]$ sudo docker login  k8s1.alv.pub:5443 -uuser1 -p123456
+        WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+        WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+        Configure a credential helper to remove this warning. See
+        https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+        Login Succeeded
+
+
+
+push或pull (上传或下载)镜像
+=====================================
+
+打一个tag，将一个本地镜像tag为我们目标私有仓库的镜像
+----------------------------------------------------------------
+
+.. code-block:: bash
+
+    [alvin@k8s2 ~]$ sudo docker images|grep nginx
+    nginx                                              latest              c82521676580        5 weeks ago         109MB
+    nginx                                              1.14-alpine         acc350649a48        7 weeks ago         18.6MB
+    [alvin@k8s2 ~]$
+    [alvin@k8s2 ~]$ sudo docker tag acc350649a48 k8s1.alv.pub:5443/nginx/1.14-alpine
+
+上传镜像到私有仓库
+---------------------------
+
+.. code-block:: bash
+
+    [alvin@k8s2 ~]$ sudo docker push k8s1.alv.pub:5443/nginx/1.14-alpine
+    The push refers to repository [k8s1.alv.pub:5443/nginx/1.14-alpine]
+    2eb31a989e11: Pushed
+    b87bb670f898: Pushed
+    841051620742: Pushed
+    717b092b8c86: Pushed
+    latest: digest: sha256:c5fd932af67a2051ea8f784e4911bd8a1f29a7f9fcc4192e64f3f593878b114a size: 1153
+    [alvin@k8s2 ~]$
+
+删除原有本地镜像
+------------------------------
+
+.. code-block:: bash
+
+    [alvin@k8s2 ~]$ sudo docker rmi k8s1.alv.pub:5443/nginx/1.14-alpine
+    Untagged: k8s1.alv.pub:5443/nginx/1.14-alpine:latest
+    Untagged: k8s1.alv.pub:5443/nginx/1.14-alpine@sha256:c5fd932af67a2051ea8f784e4911bd8a1f29a7f9fcc4192e64f3f593878b114a
+    [alvin@k8s2 ~]$
+
+从私有仓库上下载镜像
+-------------------------------
+
+.. code-block:: bash
+
+    [alvin@k8s2 ~]$ sudo docker pull k8s1.alv.pub:5443/nginx/1.14-alpine
+    Using default tag: latest
+    latest: Pulling from nginx/1.14-alpine
+    Digest: sha256:c5fd932af67a2051ea8f784e4911bd8a1f29a7f9fcc4192e64f3f593878b114a
+    Status: Downloaded newer image for k8s1.alv.pub:5443/nginx/1.14-alpine:latest
+    [alvin@k8s2 ~]$
+    [alvin@k8s2 ~]$ sudo docker images|grep nginx
+    nginx                                              latest              c82521676580        5 weeks ago         109MB
+    nginx                                              1.14-alpine         acc350649a48        7 weeks ago         18.6MB
+    k8s1.alv.pub:5443/nginx/1.14-alpine                latest              acc350649a48        7 weeks ago         18.6MB
