@@ -25,6 +25,7 @@ Welcome to Alvin's document center Poppy !
     012-monitor/readme
     013-scripts&develop/readme
     014-cloud&virtualization/readme
+    014.1-kubernetes/readme
     015-ha&lb/readme
     016-web/readme
     017-devops/readme
