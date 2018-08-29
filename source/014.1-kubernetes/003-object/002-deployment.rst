@@ -5,6 +5,8 @@ deployment
 
 run 创建的是deployment， deployment简写可以写deploy。
 
+deployment是pod的控制器，用来管理容器的。
+
 查看kubectl run的帮助
 ==========================================
 

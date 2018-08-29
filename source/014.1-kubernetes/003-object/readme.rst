@@ -14,3 +14,4 @@ k8s对象
     006-quota
     007-volume
     008-job
+    009-horizontalpodautoscaler

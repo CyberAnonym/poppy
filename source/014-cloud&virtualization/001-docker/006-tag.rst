@@ -1,0 +1,22 @@
+tag
+#####
+
+为镜像设置tag
+================
+
+[root@k8s2 ~]# docker images
+REPOSITORY                           TAG                 IMAGE ID            CREATED             SIZE
+nginx                                latest              c82521676580        5 weeks ago         109MB
+
+[root@k8s2 ~]# docker tag c82521676580 k8s1.shenmin.com:5000/nginx
+
+[root@k8s2 ~]# docker images
+REPOSITORY                           TAG                 IMAGE ID            CREATED             SIZE
+k8s1.shenmin.com:5000/nginx          latest              c82521676580        5 weeks ago         109MB
+nginx                                latest              c82521676580        5 weeks ago         109MB
+
+
+设置tag后，push相应的镜像，可以将其传到相应的仓库
+======================================================
+
+nginx                                latest              c82521676580        5 weeks ago         109MB

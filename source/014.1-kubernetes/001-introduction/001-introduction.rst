@@ -213,3 +213,19 @@ metadata：唯一标识该对象的元数据，包括name，UID，可选的names
 
 spec：标识对象的详细信息，不同对象的spec的格式不同，可以嵌套其他对象的字段。
 
+k8s里的各种对象
+===================
+
+- RESTful
+    - GET,PUT,DELETE,POST,...
+    - kubectl run,get,edit,...
+- 资源: 对象
+    - workload:Pod,ReplicasSet,Deployment,StatefulSet,DaemonSet,Job,Cronjob,...
+    - 服务发现及均衡:Service, Ingress,...
+    - 配置与存储: Volume,CSI
+        - ConfigMap,Secret
+        - DownwardAPI
+    - 集群级资源
+        - Namespace, Node, Role, ClusterRole,RoleBinding,ClusterRoleBingding
+    - 云数据型资源
+        - HPA, PodTemplate,LimitRange

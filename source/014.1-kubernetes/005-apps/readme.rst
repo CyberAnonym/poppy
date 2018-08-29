@@ -10,3 +10,4 @@ k8s应用
     003-garafana
     004-heapster
     005-istio
+    006-registry

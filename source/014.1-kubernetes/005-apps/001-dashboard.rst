@@ -10,8 +10,8 @@ dashboard
 
 .. code-block:: bash
 
-    [root@k8s1 ~]# kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
-    [root@k8s1 ~]# kubectl get service -n kube-system
+    [alvin@k8s1 ~]$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+    [alvin@k8s1 ~]$ kubectl get service -n kube-system
     NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)         AGE
     kube-dns               ClusterIP   10.96.0.10       <none>        53/UDP,53/TCP   1h
     kubernetes-dashboard   ClusterIP   10.103.193.208   <none>        443/TCP         20m
@@ -23,7 +23,7 @@ dashboard
 
 .. code-block:: bash
 
-    [root@k8s1 ~]# vim dashboard-admin.yaml
+    [alvin@k8s1 ~]$ vim dashboard-admin.yaml
     apiVersion: rbac.authorization.k8s.io/v1beta1
     kind: ClusterRoleBinding
     metadata:
@@ -38,7 +38,7 @@ dashboard
     - kind: ServiceAccount
       name: kubernetes-dashboard
       namespace: kube-system
-
+    [alvin@k8s1 ~]$ kubectl create -f dashboard-admin.yaml
 
 然后这里我们可以通过nginx做代理，让外部网络可以访问
 

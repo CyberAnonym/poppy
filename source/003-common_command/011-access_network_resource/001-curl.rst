@@ -23,6 +23,8 @@ curl参数详解
     -x    --proxy <host[:port]> 在给定的端口上使用HTTP代理
     -L       跟随链接重定向
     -H      自定义 header
+    -i      输出时包括protocol头信息
+    -v      查看ssl证书信息
 
     -#    --progress-bar 进度条显示当前的传送状态
 

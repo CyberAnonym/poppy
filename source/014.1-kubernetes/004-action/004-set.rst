@@ -1,2 +1,147 @@
-004-set
-##########################################
+set
+###
+
+查看set的帮助
+==================
+
+::
+
+    [alvin@k8s1 ~]$ kubectl set -h
+    Configure application resources
+
+    These commands help you make changes to existing application resources.
+
+    Available Commands:
+      env            Update environment variables on a pod template
+      image          Update image of a pod template
+      resources      Update resource requests/limits on objects with pod templates
+      selector       Set the selector on a resource
+      serviceaccount Update ServiceAccount of a resource
+      subject        Update User, Group or ServiceAccount in a RoleBinding/ClusterRoleBinding
+
+    Usage:
+      kubectl set SUBCOMMAND [options]
+
+    Use "kubectl <command> --help" for more information about a given command.
+    Use "kubectl options" for a list of global command-line options (applies to all commands).
+
+
+set image的帮助
+====================
+
+::
+
+    [alvin@k8s1 ~]$ kubectl set image -h
+    Update existing container image(s) of resources.
+
+    Possible resources include (case insensitive):
+
+      pod (po), replicationcontroller (rc), deployment (deploy), daemonset (ds), replicaset (rs)
+
+    Examples:
+      # Set a deployment's nginx container image to 'nginx:1.9.1', and its busybox container image to 'busybox'.
+      kubectl set image deployment/nginx busybox=busybox nginx=nginx:1.9.1
+
+      # Update all deployments' and rc's nginx container's image to 'nginx:1.9.1'
+      kubectl set image deployments,rc nginx=nginx:1.9.1 --all
+
+      # Update image of all containers of daemonset abc to 'nginx:1.9.1'
+      kubectl set image daemonset abc *=nginx:1.9.1
+
+      # Print result (in yaml format) of updating nginx container image from local file, without hitting the server
+      kubectl set image -f path/to/file.yaml nginx=nginx:1.9.1 --local -o yaml
+
+    Options:
+          --all=false: Select all resources, including uninitialized ones, in the namespace of the specified resource types
+          --allow-missing-template-keys=true: If true, ignore any errors in templates when a field or map key is missing in
+    the template. Only applies to golang and jsonpath output formats.
+          --dry-run=false: If true, only print the object that would be sent, without sending it.
+      -f, --filename=[]: Filename, directory, or URL to files identifying the resource to get from a server.
+          --include-uninitialized=false: If true, the kubectl command applies to uninitialized objects. If explicitly set to
+    false, this flag overrides other flags that make the kubectl commands apply to uninitialized objects, e.g., "--all".
+    Objects with empty metadata.initializers are regarded as initialized.
+          --local=false: If true, set image will NOT contact api-server but run locally.
+      -o, --output='': Output format. One of:
+    json|yaml|name|template|go-template|go-template-file|templatefile|jsonpath|jsonpath-file.
+          --record=false: Record current kubectl command in the resource annotation. If set to false, do not record the
+    command. If set to true, record the command. If not set, default to updating the existing annotation value only if one
+    already exists.
+      -R, --recursive=false: Process the directory used in -f, --filename recursively. Useful when you want to manage
+    related manifests organized within the same directory.
+      -l, --selector='': Selector (label query) to filter on, not including uninitialized ones, supports '=', '==', and
+    '!='.(e.g. -l key1=value1,key2=value2)
+          --template='': Template string or path to template file to use when -o=go-template, -o=go-template-file. The
+    template format is golang templates [http://golang.org/pkg/text/template/#pkg-overview].
+
+    Usage:
+      kubectl set image (-f FILENAME | TYPE NAME) CONTAINER_NAME_1=CONTAINER_IMAGE_1 ... CONTAINER_NAME_N=CONTAINER_IMAGE_N
+    [options]
+
+    Use "kubectl options" for a list of global command-line options (applies to all commands).
+
+创建一个deployment和service
+=========================================
+.. code-block:: bash
+
+    [root@k8s1 ~]# kubectl run myapp --image=ikubernetes/myapp:v1 --replicas=2
+    deployment.apps/myapp created
+    [root@k8s1 ~]# kubectl expose deployment myapp --name=myapp --port=80
+    service/myapp exposed
+    [root@k8s1 ~]# kubectl get svc -l run=myapp
+    NAME      TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+    myapp     ClusterIP   10.108.209.49   <none>        80/TCP    23s
+
+这个时候去访问service,会随机调度到后端的两个pod上去。
+
+我们访问300次，结果是这样的,300次的访问都是version:v1
+
+.. code-block:: bash
+
+    [alvin@k8s1 ~]$ for i in {1..300};do curl -s 10.108.209.49;done|sort |uniq -c
+        300 Hello MyApp | Version: v1 | <a href="hostname.html">Pod Name</a>
+
+下面我们就去通过set更新镜像版本
+
+通过set设置镜像版本，实现灰度发布。
+==============================================
+更新名为myapp的deployment的镜像为ikubernetes/myapp:v2. （之前是v2）
+
+下面的命令中，deployment后面的myapp是deployment的名字，然后后面的myapp= 这里的myapp是容器的名字，一个pod里面可能有多个容器，所以这里我们能指定容器名。
+
+::
+
+    [alvin@k8s1 ~]$ kubectl set image deployment myapp myapp=ikubernetes/myapp:v2
+    deployment.extensions/myapp image updated
+
+然后马上执行命令访问servcie查看一下,发现现在的访问结果是有v1,也有v2了，也就是说，通过set更新镜像版本，不会同时更新全部pod，而是新版本和旧版本会同时存在。
+
+::
+
+    [alvin@k8s1 ~]$ for i in {1..300};do curl -s 10.108.209.49;done|sort |uniq -c
+        209 Hello MyApp | Version: v2 | <a href="hostname.html">Pod Name</a>
+         89 Hello MyApp | Version: v1 | <a href="hostname.html">Pod Name</a>
+
+然后再查看一下. 再次访问，300次访问全是v2了，更新完毕，
+
+::
+
+    alvin@k8s1 ~]$ for i in {1..300};do curl -s 10.108.209.49;done|sort |uniq -c
+        300 Hello MyApp | Version: v2 | <a href="hostname.html">Pod Name</a>
+
+通过rollout查看更新状态
+===============================
+在灰度发布更新镜像的时候，我能也可以查看更新的进度。
+
+下面我们再次更新一下，然后通过rollout status 查看精度
+
+.. code-block:: bash
+
+    [alvin@k8s1 ~]$ kubectl set image deployment myapp myapp=ikubernetes/myapp:v3
+    deployment.extensions/myapp image updated
+    [alvin@k8s1 ~]$ kubectl rollout status deployment myapp
+    Waiting for deployment "myapp" rollout to finish: 1 out of 2 new replicas have been updated...
+    Waiting for deployment "myapp" rollout to finish: 1 out of 2 new replicas have been updated...
+    Waiting for deployment "myapp" rollout to finish: 1 out of 2 new replicas have been updated...
+    Waiting for deployment "myapp" rollout to finish: 1 old replicas are pending termination...
+    Waiting for deployment "myapp" rollout to finish: 1 old replicas are pending termination...
+    deployment "myapp" successfully rolled out
