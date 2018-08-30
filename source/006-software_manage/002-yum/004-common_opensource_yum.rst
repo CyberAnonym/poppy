@@ -12,6 +12,10 @@ nginx的官方yum源
 kubernetes在阿里的yum源
 ==============================
 
+.. code-block:: bash
+
+    $ wget -P /etc/yum.repos.d/ https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/yum.repos.d/kubernetes.repo
+
 .. literalinclude:: ../../../code/yum.repos.d/kubernetes.repo
     :lines: 1-
 
@@ -31,7 +35,11 @@ mariadb10.3 stable版官方源
 
 docker-ce 的阿里云yum源
 ====================================
-从网络下载：  wget -P /etc/yum.repos.d/ https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+从网络下载：
+
+.. code-block:: bash
+
+    $ wget -P /etc/yum.repos.d/ https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 
 .. literalinclude:: ../../../code/yum.repos.d/docker-ce.repo
     :lines: 1-

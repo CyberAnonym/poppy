@@ -52,6 +52,9 @@ k8s1的操作
 .. code-block:: bash
 
     # python -c "$(curl -fsSL https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/common_tools/pullLocalYum.py)"  ##添加我的内网仓库
+    ####上面是我自己用的命令，使用的是我自己的内网仓库，连接不到我的内网的地方，使用下面的命令添加网络yum源
+    # wget -P /etc/yum.repos.d/ https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/yum.repos.d/kubernetes.repo
+    # wget -P /etc/yum.repos.d/ https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
     # yum install docker-ce-17.12.1.ce kubelet kubeadm kubectl
     # vim /usr/lib/systemd/system/docker.service
     Environment="HTTPS_PROXY=http://www.ik8s.io:10080"
