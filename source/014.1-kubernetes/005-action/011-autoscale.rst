@@ -193,7 +193,7 @@ describe 查看一下，发现有一个报错
 
 然后pod要开始扩展了。
 
-.. code-block:: bsah
+.. code-block:: bash
 
     [root@k8s1 ~]# kubectl get hpa
     NAME           REFERENCE                 TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
@@ -201,4 +201,12 @@ describe 查看一下，发现有一个报错
     [root@k8s1 ~]# kubectl get hpa
     NAME           REFERENCE                 TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
     nginx-deploy   Deployment/nginx-deploy   32%/5%    1         6         4          5m
+    [root@k8s1 ~]# kubectl get hpa
+    NAME           REFERENCE                 TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+    nginx-deploy   Deployment/nginx-deploy   30%/5%    1         6         4          8m
+    [root@k8s1 ~]# kubectl get hpa
+    NAME           REFERENCE                 TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+    nginx-deploy   Deployment/nginx-deploy   30%/5%    1         6         6          9m
 
+
+最终扩展到了6
