@@ -9,3 +9,4 @@ kubernetes
     003-object/readme.rst
     004-action/readme.rst
     005-apps/readme.rst
+    006-errors/readme

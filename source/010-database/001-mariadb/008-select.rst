@@ -8,29 +8,60 @@ select
 ::
 
     SELECT
-
         t1.realname 姓名,
         FORMAT(
             (
                 cur_weight_num - init_weight_num
             ) * 2,
             2
-        ) 累计减重, diet_days 饮食记录,
+        ) 累计减重,
+        diet_days 饮食记录,
         day_coin 每日预算,
-        CONCAT(cast(
-            format(
-                (
+        CONCAT(
+            cast(
+                format(
                     (
-                        init_weight_num - cur_weight_num
-                    ) / init_weight_num
-                ) * 100,
-                1
-            ) AS CHAR
-        ),'%') 减重百分比,t1.bmi 最新BMI,t1.mobile 手机号 ,t2.weight_day 日期,t2.BMI 当前日期MBI
+                        (
+                            init_weight_num - cur_weight_num
+                        ) / init_weight_num
+                    ) * 100,
+                    1
+                ) AS CHAR
+            ),
+            '%'
+        ) 减重百分比,
+        t1.bmi 最新BMI,
+        t1.mobile 手机号,
+        t2.weight_day 日期
     FROM
-        t_user t1,t_user_weight t2
+        t_user t1,
+        (
+            SELECT
+                t1.user_id,
+                t1.id id,
+                t1.bmi BMI,
+                t2.realname,
+                max(t1.weight_day) AS weight_day
+            FROM
+                t_user_weight t1,
+                t_user t2,
+                t_clazz t3
+            WHERE
+                t3.clazz_name = 'BMS2018'
+            AND t2.clazz_id = t3.id
+            AND t2.id = t1.user_id
+            GROUP BY
+                t1.user_id
+            ORDER BY
+                t2.realname,
+                t1.weight_day DESC
+        ) t2,
+        t_clazz t3
     WHERE
-        t1.clazz_id = 121 and t1.id =t2.user_id  and t1.cur_weight_num=t2.weight_num
+        t3.clazz_name = 'BMS2018'
+    AND t1.clazz_id = t3.id
+    AND t1.id = t2.user_id
+    AND t1.id = t2.user_id
     ORDER BY
         t1.id DESC
 
@@ -41,7 +72,25 @@ select
 
 ::
 
-    SELECT t2.realname 姓名,t1.weight_day 日期,FORMAT(t1.weight_num,1) '体重(kg)',t1.total_fat_num '总体脂肪量(%)',t1.muscle_num 肌肉量,t1.bmi BMI,t1.physical_age 生理年龄,water_num '水分(%)',t1.inner_fat_num 内脂 FROM t_user_weight t1,t_user t2 where t2.clazz_id = 121 and t2.id = t1.user_id order by t2.realname,t1.weight_day desc
+    SELECT
+        t2.realname 姓名,
+        t1.weight_day 日期,
+        FORMAT(t1.weight_num, 1) '体重(kg)',
+        t1.total_fat_num '总体脂肪量(%)',
+        t1.muscle_num 肌肉量,
+        t1.bmi BMI,
+        t1.physical_age 生理年龄,
+        water_num '水分(%)',
+        t1.inner_fat_num 内脂
+    FROM
+        t_user_weight t1,
+        t_user t2,t_clazz t3
+    WHERE
+        t3.clazz_name = 'BMS2018' and t2.clazz_id = t3.id
+    AND t2.id = t1.user_id
+    ORDER BY
+        t2.realname,
+        t1.weight_day DESC
 
 - 分组取最新的一条记录
 

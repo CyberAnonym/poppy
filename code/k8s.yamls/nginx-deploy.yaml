@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-deploy
+  labels:
+    run: nginx-deploy
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: nginx-deploy
+    spec:
+      containers:
+      - name: nginx
+        resources:
+          limits:
+            cpu: 2
+            memory: 1Gi
+          requests:
+            cpu: 1
+            memory: 500Mi
+        image: nginx
+        ports:
+        - containerPort: 80
+          hostPort: 80
+          protocol: TCP
+          name: nginx-port
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+          readOnly: true
+      volumes:
+      - name: tmp
+        hostPath:
+          path: /tmp
