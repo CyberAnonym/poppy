@@ -5,7 +5,7 @@
 
 Welcome to Alvin's document center Poppy !
 =================================================
-欢迎来的Alvin的技术文档中心，如果需要，你可以参考、学习这里的东西，也可以修改或添加内容到这里，想需要修改添加的地方，点击右上角的Edit on GitHub，修改后提交pull request,谢谢！
+欢迎来的Alvin的技术文档中心，这里从2018年7月23日开始记录，如果需要，你可以参考、学习这里的东西，也可以修改或添加内容到这里，想需要修改添加的地方，点击右上角的Edit on GitHub，修改后提交pull request,谢谢！
 
 如需联系Alvin，可发邮件至 alvin.wan.cn@hotmail.com, 谢谢。 :)
 

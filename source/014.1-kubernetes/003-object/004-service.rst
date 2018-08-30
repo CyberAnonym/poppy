@@ -64,11 +64,11 @@ service 使用ipvs规则，把所有访问service cluster-ip的请求全部调�
 
 然后我们将这个名为nginx-deploy的deployment给暴露出来，放到service里。
 
-以下命令中，--target-port=80 表示目标deployment里的pod提供服务的端口是80， --port=8000 表示service这里提供服务的端口是8000.
+以下命令中，--target-port=80 表示目标deployment里的pod提供服务的端口是80， --port=80 表示service这里提供服务的端口是80.
 
 .. code-block:: bash
 
-    $ kubectl expose deployment nginx-deploy --name=nginx --port=8000 --target-port=80 --protocol=TCP
+    $ kubectl expose deployment nginx-deploy --name=nginx --port=80 --target-port=80 --protocol=TCP
 
 然后我们查看一下，确认service创建完成，而且可以访问。
 
@@ -79,7 +79,7 @@ service 使用ipvs规则，把所有访问service cluster-ip的请求全部调�
     NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
     kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP    5h
     nginx        ClusterIP   10.110.69.178   <none>        8000/TCP   1m
-    [root@k8s1 ~]# curl 10.110.69.178:8000
+    [root@k8s1 ~]# curl 10.110.69.178:80
     <!DOCTYPE html>
     <html>
     <head>
@@ -122,7 +122,7 @@ service信息里有一行 Selector, 就是标签选择器，通过标签选择�
     Selector:          run=nginx-deploy
     Type:              ClusterIP
     IP:                10.110.69.178
-    Port:              <unset>  8000/TCP
+    Port:              <unset>  80/TCP
     TargetPort:        80/TCP
     Endpoints:         10.244.1.10:80,10.244.2.10:80
     Session Affinity:  None
