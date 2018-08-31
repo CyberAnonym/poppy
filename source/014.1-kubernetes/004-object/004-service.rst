@@ -130,3 +130,30 @@ service信息里有一行 Selector, 就是标签选择器，通过标签选择�
     [root@k8s1 ~]#
 
 
+通过yaml文件创建registry的service
+===============================================
+
+.. code-block:: bash
+
+    $ vim registry-service.yaml
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: registry-svc
+      labels:
+        run: registry-svc
+    spec:
+      ports:
+      - port: 5000
+        protocol: TCP
+      selector:
+        run: registry
+      type: NodePort
+      ports:
+      - port: 5000
+        targetPort: 5000
+        nodePort: 30001
+
+    $ kubectl create -f registry-service.yaml
+
+

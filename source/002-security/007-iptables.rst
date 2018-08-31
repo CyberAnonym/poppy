@@ -49,6 +49,7 @@ iptables 多条规则有冲突的时候，排在上面的规则优先。
 这里我们使用了这样几条命令
 
 ::
+
     iptables -L -n --line-numbers    ##所有链的规则number
 
     iptables -L INPUT --line-numbers ## 查看INPUT的

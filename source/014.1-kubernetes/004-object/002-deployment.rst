@@ -76,3 +76,56 @@ nginx是镜像名，冒号:后面的是镜像版本。
     NAME                          READY     STATUS    RESTARTS   AGE       IP            NODE               NOMINATED NODE
     nginx-deploy-5b595999-94z9p   1/1       Running   0          14s       10.244.1.10   k8s2.shenmin.com   <none>
     nginx-deploy-5b595999-f4m8x   1/1       Running   0          5m        10.244.2.10   k8s3.shenmin.com   <none>
+
+
+通过yaml文件创建一个deployment
+===========================================
+
+.. code-block:: bash
+
+    [alvin@k8s1 ~]$ vim registry.yaml
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    metadata:
+      name: registry
+    spec:
+      replicas: 1
+      template:
+        metadata:
+          labels:
+            run: registry
+        spec:
+          containers:
+          - name: registry
+            resources:
+              limits:
+                cpu: 2
+                memory: 200Mi
+              requests:
+                cpu: 0.5
+                memory: 100Mi
+            image: registry:2
+            ports:
+            - containerPort: 5000
+              protocol: TCP
+              name: registry-port
+            volumeMounts:
+            - name: registry-nfs-data
+              mountPath: /var/lib/registry
+              readOnly: false
+            - name: registry-nfs-config
+              mountPath:  /etc/docker/registry
+              readOnly: true
+          volumes:
+          - name: registry-nfs-data
+            nfs:
+              server: 192.168.127.54
+              path: '/registry/data'
+          - name: registry-nfs-config
+            nfs:
+              server: 192.168.127.54
+              path: '/registry/config'
+
+.. code-block:: bash
+
+    $ kubectl create -f registry.yaml

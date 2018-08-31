@@ -15,7 +15,7 @@ spec:
       - name: nginx
         resources:
           limits:
-            cpu: 2
+            cpu:
             memory: 1Gi
           requests:
             cpu: 1
