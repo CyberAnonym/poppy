@@ -12,3 +12,5 @@ k8s应用
     005-istio
     006-registry
     007-metrics-server
+    008-busybox
+    009-myapp

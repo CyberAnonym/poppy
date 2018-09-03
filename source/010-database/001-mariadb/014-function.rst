@@ -70,24 +70,49 @@ hex(n)
     mysql> select hex(255);
     　　-> 'ff'
 
-    char(n,...)
+char(n,...)
+=====================
+::
+
     返回由参数n,...对应的ascii代码字符组成的一个字串(参数是n,...是数字序列,null值被跳过)
     mysql> select char(77,121,83,81,'76');
     　　-> 'mysql'
     mysql> select char(77,77.3,'77.3');
     　　-> 'mmm'
 
-    concat(str1,str2,...)
+concat(str1,str2,...)
+==========================================
+
     把参数连成一个长字符串并返回(任何参数是null时返回null)
+
+::
+
     mysql> select concat('my', 's', 'ql');
     　　-> 'mysql'
     mysql> select concat('my', null, 'ql');
     　　-> null
     mysql> select concat(14.3);
     　　-> '14.3'
+    MySQL [K8S]> select concat('this host is:',@@hostname);
+    +------------------------------------+
+    | concat('this host is:',@@hostname) |
+    +------------------------------------+
+    | this host is:db2.shenmin.com       |
+    +------------------------------------+
+    1 row in set (0.00 sec)
 
 length(str)
 =================================================
+
+::
+
+    MySQL [(none)]> select length('alvin');
+    +-----------------+
+    | length('alvin') |
+    +-----------------+
+    |               5 |
+    +-----------------+
+    1 row in set (0.01 sec)
 
 
 octet_length(str)

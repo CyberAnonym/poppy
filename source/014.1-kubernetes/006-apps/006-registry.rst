@@ -383,7 +383,7 @@ push镜像到私有仓库
 .. code-block:: bash
 
     # mkdir -p  /k8sshare/docker-registry-web/config/
-    # vim /k8sshare/docker-registry-web/config/config.yaml
+    # vim /k8sshare/docker-registry-web/config/config.yml
     registry:
       # Docker registry url
       url: http://registry.alv.pub:30001/v2
@@ -459,7 +459,7 @@ push镜像到私有仓库
         run: registry-web-svc
     spec:
       selector:
-        run: registry
+        run: registry-web
       type: NodePort
       ports:
       - port: 8080

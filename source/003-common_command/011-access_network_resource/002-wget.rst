@@ -31,6 +31,14 @@ wget
 --follow-ftp    ：从HTML文件中下载FTP连接文件。
 -P  :指定下载到的本地路径
 
+使用wget查看网页内容
+==========================
+查看网页内容，实现curl的效果
+
+.. code-block:: bash
+
+    wget -q  -O - https://alv.pub/ip
+
 
 使用wget下载单个文件
 =====================
