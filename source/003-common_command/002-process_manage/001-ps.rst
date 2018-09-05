@@ -41,3 +41,13 @@ rss ,代表物理内存，pmem代表 物理内存百分比，
 .. code-block:: bash
 
     ps -eo rss,pmem,pcpu,vsize,args | sort -k 1 -r -n |head -20|nl
+
+
+
+指定进程id查看进程
+========================
+查看pid为 1005的进程
+
+.. code-block::
+
+    $ ps -f -p 1005
