@@ -42,8 +42,8 @@ centos7下kubeadm安装k8s1.11
     https://github.com/kubernetes/kubeadm/blob/master/docs/design/design_v1.10.md
 
 
-k8s1的操作
-================
+k8s1上需要做的操作
+================================
 
 安装配置docker和kubernetes相关组件
 -------------------------------------
@@ -173,7 +173,7 @@ coreDNS是1.11开始使用的。
 ==========================================================================
 .. code-block:: bash
 
-    scp /usr/lib/systemd/system/docker.service k8s3:/usr/lib/systemd/system/docker.service
+    scp /usr/lib/systemd/system/docker.service k8s2:/usr/lib/systemd/system/docker.service
     scp /usr/lib/systemd/system/docker.service k8s3:/usr/lib/systemd/system/docker.service
     scp /etc/sysconfig/kubelet  k8s2:/etc/sysconfig/kubelet
     scp /etc/sysconfig/kubelet  k8s3:/etc/sysconfig/kubelet
@@ -185,6 +185,7 @@ coreDNS是1.11开始使用的。
 .. code-block:: bash
 
     systemctl enable docker kubelet
+    systemctl start docker
 
 
 node节点加入kubernetes

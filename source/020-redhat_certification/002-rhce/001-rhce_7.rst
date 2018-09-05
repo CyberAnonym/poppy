@@ -811,6 +811,26 @@ server0:
 
 
 
+没有数据库环境，可以先创建数据库表和数据。
+
+.. code-block:: sql
+
+    create database Contacts;
+    use Contacts;
+    create table if not exists base (id INT PRIMARY KEY auto_increment NOT NULL, name VARCHAR(100), password VARCHAR (100));
+    create table if not exists location (id INT PRIMARY KEY auto_increment NOT NULL, name VARCHAR(100), city VARCHAR (100));
+    insert into base(name,password) values ('bobo','123');
+    insert into base(name,password) values ('harry','456');
+    insert into base(name,password) values ('natasha','789');
+    insert into base(name,password) values ('Barbara','solicitous');
+    insert into location(name,city )values ('bobo','beijing');
+    insert into location(name,city )values ('harry','shanghai');
+    insert into location(name,city )values ('natasha','tianjin');
+    insert into location(name,city )values ('Barbara','Sunnyvale');
+
+
+查询
+
 ::
 
     SELECT name FROM base WHERE password='solicitous';

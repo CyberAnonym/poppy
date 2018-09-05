@@ -10,6 +10,5 @@
     003-memory
     004-ulimit
     005-bash-completion
-
-
+    006-time_wait
 

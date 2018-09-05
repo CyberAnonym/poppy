@@ -77,3 +77,15 @@ ulimit 用于限制 shell 启动进程所占用的资源，支持以下各种类
     vim /etc/security/limits.conf
     *      soft    nofile     15000
     *      hard    nofile     30000
+
+
+设置为最大
+
+.. code-block:: bash
+
+    vim /etc/security/limits.conf
+
+    * soft nofile 65535
+    * hard nofile 65535
+    * soft nproc 65535
+    * hard nproc 65535
