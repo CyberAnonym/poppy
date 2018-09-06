@@ -39,7 +39,7 @@ ab
 
 从下面的请求结果可以看到，15000并发是没有问题的，吞吐量为2135.57 [#/sec]
 
-::
+.. code-block:: bash
 
     [root@k8s4 ~]# ab -c 5000 -n 15000 http://k8s2.shenmin.com:8080/noflux/test2
     This is ApacheBench, Version 2.3 <$Revision: 1430300 $>
@@ -100,58 +100,60 @@ ab
 
 下面我们访问nginx，nginx做了负载均衡，nginx的后端就是两台上面那个8080的java服务。
 
-[root@k8s4 ~]# ab -c 5000 -n 15000 http://k8s2.shenmin.com:80/noflux/test2
-This is ApacheBench, Version 2.3 <$Revision: 1430300 $>
-Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
-Licensed to The Apache Software Foundation, http://www.apache.org/
+.. code-block:: bash
 
-Benchmarking k8s2.shenmin.com (be patient)
-Completed 1500 requests
-Completed 3000 requests
-Completed 4500 requests
-Completed 6000 requests
-Completed 7500 requests
-Completed 9000 requests
-Completed 10500 requests
-Completed 12000 requests
-Completed 13500 requests
-Completed 15000 requests
-Finished 15000 requests
+    [root@k8s4 ~]# ab -c 5000 -n 15000 http://k8s2.shenmin.com:80/noflux/test2
+    This is ApacheBench, Version 2.3 <$Revision: 1430300 $>
+    Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+    Licensed to The Apache Software Foundation, http://www.apache.org/
+
+    Benchmarking k8s2.shenmin.com (be patient)
+    Completed 1500 requests
+    Completed 3000 requests
+    Completed 4500 requests
+    Completed 6000 requests
+    Completed 7500 requests
+    Completed 9000 requests
+    Completed 10500 requests
+    Completed 12000 requests
+    Completed 13500 requests
+    Completed 15000 requests
+    Finished 15000 requests
 
 
-Server Software:        nginx/1.12.2
-Server Hostname:        k8s2.shenmin.com
-Server Port:            80
+    Server Software:        nginx/1.12.2
+    Server Hostname:        k8s2.shenmin.com
+    Server Port:            80
 
-Document Path:          /noflux/test2
-Document Length:        425 bytes
+    Document Path:          /noflux/test2
+    Document Length:        425 bytes
 
-Concurrency Level:      5000
-Time taken for tests:   5.126 seconds
-Complete requests:      15000
-Failed requests:        0
-Write errors:           0
-Total transferred:      8490000 bytes
-HTML transferred:       6375000 bytes
-Requests per second:    2926.48 [#/sec] (mean)
-Time per request:       1708.534 [ms] (mean)
-Time per request:       0.342 [ms] (mean, across all concurrent requests)
-Transfer rate:          1617.57 [Kbytes/sec] received
+    Concurrency Level:      5000
+    Time taken for tests:   5.126 seconds
+    Complete requests:      15000
+    Failed requests:        0
+    Write errors:           0
+    Total transferred:      8490000 bytes
+    HTML transferred:       6375000 bytes
+    Requests per second:    2926.48 [#/sec] (mean)
+    Time per request:       1708.534 [ms] (mean)
+    Time per request:       0.342 [ms] (mean, across all concurrent requests)
+    Transfer rate:          1617.57 [Kbytes/sec] received
 
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        0   37  81.4      0    1003
-Processing:    28 1377 1087.5   1271    4925
-Waiting:        6 1377 1087.5   1271    4925
-Total:         28 1414 1096.9   1304    5077
+    Connection Times (ms)
+                  min  mean[+/-sd] median   max
+    Connect:        0   37  81.4      0    1003
+    Processing:    28 1377 1087.5   1271    4925
+    Waiting:        6 1377 1087.5   1271    4925
+    Total:         28 1414 1096.9   1304    5077
 
-Percentage of the requests served within a certain time (ms)
-  50%   1304
-  66%   1731
-  75%   1920
-  80%   2339
-  90%   2976
-  95%   3660
-  98%   4212
-  99%   4585
- 100%   5077 (longest request)
+    Percentage of the requests served within a certain time (ms)
+      50%   1304
+      66%   1731
+      75%   1920
+      80%   2339
+      90%   2976
+      95%   3660
+      98%   4212
+      99%   4585
+     100%   5077 (longest request)

@@ -17,11 +17,11 @@ Shell代码
 
 ::
 
-　　mysql>set global general_log_file='/tmp/general.lg';    #设置路径
+    mysql>set global general_log_file='/tmp/general.lg';    #设置路径
 
-　　mysql>set global general_log=on;    # 开启general log模式
+    mysql>set global general_log=on;    # 开启general log模式
 
-　　mysql>set global general_log=off;   # 关闭general log模式
+    mysql>set global general_log=off;   # 关闭general log模式
 
 命令行设置即可,无需重启
 

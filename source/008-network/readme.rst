@@ -10,3 +10,4 @@
     003-NetworkManager
     004-vpn/readme
     005-route
+    006-tinyproxy
