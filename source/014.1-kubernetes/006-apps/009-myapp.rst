@@ -34,9 +34,8 @@ myapp
 
 ::
 
-
-/ # wget -q  -O - myapp/hostname.html
-myapp-848b5b879b-q59pl
+    / # wget -q  -O - myapp/hostname.html
+    myapp-848b5b879b-q59pl
 
 
 验证负载均衡，访问myapp 200次,结果显示，其中一个调度了87次，另一个113次。

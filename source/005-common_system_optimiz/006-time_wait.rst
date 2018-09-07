@@ -6,6 +6,12 @@ TCP四次挥手：
 .. image:: ../../images/opt1.png
 
 
+查看各种连接状态的数量：
+
+.. code-block:: bash
+
+    netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'
+
 Time_wait产生原因及作用：
 ==============================
 

@@ -180,9 +180,9 @@ net.ipv4.tcp_max_syn_backlog = 8192
 
 # 打开TIME-WAIT套接字重用功能，对于存在大量连接的Web服务器非常有效。
 
-net.ipv4.tcp_tw_recycle = 1
+net.ipv4.tcp_tw_recycle = 1   #让TIME_WAIT尽快回收 默认0
 
-net.ipv4.tcp_tw_reuse = 0
+net.ipv4.tcp_tw_reuse = 1  #让TIME_WAIT状态可以重用，这样即使TIME_WAIT占满了所有端口，也不会拒绝新的请求造成障碍 默认是0
 
 
 
