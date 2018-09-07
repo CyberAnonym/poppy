@@ -44,3 +44,10 @@
 .. code-block:: bash
 
     curl -fsSL https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/common_tools/optimize_system.py|python
+
+最大文件打开数优化
+==========================
+
+.. code-block:: bash
+
+    curl -fsSL https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/common_tools/ulimit_optimize.sh|bash
