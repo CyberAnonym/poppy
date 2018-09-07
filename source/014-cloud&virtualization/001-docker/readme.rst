@@ -14,3 +14,4 @@ docker
     007-pull
     008-save
     009-load
+    010-dockerfile
