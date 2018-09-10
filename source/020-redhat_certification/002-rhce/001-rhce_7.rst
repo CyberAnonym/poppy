@@ -189,7 +189,7 @@ server端：
 
 .. code-block:: bash
 
-    # vim /etc/postfix/mail.conf
+    # vim /etc/postfix/main.cf
     relayhost=[smtpX.example.com]
     inet_interfaces = loopback-only
     myorigin = desktopX.example.com
