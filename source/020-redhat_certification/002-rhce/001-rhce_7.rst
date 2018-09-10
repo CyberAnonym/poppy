@@ -267,7 +267,7 @@ lab smtp-nullclient grade
     [root@serverX ~]# setfacl -m u:chihiro:rwx /devops/
     [root@serverX ~]# vim /etc/samba/smb.conf
     .. ..
-    [devops] path = /devops
+        [devops] path = /devops
         write list = chihiro
         hosts allow = 172.25.0.0/24 //只允许指定网域访问
     [root@serverX ~]# systemctl restart smb

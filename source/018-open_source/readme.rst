@@ -8,4 +8,3 @@
     002-etcd/readme
     003-jmeter
     004-wrk
-    005-load

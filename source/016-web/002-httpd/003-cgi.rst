@@ -1,0 +1,90 @@
+cgi
+######
+
+使用httpd cgi，建立动态网站，调用系统命令。
+
+下面是一个应用实例，我们需要通过在浏览器里点击一个按钮，就可以调用这台服务器上的命令，去执行一些我们编写好的操作。
+
+
+省略的操作： 创建用户alvin,alvin用户拥有sudo权限。
+
+httpd服务是alvin启动的。：
+
+.. code-block:: bash
+
+    [root@ops ~]# vim /etc/httpd/conf.d/httpd-vhosts.conf
+    User alvin
+
+    #Define specified directory configuration
+    <Directory "/opt/shenminops">
+        AllowOverride None
+        # Allow open access:
+        Require all granted
+    </Directory>
+
+    #Define specified directory configuration
+    <Directory "/opt/shenminops/cgi-bin">
+        AllowOverride None
+        Options None
+        Require all granted
+    </Directory>
+
+    #Define new Document Root directory, cover origin configuration.
+    DocumentRoot "/opt/shenminops"
+
+
+    [root@ops ~]# vim /etc/httpd/conf/httpd.conf
+    <IfModule alias_module>
+
+        ScriptAlias /cgi-bin/ "/opt/shenminops/cgi-bin/"
+
+    </IfModule>
+
+
+- 创建cgi-bin目录，编写index.html
+
+.. code-block:: bash
+
+    [root@ops ~]# mkdir -p /opt/shenminops/cgi-bin/
+    [root@ops ~]# vim /opt/shenminops/index.html
+    <html>
+    <p>
+            <a href=./cgi-bin/restart_mvc.py?host=k8s1>重启K8S1上的MVC模块</a> </br>
+            <a href=./cgi-bin/restart_mvc.py?host=k8s2>重启K8S2上的MVC模块</a>
+    </p>
+    </html>
+
+
+- 创建cgi-bin里的脚本文件
+
+.. code-block:: bash
+
+    [root@ops ~]# vim /opt/shenminops/cgi-bin/restart_mvc.py
+    #!/usr/bin/python
+    #coding:utf-8
+
+    import subprocess,cgi,hashlib,json,time,requests
+    print("Content-Type: application/json")
+    print('')
+    data=cgi.FieldStorage()
+    host=data.getvalue('host')
+    port=8081
+    def now_time():
+            return time.strftime('%Y-%m-%d %H:%M:%S:')
+    print(subprocess.check_output("sudo ansible %s -m shell -a '/root/webmvc-undertow_restart.sh'"%host,shell=True))
+    print(now_time()+'启动命令已发送，%s上的mvc模块正在启动。'%host)
+
+    n=0
+    while True:
+            try:
+                    response = requests.get('http://%s.shenmin.com:%s/noflux/test2'%(host,port))
+                    if response.status_code == 200 or n > 40:
+                            print(now_time()+'MVC模块启动已完成, 访问地址: http://{host}.shenmin.com:{port}/noflux/test2'.format(host=host,port=port))
+                            exit(0)
+                    else:
+                            print(now_time()+'MVC模块正在启动')
+                            time.sleep(2)
+            except Exception as e :
+                    print(now_time()+'MVC模块正在启动')
+                    time.sleep(2)
+            n=n+2

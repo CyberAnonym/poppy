@@ -6,3 +6,4 @@ httpd
 
     001-installation
     002-virtual_host
+    003-cgi

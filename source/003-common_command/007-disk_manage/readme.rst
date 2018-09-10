@@ -18,3 +18,5 @@
     011-swapoff
     012-iostat
     013-du
+    014-dstat
+    015-fuser

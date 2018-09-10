@@ -9,3 +9,4 @@ python
     003-error/readme
     004-time
     005-character
+    006-requests
