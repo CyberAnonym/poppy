@@ -51,3 +51,11 @@
 .. code-block:: bash
 
     curl -fsSL https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/common_tools/ulimit_optimize.sh|bash
+
+
+百万并发系统内核优化
+==============================
+
+.. code-block:: bash
+
+     curl -fsSL https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/common_tools/core_optmize.sh|bash
