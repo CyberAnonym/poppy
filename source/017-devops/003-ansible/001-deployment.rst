@@ -155,3 +155,10 @@
     k8s2 | SUCCESS | rc=0 >>
     14
 
+
+
+对所有服务器执行ping模块。
+
+.. code-block:: bash
+
+    $ sudo ansible all -m ping

@@ -57,6 +57,28 @@ httpd服务是alvin启动的。：
 
 - 创建cgi-bin里的脚本文件
 
+
+这里我们写一个测试脚本，用base shell 写。
+
+.. code-block:: bash
+
+    [root@ops ~]# vim /opt/shenminops/cgi-bin/t1.sh
+    #!/bin/bash
+
+    echo "Content-Type: application/json"
+    echo ""
+    echo "hello, this is a base shell script"
+    echo 'now time is:'`date +%Y-%m-%d' '%H:%M:%S`
+    [root@ops ~]# chmod +x /opt/shenminops/cgi-bin/t1.sh
+    [root@ops ~]# systemctl restart httpd
+    [root@ops ~]# curl http://ops.shenmin.com/cgi-bin/t1.sh
+    hello, this is a base shell script
+    now time is:2018-09-10 17:22:57
+    [root@ops ~]#
+
+
+下面是我们实际应用中编写的脚本。
+
 .. code-block:: bash
 
     [root@ops ~]# vim /opt/shenminops/cgi-bin/restart_mvc.py

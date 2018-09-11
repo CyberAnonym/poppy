@@ -199,6 +199,8 @@ server端：
 
     # systemctl restart postfix
     # systemctl enable postfix
+    # firewall-cmd --add-service=smtp
+    # firewall-cmd --reload
 
     # echo 'Mail Data.' |mail -s 'Test1' student
 
@@ -303,9 +305,9 @@ lab smtp-nullclient grade
 
 - 以只读的方式共享目录/public，同时只能被 groupX.example.com 域中的系统访问
 - 以读写的方式共享目录/protected，能被 groupX.example.com 域中的系统访问
-- 访问/protected 需要通过 Kerberos 安全加密，您可以使用下面 URL 提供的密钥： http://host.groupX.example.com/material/nfs_server.keytab
-- 目录/protected 应该包含名为 project 拥有人为 krishna 的子目录
-- 用户 krishna 能以读写方式访问/protected/project
+- 访问/protected 需要通过 Kerberos 安全加密，您可以使用下面 URL 提供的密钥： http://classroom.example.com/pub/keytabs/server0.keytab
+- 目录/protected 应该包含名为 project 拥有人为 ldapuser0 的子目录
+- 用户 ldapuser0 能以读写方式访问/protected/project
 
 server0:
 
@@ -317,15 +319,20 @@ server0:
     [root@server0 ~]# chcon -R -t public_content_t /public
     [root@server0 ~]# chcon -R -t public_content_t /protected
     [root@server0 ~]# vim /etc/exports
-    /public 172.25.0.0/24(ro,sync) /protected 172.25.0.0/24(rw,sync,sec=krb5p)
+    /public 172.25.0.0/24(ro,sync)
+    /protected 172.25.0.0/24(rw,sync,sec=krb5p)
     [root@server0 ~]# wget -O /etc/krb5.keytab http://classroom.example.com/pub/keytabs/server0.keytab
-    [root@server0 ~]# vim /etc/sysconfig/nfs RPCNFSDARGS="-V 4.2"
-    [root@system1~]# chown deepak /protected/confidential
-    [root@server0 ~]# firewall-cmd --permanent --add-service=nfs success
-    [root@server0 ~]# firewall-cmd --permanent --add-service=mountd success
-    [root@server0 ~]# firewall-cmd --permanent --add-service=rpc-bind success
+    [root@server0 ~]# vim /etc/sysconfig/nfs
+    RPCNFSDARGS="-V 4.2"
+    [root@system1~]# chown ldapuser0 /protected/project
+    [root@server0 ~]# firewall-cmd --permanent --add-service=nfs
+    success
+    [root@server0 ~]# firewall-cmd --permanent --add-service=mountd
+    success
+    [root@server0 ~]# firewall-cmd --permanent --add-service=rpc-bind
+    success
     [root@server0 ~]# firewall-cmd --reload success
-    [root@server0 ~]# setfacl -m u:deepak:rwx /protected
+    [root@server0 ~]# setfacl -m u:ldapuser0:rwx /protected
     [root@server0 ~]# systemctl restart nfs-server nfs-secure-server
     [root@server0 ~]# systemctl enable nfs-server nfs-secure-server
     [root@server0 ~]# exportfs -ra
@@ -340,7 +347,7 @@ server0:
 在 system2 上挂载一个来自 system1.goup3.exmaple.com 的共享，并符合下列要求：
 
 - /public 挂载在下面的目录上/mnt/nfsmount
-- /protected 挂载在下面的目录上/mnt/nfssecure 并使用安全的方式，密钥下载 URL： http://host.groupX.example.com/nfs_client.keytab
+- /protected 挂载在下面的目录上/mnt/nfssecure 并使用安全的方式，密钥下载 URL： http://classroom.example.com/pub/keytabs/desktop0.keytab
 - 用户 krishna 能够在/mnt/nfssecure/project 上创建文件
 - 这些文件系统在系统启动时自动挂载
 
@@ -360,8 +367,8 @@ desktop0:
     [root@desktop0 ~]# mkdir -p /mnt/nfsmount
     [root@desktop0 ~]# mkdir -p /mnt/nfssecure
     [root@desktop0 ~]# vim /etc/fstab
-    172.25.0.11:/public /mnt/nfsmount nfs defaults 0 0
-    172.25.0.11:/protected /mnt/nfssecure nfs defaults,sec=krb5p,v4.2 0 0
+    172.25.0.11:/public /mnt/nfsmount nfs defaults,_netdev 0 0
+    172.25.0.11:/protected /mnt/nfssecure nfs defaults,sec=krb5p,v4.2,_netdev 0 0
     [root@desktop0 ~]# mount -a
     [root@desktop0 ~]# df -Th
 
@@ -393,7 +400,8 @@ server0:
     [root@server0 ~]# cd /var/www/html/
     [root@server0 html]# wget -O index.html http://rhgls.domain1.example.com/materials/server.html
     [root@server0 html]# ls index.html
-    [root@server0 html]# cat index.html server.example.com.
+    [root@server0 html]# cat index.html
+    server.example.com.
     [root@server0 ~]# systemctl restart httpd
     [root@server0 ~]# systemctl enable httpd
     ln -s '/usr/lib/systemd/system/httpd.service' '/etc/systemd/system/multi-user.target.wants/httpd.service'
@@ -410,9 +418,6 @@ server0:
 
 配置安全 web 服务试题概述：
 ==============================================
-
-
-
 
 ..
     为站点 http://system1.groupX.example.com 配置 TLS 加密：
@@ -534,7 +539,9 @@ server0:
     [root@server0 ~]# chcon -R -t httpd_sys_content_t /var/www/html/secret
     [root@server0 ~]# vim /etc/httpd//conf.d/httpd-vhosts.conf
     <Directory "/var/www/html/secret">
-    AllowOverride None Require all denied Require local
+        AllowOverride None
+        Require all denied
+        Require local granted
     </Directory>
     [root@server0 ~]# systemctl restart httpd.service
     [root@server0 ~]# cd /var/www/html/secret/
@@ -551,10 +558,10 @@ server0:
 在 system1 上配置提供动态 Web 内容，要求如下：
 
 - 动态内容由名为 alt.groupX.example.com 的虚拟主机提供
-- 虚拟主机侦听在端口 8909
+- 虚拟主机侦听在端口 8998
 - 从 http://server1.groupX.example.com/materials/webinfo.wsgi 下载一个脚本， 然后放在适当的位置，无论如何不要修改此文件的内容
-- 客户端访问 http://alt.groupX.example.com:8909 可接收到动态生成的 Web 页
-- 此 http://alt.groupX.example.com:8909/必须能被 groupX.example.com 域内的所有系统访问
+- 客户端访问 http://alt.groupX.example.com:8998 可接收到动态生成的 Web 页
+- 此 http://alt.groupX.example.com:8998/必须能被 groupX.example.com 域内的所有系统访问
 
 .. code-block:: bash
 
@@ -563,7 +570,7 @@ server0:
     Listen 8998
     [root@server0 ~]# mkdir -p /var/www/webapp
     [root@server0 ~]# chcon -R -t httpd_sys_content_t /var/www/webapp
-    [root@server0 ~]# semanage port -a -t httpd_port_t -p tcp 8990
+    [root@server0 ~]# semanage port -a -t http_port_t -p tcp 8998
     [root@server0 ~]# cd /var/www/webapp/
     [root@server0 webapp]# wget -O webapp.wsgi http://rhgls.domain1.example.com/materials/webapp.wsgi
     [root@server0 webapp]# cat webapp.wsgi
@@ -583,6 +590,7 @@ server0:
     ServerName webapp0.example.com
     WSGIScriptAlias / /var/www/webapp/webapp.wsgi
     </VirtualHost>
+    [root@server0 ~]# systemctl restart httpd.service
     [root@server0 ~]# firewall-cmd --permanent --add-port=8998/tcp success
     [root@server0 ~]# firewall-cmd --reload success
     [root@server0 ~]# firewall-config
@@ -591,8 +599,6 @@ server0:
 
 .. code-block:: bash
 
-    [root@server0 ~]# semanage port -a -t http_port_t -p tcp 8998
-    [root@server0 ~]# systemctl restart httpd.service
 
 创建一个脚本试题概述：
 ==============================================
@@ -705,10 +711,8 @@ server0:
 
 
     yum -y install iscsi-initiator-utils
-
     vim /etc/iscsi/initiatorname.iscsi
     InitiatorName=iqn.2016-02.com.example:desktop0
-
 
     iscsiadm -m discovery -t st -p server0
     iscsiadm -m node -T iqn.2016-02.com.example:server0 -p 172.25.0.11 -l
@@ -721,18 +725,17 @@ server0:
     fdisk /dev/sda 分2100M
 
     mkfs.ext4 /dev/sda1
-
     mkdir /mnt/data
     blkid /dev/sda1
-
     vim /etc/fstab
     UUID="088fd0f5-554e-48b3-ab20-5dd060d8c7ee"  /mnt/data ext4 _netdev 0 0
-
     mount -a
     iscsiadm -m discovery -t st -p server0
-    iscsiadm -m node -T iqn.2016-02.com.example:server0 -p 172.25.0.11 -l
+    iscsiadm -m node -T iqn.2016-02.com.example:server0 -p 172.25.0.11  -o update -n node.startup -v automatic
 
     sync ; reboot -f
+
+..
 
     方法2
     yum -y install iscsi*
