@@ -81,7 +81,7 @@ alv.pub:    172.24.3.0/24
 
 .. code-block:: bash
 
-    firewall-cmd --add-forward-port=port=5423:proto=tcp:toport:80 --permanent
+    firewall-cmd --add-forward-port=port=5423:proto=tcp:toport=80 --permanent
     firewall-cmd --reload
 
 配置链路聚合试题概述：
@@ -269,8 +269,10 @@ lab smtp-nullclient grade
     [root@serverX ~]# setfacl -m u:chihiro:rwx /devops/
     [root@serverX ~]# vim /etc/samba/smb.conf
     .. ..
-        [devops] path = /devops
+        [devops]
+        path = /devops
         write list = chihiro
+        valid users = kenji
         hosts allow = 172.25.0.0/24 //只允许指定网域访问
     [root@serverX ~]# systemctl restart smb
 
@@ -293,7 +295,7 @@ lab smtp-nullclient grade
     [root@desktopX ~]# useradd mike   //添加普通测试用户
     [root@desktopX ~]# su - mike    //切换到普通用户
     [root@desktopX ~]# su - chihiro
-    [mike@desktopX ~]$ cifscreds add    //向服务器提交用户认证凭据
+    [mike@desktopX ~]$ cifscreds add -u chihiro server0    //向服务器提交用户认证凭据
     Password:                         //提供 Samba 用户 chihiro 的密码
     [mike@desktopX ~]$ touch /mnt/dev/b.txt     //确认有写入权限（新建文件)
 
@@ -348,7 +350,7 @@ server0:
 
 - /public 挂载在下面的目录上/mnt/nfsmount
 - /protected 挂载在下面的目录上/mnt/nfssecure 并使用安全的方式，密钥下载 URL： http://classroom.example.com/pub/keytabs/desktop0.keytab
-- 用户 krishna 能够在/mnt/nfssecure/project 上创建文件
+- 用户 ldapuser0 能够在/mnt/nfssecure/project 上创建文件
 - 这些文件系统在系统启动时自动挂载
 
 desktop0:
@@ -405,6 +407,7 @@ server0:
     [root@server0 ~]# systemctl restart httpd
     [root@server0 ~]# systemctl enable httpd
     ln -s '/usr/lib/systemd/system/httpd.service' '/etc/systemd/system/multi-user.target.wants/httpd.service'
+    [root@server0 ~]# firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="172.24.3.0/24" reject"
     [root@server0 ~]# firewall-cmd --permanent --add-service=http success
     [root@server0 ~]# firewall-cmd --permanent --add-service=https success
     [root@server0 ~]# firewall-cmd --reload success
@@ -467,7 +470,7 @@ desktop0:
 .. code-block:: bash
 
 
-    [root@desktop0 ~]# firefox
+    [root@desktop0 ~]# curl -k server0.example.com
 
 
 配置虚拟主机试题概述：
@@ -763,8 +766,8 @@ server0:
 
 - 数据库应该包含来自数据库复制的内容，复制文件的 URL 为： http://server1.groupX.example.com/materials/users.sql
 - 数据库只能被 localhost 访问
-- 除了 root 用户，此数据库只能被用户 Raikon 查询，此用户密码为 atenorth
-- root 用户的密码为 atenorth，同时不允许空密码登陆。
+- 除了 root 用户，此数据库只能被用户 Raikon 查询，此用户密码为 redhat
+- root 用户的密码为 redhat，同时不允许空密码登陆。
 
 .. code-block:: sh
 
@@ -838,5 +841,5 @@ server0:
 
     SELECT name FROM base WHERE password='solicitous';
 
-    SELECT count(*) FROM base,location WHERE base.name='Barbara' AND location.city='Sunnyvale' AND base.id=location.id;
+    SELECT count(*) FROM location WHERE name='Barbara' AND city='Sunnyvale';
 
