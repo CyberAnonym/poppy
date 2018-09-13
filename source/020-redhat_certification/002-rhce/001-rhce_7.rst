@@ -185,6 +185,11 @@ system2
 
 [练习环境：lab smtp-nullclient setup] server和desktop都执行这个，
 
+.. note::
+
+    #. 我们的练习环境下,一定要在server和desktop端都先执行 lab smtp-nullclient setup，否则会报错的。
+    #. inet_interfaces 是用于控制Postfix侦听传入电子邮件的网络接口。如果设置为loopback-only,仅侦听127.0.0.1和::1。如果设置为all,则侦听所有网络接口。还可以指定特定地址。
+
 server端：
 
 .. code-block:: bash
