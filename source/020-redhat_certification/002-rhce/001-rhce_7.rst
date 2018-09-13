@@ -81,7 +81,7 @@ alv.pub:    172.24.3.0/24
 
 .. code-block:: bash
 
-    firewall-cmd --add-forward-port=port=5423:proto=tcp:toport=80 --permanent
+    firewall-cmd --add-forward-port='port=5423:proto=tcp:toport=80' --permanent
     firewall-cmd --reload
 
 配置链路聚合试题概述：
@@ -218,6 +218,7 @@ desktop端验证：
 
 .. code-block:: bash
 
+    lab smtp-nullclient setup
     mail -u student
 
 验证该实验
