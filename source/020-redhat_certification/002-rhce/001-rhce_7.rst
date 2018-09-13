@@ -95,6 +95,10 @@ alv.pub:    172.24.3.0/24
 - 此链路在 system2 使用下面的地址 172.16.X.25/255.255.255.0
 - 此链路在系统重启之后依然保持正常状态
 
+.. note::
+
+    创建tem0的时候，编写config的时候，那段json的最外层一定要用单引号'', 例如： '{"runner":{"name":"activebackup"}}'， 如果是外层是双引号"" 里面是单引号，后面slave会识别不到这个master的，connection up时会报错的。
+
 
 system1:
 
@@ -118,6 +122,8 @@ system1:
     teamdctl team0 state
 
 system2:
+
+
 
 .. code-block:: bash
     :linenos:
@@ -514,9 +520,10 @@ server0:
     </VirtualHost>
     [root@server0 ~]# cd /var/www/virtual/
     [root@server0 virtual]# wget -O index.html http://rhgls.domain1.example.com/materials/www.html
-    [root@server0 virtual]# cat index.html www.example.com.
+    [root@server0 virtual]# cat index.html
+    www.example.com.
     [root@server0 virtual]# cd
-    [root@server0 ~]# setfacl -m u:andy:rwx /var/www/virtual
+    [root@server0 ~]# setfacl -m u:harry:rwx /var/www/virtual
     [root@server0 ~]# systemctl restart httpd.service
 
 desktop0:
@@ -525,23 +532,15 @@ desktop0:
 
     [root@desktop0 ~]# firefox
 
-配置 web 内容的访问试题概述：
-==============================================
-
-..
-    在您的 system1 上的 web 服务器的 DocumentRoot 目录下创建一个名为 private 的目录，要求如下：
-
-    - 从 http://server1.groupX.example.com/materails/private.html 下载一个文件副本到这个目录，并且得命名为 index.html
-    - 不要对这个文件的内容做任何修改
-    - 从 system1 上，任何人都可以浏览 private 的内容，但是从其他系统不能访问这个目录的内容
-
+配置 web 内容的访问
+=========================
 
 描述：
 
 在 server0 上的 web 服务器的 DocumentRoot 目录下创建一个名为 secret 的目录，要求如下：
 
 - 从 http://rhgls.domain1.example.com/materials/private.html 下载一个文件副本到这个目录，并且重命名为 index.html，不要对这个文件的内容做任何修改。
-- 从 server0 上，任何人都可以浏览 secret 的内容，但是从其它系统不能访问这个目录的内
+- 从 server0 上，任何人都可以浏览 secret 的内容，但是从其它系统不能访问这个目录的内容
 
 
 
@@ -566,8 +565,10 @@ server0:
 
 
 
-实现动态 WEB 内容试题概述：
-==============================================
+实现动态 WEB 内容
+======================
+
+试题概述：
 
 在 system1 上配置提供动态 Web 内容，要求如下：
 
