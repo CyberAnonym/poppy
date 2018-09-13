@@ -280,16 +280,36 @@ http://content.example.com/rhel7.0/x86_64/errata/Packages/
 安装软件包
 ::
 
-    [root@server0 ~]# yum install -y sssd
+    yum install -y sssd	krb5-workstation.x86_64 nss-pam-* pam-krb5
+    mdkir -p /etc/openldap/cacerts
+    cd /etc/openldap/cacerts
+    wget http://classroom.example.com/pub/example-ca.crt
+
 
 打开配置界面
 ::
 
-    [root@server0 ~]# authconfig-tui
+    authconfig-tui
 
-左侧选中 Use LDAP 和右侧选中 Use LDAP Authentication，然后 Next
+左侧选中 Use LDA P 和右侧选中 Use LDAP Authentication，然后 Next
 
 选中 Use TLS 和填写 LDAP Server 和 Base DN，然后 Next
+    | [*] Use TLS
+    | Server: ldap://classroom.example.com
+    | Base DN: dc=example,dc=com
+
+然后填写Kerberos Settings
+    | Realm: EXAMPLE.COM     #注意要大写
+    | KDC: clssroom.example.com
+    | Admin Server: classroom.com
+    | (下面两相不用勾选)
+
+- 配置Kerberos
+
+    | Realm: EXAMPLE.COM
+    | KDC: classroom.example.com
+    | Admin Server: classroom.example.com
+
 
 下载证书
 
@@ -305,11 +325,13 @@ http://content.example.com/rhel7.0/x86_64/errata/Packages/
 下载完成后，回来点击 Ok。如果在证书下载前按了 ok，那么需要将前面的配置恢复成默认，然后重新配置。用户信息为 ldap 和验证信息为 Kerberos
 
 安装软件包
+
 ::
 
     yum install -y sssd	krb5-workstation.x86_64 nss-pam-* pam-krb5
 
 打开配置界面
+
 ::
 
     authconfig-tui
