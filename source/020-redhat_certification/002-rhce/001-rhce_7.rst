@@ -188,7 +188,10 @@ system2
 .. note::
 
     #. 我们的练习环境下,一定要在server和desktop端都先执行 lab smtp-nullclient setup，否则会报错的。
-    #. inet_interfaces 是用于控制Postfix侦听传入电子邮件的网络接口。如果设置为loopback-only,仅侦听127.0.0.1和::1。如果设置为all,则侦听所有网络接口。还可以指定特定地址。
+    #. inet_interfaces 是用于控制Postfix侦听传入电子邮件的网络接口。如果设置为loopback-only,仅侦听127.0.0.1和::1。如果设置为all,则侦听所有网络接口。还可以指定特定地址。 默认:inet_interfaces = localhost
+    #. myorigin 用于重写本地发布的电子邮件,使其显示为来自该域。这样有助于确保响应返回入站邮件服务器,默认:myorigin = $myhostname
+    #. mydestination  收到地址为这些域的电子邮件将传递至MDA,以进行本地发送。默认:mydestination = $myhostname, localhost.$mydomain, localhost
+    #. mynetworks IP地址和网络的逗号分隔列表(采用CIDR表示法)。这些地址和网络可以通过此MTA转发至任何位置,无需进一步身份验证。 默认:mynetworks = 127.0.0.0/8
 
 server端：
 
