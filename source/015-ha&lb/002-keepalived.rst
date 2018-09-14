@@ -1,6 +1,26 @@
 keepalived
 ################
 
+keepalived主要用作RealServer的健康状态检查以及LoadBalance主机和BackUP主机之间failover的实现。keepalived主要目的在于，其自身启动一个服务，能够实现工作在双节点或多个节点上，并且可以在内核生效的ipvs规则其中当前持有资源的节点被称为活跃节点，另外的节点被称为备节点被称为 Master/Backup。
+
+
+VRRP
+=========
+
+虚拟路由器冗余协议（VRRP）是一种选择协议，它可以把一个虚拟路由器的责任动态分配到局域网上的 VRRP 路由器中的一台。控制虚拟路由器 IP 地址的 VRRP 路由器称为主路由器，它负责转发数据包到这些虚拟 IP 地址。一旦主路由器不可用，这种选择过程就提供了动态的故障转移机制，这就允许虚拟路由器的 IP 地址可以作为终端主机的默认第一跳路由器。使用 VRRP 的好处是有更高的默认路径的可用性而无需在每个终端主机上配置动态路由或路由发现协议。 VRRP 包封装在 IP 包中发送。
+
+VRRP优先级别：
+
+	VRRP每个节点是有自己的优先级的，一般优先级是从0-255，数字越大优先级越高因此可以这么定义：假如要有一初始化的状态，其中一节点优先级100另一节点优先级99，那么毫无疑问，谁的优先级高谁就是主节点所有的节点刚启动后上线都是backup状态，需通过选举的方式选择master，如果其他节点没有响应则将自己提升为master
+
+    通告机制：如果节点之间master出现故障，其会自动转移当前角色，这时我们的管理员应该知道其已切换角色keepalived支持邮件发送机制，如果其状态发生改变的话可以通过邮件方式发送给管理员，使管理员第一时间可以查看其活动状态，方便之后的运维工作
+
+keepalived核心组成部分
+
+    #. vrrp的实现
+    #. virtual_server：基于vrrp作为所谓通告机制之上的
+    #. vrrp_script:以外部脚本方式进行检测
+
 
 实验环境
 ================
@@ -54,21 +74,21 @@ Vos1.alv.pub configuration
        notification_email_from Alvin.Wan.CN@hotmail.com
        smtp_server 127.0.0.1
        smtp_connect_timeout 300
-       router_id director
+       router_id director #主备要不同
     }
 
     vrrp_instance VI_1 {
-        state MASTER
-        interface eth0
-        virtual_router_id 51
-        priority 100
+        state MASTER  #备份服务器上将 MASTER 改为 BACKUP
+        interface eth0 #网卡
+        virtual_router_id 51   # 主、备机的virtual_router_id必须相同
+        priority 150  # 主、备机取不同的优先级，主机值较大，备份机值较小
         advert_int 1
         authentication {
             auth_type PASS
             auth_pass 1111
         }
         virtual_ipaddress {
-            192.168.105.211
+            192.168.105.211  #VRRP H虚拟地址
         }
     }
 
@@ -175,7 +195,12 @@ vos3alv.pub configuration
     echo "2" >/proc/sys/net/ipv4/conf/lo/arp_announce
     echo "1" >/proc/sys/net/ipv4/conf/all/arp_ignore
     echo "2" >/proc/sys/net/ipv4/conf/all/arp_announce
-    2.4,vos4.alv.pub configuration
+
+vos4.alv.pub configuration
+===================================
+
+.. code-block:: bash
+
     # yum install httpd -y
     # echo web2 > /var/www/html/index.html
     # /etc/init.d/httpd start
