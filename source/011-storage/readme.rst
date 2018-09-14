@@ -13,6 +13,7 @@
     007-ceph
     008-owncloud
     009-fastdfs
+    010-nextcloud
 
 
 

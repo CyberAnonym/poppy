@@ -177,12 +177,12 @@ YUM 的软件库源为 http://rhgls.domainX.example.com/pub/x86_64/Server.将此
 
 复制文件/etc/fstab 到/var/tmp 目录下，并按照以下要求配置/var/tmp/fstab 文件的权限:
 
-#. 该文件的所属人为 root
-#. 该文件的所属组为 root
-#. 该文件对任何人均没有执行权限用户
-#. natasha对该文件有读和写的权限用户
-#. harry对该文件既不能读也不能写
-#. 所有其他用户（包括当前已有用户及未来创建的用户）对该文件都有读的权限
+    #. 该文件的所属人为 root
+    #. 该文件的所属组为 root
+    #. 该文件对任何人均没有执行权限
+    #. 用户natasha对该文件有读和写的权限
+    #. 用户harry对该文件既不能读也不能写
+    #. 所有其他用户（包括当前已有用户及未来创建的用户）对该文件都有读的权限
 
 参考解答：
 
@@ -275,86 +275,45 @@ http://content.example.com/rhel7.0/x86_64/errata/Packages/
 
 解答：
 
-用户信息和验证信息全为 ldap
+    用户信息和验证信息全为 ldap
 
-安装软件包
-::
+    安装软件包
+    ::
 
-    yum install -y sssd	krb5-workstation.x86_64 nss-pam-* pam-krb5
-    mdkir -p /etc/openldap/cacerts
-    cd /etc/openldap/cacerts
-    wget http://classroom.example.com/pub/example-ca.crt
-
-
-打开配置界面
-::
-
-    authconfig-tui
-
-左侧选中 Use LDA P 和右侧选中 Use LDAP Authentication，然后 Next
-
-选中 Use TLS 和填写 LDAP Server 和 Base DN，然后 Next
-    | [*] Use TLS
-    | Server: ldap://classroom.example.com
-    | Base DN: dc=example,dc=com
-
-然后填写Kerberos Settings
-    | Realm: EXAMPLE.COM     #注意要大写
-    | KDC: clssroom.example.com
-    | Admin Server: classroom.com
-    | (下面两相不用勾选)
-
-- 配置Kerberos
-
-    | Realm: EXAMPLE.COM
-    | KDC: classroom.example.com
-    | Admin Server: classroom.example.com
+        yum install -y sssd	krb5-workstation.x86_64 nss-pam-* pam-krb5
+        mdkir -p /etc/openldap/cacerts
+        wget -P  /etc/openldap/cacerts http://classroom.example.com/pub/example-ca.crt
 
 
-下载证书
+    打开配置界面
+    ::
 
-将证书下载到目录/etc/openldap/cacerts/
+        authconfig-tui
 
-新开一个终端下载证书
+    左侧选中 Use LDA P 和右侧选中 Use LDAP Authentication，然后 Next
 
-::
+    - 选中 Use TLS 和填写 LDAP Server 和 Base DN，然后 Next
+        | [*] Use TLS
+        | Server: ldap://classroom.example.com
+        | Base DN: dc=example,dc=com
 
-    [root@server0 ~]# cd /etc/openldap/cacerts/
-    [root@server0 cacerts]# wget http://classroom.example.com/pub/example-ca.crt
+    - 然后填写Kerberos Settings
+        | Realm: EXAMPLE.COM     #注意要大写
+        | KDC: clssroom.example.com
+        | Admin Server: classroom.com
+        | (下面两相不用勾选)
 
-下载完成后，回来点击 Ok。如果在证书下载前按了 ok，那么需要将前面的配置恢复成默认，然后重新配置。用户信息为 ldap 和验证信息为 Kerberos
+    - 配置Kerberos
 
-安装软件包
+        | Realm: EXAMPLE.COM
+        | KDC: classroom.example.com
+        | Admin Server: classroom.example.com
 
-::
 
-    yum install -y sssd	krb5-workstation.x86_64 nss-pam-* pam-krb5
+    ::
 
-打开配置界面
+        [root@server0 ~]# getent passwd ldapuser0
 
-::
-
-    authconfig-tui
-
-选中 Use LDAP 和 Use Kerberos，然后 Next
-
-选中 Use TLS 和填写 LDAP Server 和 Base DN，然后 Next
-
-配置 Kerberos
-
-下载证书
-将证书下载到目录/etc/openldap/cacerts/
-
-新开一个终端下载证书
-::
-
-    [root@server0 ~]# cd /etc/openldap/cacerts/
-    [root@server0 cacerts]# wget http://classroom.example.com/pub/example-ca.crt
-
-下载完成后，回来点击 Ok。如果在证书下载前按了 ok，那么需要将前面的配置恢复成默认，然后重新配置。验证：
-::
-
-    [root@server0 ~]# getent passwd ldapuser0
 
 配置 LDAP 用户家目录自动挂载
 -------------------------------
