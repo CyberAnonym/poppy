@@ -18,3 +18,4 @@
     012-mail
     013-journalctl
     014-alias
+    015-dmesg

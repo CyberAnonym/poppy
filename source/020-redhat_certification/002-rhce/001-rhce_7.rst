@@ -334,24 +334,26 @@ server0:
 
     [root@server0 ~]# lab nfskrb5 setup   #练习环境
     [root@server0 ~]# mkdir /public
-    [root@server0 ~]# mkdir -p /protected/confidential
-    [root@server0 ~]# chcon -R -t public_content_t /public
-    [root@server0 ~]# chcon -R -t public_content_t /protected
+    [root@server0 ~]# mkdir -p /protected/protected
+    [root@system1~]# chown ldapuser0 /protected/project
+    [root@server0 ~]# semanage fcontext -a -t public_content_t '/public(/.*)?'
+    [root@server0 ~]# semanage fcontext -a -t public_content_rw_t '/protected(/.*)?'
+    [root@server0 ~]# restorecon -Rv /public
+    [root@server0 ~]# restorecon -Rv /protected
     [root@server0 ~]# vim /etc/exports
     /public 172.25.0.0/24(ro,sync)
     /protected 172.25.0.0/24(rw,sync,sec=krb5p)
     [root@server0 ~]# wget -O /etc/krb5.keytab http://classroom.example.com/pub/keytabs/server0.keytab
     [root@server0 ~]# vim /etc/sysconfig/nfs
     RPCNFSDARGS="-V 4.2"
-    [root@system1~]# chown ldapuser0 /protected/project
     [root@server0 ~]# firewall-cmd --permanent --add-service=nfs
     success
     [root@server0 ~]# firewall-cmd --permanent --add-service=mountd
     success
     [root@server0 ~]# firewall-cmd --permanent --add-service=rpc-bind
     success
-    [root@server0 ~]# firewall-cmd --reload success
-    [root@server0 ~]# setfacl -m u:ldapuser0:rwx /protected
+    [root@server0 ~]# firewall-cmd --reload
+    success
     [root@server0 ~]# systemctl restart nfs-server nfs-secure-server
     [root@server0 ~]# systemctl enable nfs-server nfs-secure-server
     [root@server0 ~]# exportfs -ra
