@@ -6,7 +6,8 @@
     :maxdepth: 2
 
     001-systemd_index
-    002-chrony
-    003-ssh
-    004-cron
-    005-ldap
+    002-ntpd
+    003-chrony
+    004-ssh
+    005-cron
+    006-ldap

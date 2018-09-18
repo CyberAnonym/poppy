@@ -27,6 +27,7 @@ $*	    输入的参数的具体内容（将输入的参数作为一个单词）
     002-case
     003-for
     004-while
+    005-condition_judge
     ../../003-common_command/001-process_string/0*
 
 

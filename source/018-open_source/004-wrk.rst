@@ -17,7 +17,7 @@ wrk
 .. code-block:: bash
 
     $ cd wrk
-    $ sudo make
+    $ make
 
 make结束之后，当前目录下会出现一个wrk文件，我们把他放到bin目录下。
 
