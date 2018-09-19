@@ -10,3 +10,5 @@ python
     004-time
     005-character
     006-requests
+    007-set_environment_variable
+    008-django/readme

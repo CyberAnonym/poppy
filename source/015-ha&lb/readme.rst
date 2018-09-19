@@ -4,6 +4,6 @@
 .. toctree::
     :maxdepth: 2
 
-    001-lvs
+    001-lvs/readme.rst
     002-keepalived
     003-haproxy

@@ -6,6 +6,5 @@
 
     000-my_common/readme.rst
     001-shell/readme.rst
-    002-python/readme.rst
     003-go/readme.rst
     004-javascript/readme.rst

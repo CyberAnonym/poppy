@@ -12,7 +12,7 @@ Alvin编写了一键安装python3.6.5的代码，可以在shell下一键执行�
 
 脚本详细内容如下：
 
-.. literalinclude:: ../../../code/python/install_python3.6.5.py
+.. literalinclude:: ../../code/python/install_python3.6.5.py
    :language: python
    :linenos:
    :lines: 1-
