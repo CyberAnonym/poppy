@@ -298,8 +298,6 @@ lab smtp-nullclient grade
 .. code-block:: bash
 
     [root@desktopX ~]# yum -y install samba-client cifs-utils
-    [root@desktopX ~]# smbclient -L serverX
-    .. ..
     [root@desktopX ~]# mkdir/mnt/dev
     [root@desktopX ~]# vim /etc/fstab
     //serverX.example.com/devops    /mnt/dev    cifs username=kenji,password=atenorth,multiuser,sec=ntlmssp,_netdev 0 0
