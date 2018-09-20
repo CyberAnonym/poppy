@@ -400,6 +400,8 @@ server0:
 - 用户 ldapuser0 能够在/mnt/nfssecure/project 上创建文件
 - 这些文件系统在系统启动时自动挂载
 
+ldapuser0的密码是 kerberos
+
 desktop0:
 
 .. code-block:: bash
