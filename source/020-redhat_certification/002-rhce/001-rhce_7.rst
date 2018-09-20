@@ -334,7 +334,7 @@ server0:
 
     [root@server0 ~]# lab nfskrb5 setup   #练习环境
     [root@server0 ~]# mkdir /public
-    [root@server0 ~]# mkdir -p /protected/protected
+    [root@server0 ~]# mkdir -p /protected/project
     [root@system1~]# chown ldapuser0 /protected/project
     [root@server0 ~]# semanage fcontext -a -t public_content_t '/public(/.*)?'
     [root@server0 ~]# semanage fcontext -a -t public_content_rw_t '/protected(/.*)?'
