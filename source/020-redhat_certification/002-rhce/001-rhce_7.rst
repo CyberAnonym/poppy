@@ -293,12 +293,11 @@ lab smtp-nullclient grade
     [root@serverX ~]# useradd chihiro; pdbedit -a chihiro
     [root@serverX ~]# setfacl -m u:chihiro:rwx /devops/
     [root@serverX ~]# vim /etc/samba/smb.conf
-    .. ..
-        [devops]
-        path = /devops
-        write list = chihiro
-        valid users = kenji
-        hosts allow = 172.25.0.0/24 //只允许指定网域访问
+    [devops]
+    path = /devops
+    write list = chihiro
+    valid users = kenji
+    hosts allow = 172.25.0.0/24 //只允许指定网域访问
     [root@serverX ~]# systemctl restart smb
 
 然后在客户端desktop0上:
