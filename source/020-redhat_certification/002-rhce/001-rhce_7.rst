@@ -368,6 +368,28 @@ server0:
     /protected 172.25.0.0/24
     /public 172.25.0.0/24
 
+
+非交互式操作，可使用一下命令
+
+::
+
+    lab nfskrb5 setup
+    mkdir /public
+    mkdir -p /protected/project
+    chown ldapuser0 /protected/project
+    echo '/public 172.25.0.0/24(ro,sync)' > /etc/exports
+    echo '/protected 172.25.0.0/24(rw,sync,sec=krb5p)' >> /etc/exports
+    wget -q -O /etc/krb5.keytab http://classroom.example.com/pub/keytabs/server0.keytab
+    sed  -i 's/RPCNFSDARGS=.*/RPCNFSDARGS="-V 4.2"/' /etc/sysconfig/nfs
+    firewall-cmd --permanent --add-service=nfs
+    firewall-cmd --permanent --add-service=mountd
+    firewall-cmd --permanent --add-service=rpc-bind
+    firewall-cmd --reload
+    systemctl enable nfs-server nfs-secure-server
+    systemctl start nfs-server nfs-secure-server
+
+
+
 挂载 NFS 共享试题概述：
 ==============================================
 
@@ -398,6 +420,20 @@ desktop0:
     172.25.0.11:/protected /mnt/nfssecure nfs defaults,sec=krb5p,v4.2,_netdev 0 0
     [root@desktop0 ~]# mount -a
     [root@desktop0 ~]# df -Th
+
+- 非交互式操作，可使用以下命令，复制粘贴一键完成
+
+::
+
+    lab nfskrb5 setup
+    wget -q -O /etc/krb5.keytab http://classroom.example.com/pub/keytabs/desktop0.keytab
+    systemctl enable nfs-secure
+    systemctl start nfs-secure
+    mkdir -p /mnt/{nfsmount,nfssecure}
+    echo 'server0:/public /mnt/nfsmount nfs defaults,_netdev 0 0' >> /etc/fstab
+    echo 'server0:/protected /mnt/nfssecure nfs defaults,_netdev,sec=krb5p,v4.2 0 0' >> /etc/fstab
+    mount -a
+
 
 
 
