@@ -422,6 +422,10 @@ desktop0:
     172.25.0.11:/protected /mnt/nfssecure nfs defaults,sec=krb5p,v4.2,_netdev 0 0
     [root@desktop0 ~]# mount -a
     [root@desktop0 ~]# df -Th
+    [root@desktop0 ~]# su - ldapuser0   #验证ldapuser0的权限 使用root切换用户时是无法访问/mnt/nfssecure的。需要再su - ldaouser0一次，使用密码登录，才能访问/mnt/nfssecure/project
+    [ldapuser0@desktop0 ~]$ ls /mnt/nfssecure/project
+    [ldapuser0@desktop0 ~]$ su - ldapuser0
+    [ldapuser0@desktop0 ~]$ touch /mnt/nfssecure/project/alvin
 
 - 非交互式操作，可使用以下命令，复制粘贴一次性全部完成
 
