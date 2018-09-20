@@ -246,7 +246,7 @@ lab smtp-nullclient grade
 - 共享名必须为 common
 - 只有 group0.example.com 域内的客户端可以访问 common 共享
 - common 必须是可以浏览的
-- 用户 harry 必须能够读取共享中的内容，如果需要的话，验证的密码是 migwhisk
+- 用户 harry 必须能够读取共享中的内容，如果需要的话，验证的密码是 redhat
 
 
 - 解题参考：
@@ -256,7 +256,7 @@ lab smtp-nullclient grade
     yum install samba -y
     mkdir -p /common
     setsebool -P samba_export_all_rw=on  ##取消selinux限制
-    useradd harry ； pdbedit -a harry ##启用共享账号并设置migwhisk
+    useradd harry ； pdbedit -a harry ##启用共享账号并设置redhat
     vim /etc/samba/smb.conf
     [global]
         workgroup = STAFF
@@ -264,8 +264,10 @@ lab smtp-nullclient grade
         path = /common
         hosts allow = 172.25.0.0/24
 
-    systemctl restart smb
-    systemctl enable smb
+    systemctl restart smb nmb
+    systemctl enable smb nmb
+    firewall-cmd --permanent --add-service=samba
+    firewall-cmd --reload
 
 
 
@@ -290,8 +292,6 @@ lab smtp-nullclient grade
     [root@serverX ~]# useradd kenji ; pdbedit -a kenji
     [root@serverX ~]# useradd chihiro; pdbedit -a chihiro
     [root@serverX ~]# setfacl -m u:chihiro:rwx /devops/
-    [root@serverX ~]# firewall-cmd --permanent --add-service=samba
-    [root@serverX ~]# firewall-cmd --reload
     [root@serverX ~]# vim /etc/samba/smb.conf
     .. ..
         [devops]
