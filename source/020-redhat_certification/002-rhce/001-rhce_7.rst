@@ -284,6 +284,8 @@ lab smtp-nullclient grade
     [root@serverX ~]# useradd kenji ; pdbedit -a kenji
     [root@serverX ~]# useradd chihiro; pdbedit -a chihiro
     [root@serverX ~]# setfacl -m u:chihiro:rwx /devops/
+    [root@serverX ~]# firewall-cmd --permanent --add-service=samba
+    [root@serverX ~]# firewall-cmd --reload
     [root@serverX ~]# vim /etc/samba/smb.conf
     .. ..
         [devops]
@@ -300,7 +302,7 @@ lab smtp-nullclient grade
     [root@desktopX ~]# yum -y install samba-client cifs-utils
     [root@desktopX ~]# mkdir -p /mnt/dev
     [root@desktopX ~]# vim /etc/fstab
-    //serverX.example.com/devops    /mnt/dev    cifs username=kenji,password=atenorth,multiuser,sec=ntlmssp,_netdev 0 0
+    //server0.example.com/devops    /mnt/dev    cifs username=kenji,password=atenorth,multiuser,sec=ntlmssp,_netdev 0 0
     [root@desktopX ~]# mount -a
 
 验证多用户访问（在 desktopX 上）：chihiro 可读写
