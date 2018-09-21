@@ -268,9 +268,10 @@ lab smtp-nullclient grade
     systemctl enable smb nmb
     firewall-cmd --permanent --add-service=samba
     firewall-cmd --reload
+    echo 'done'
 
 
-非交互式配置samba，可直接复制粘贴一键完成
+上面是交互式操作，上面的内容也可以替换为下面的非交互式配置samba，可直接复制粘贴一键完成
 
 ::
 
@@ -281,15 +282,13 @@ lab smtp-nullclient grade
     expect <<eof
     spawn pdbedit -a harry
     expect "password:"
-    send 'redhat\n'
+    send "redhat\n"
     expect "new password:"
-    send 'redhat\n'
+    send "redhat\n"
     expect eof
     eof
     sed -i 's/MYGROUP/STAFF/' /etc/samba/smb.conf
     echo '
-    [global]
-        workgroup = STAFF
     [common]
         path = /common
         hosts allow = 172.25.0.0/24
@@ -298,6 +297,20 @@ lab smtp-nullclient grade
     systemctl enable smb nmb
     firewall-cmd --permanent --add-service=samba
     firewall-cmd --reload
+    echo 'done'
+
+- 客户端验证
+
+    在desktop0上操作
+
+.. code-block:: bash
+
+    yum install samba-client cifs-utils -y >/dev/null
+    mkdir -p /common
+    mount //server0/common /common -o user=harry,password=redhat
+    [ $? -eq 0 ] && df /common && echo 'success' || echo 'failed!'
+    echo 'done'
+
 
 
 配置多用户 Samba 挂载试题概述：
@@ -325,12 +338,12 @@ lab smtp-nullclient grade
     [devops]
         path = /devops
         write list = chihiro
-        valid users = kenji
+        valid users = kenji,chihiro
         hosts allow = 172.25.0.0/24 //只允许指定网域访问
     [root@serverX ~]# systemctl restart smb
 
 
-非交互式一键命令：
+上面是交互式操作，上面的内容也可以替换为下面的非交互式一键命令：
 
 ::
 
@@ -342,30 +355,31 @@ lab smtp-nullclient grade
     expect <<eof
     spawn pdbedit -a kenji
     expect "password:"
-    send 'redhat\n'
+    send "redhat\n"
     expect "new password:"
-    send 'redhat\n'
+    send "redhat\n"
     expect eof
     eof
     expect <<eof
     spawn pdbedit -a chihiro
     expect "password:"
-    send 'redhat\n'
+    send "redhat\n"
     expect "new password:"
-    send 'redhat\n'
+    send "redhat\n"
     expect eof
     eof
     echo '
     [devops]
         path = /devops
         write list = chihiro
-        valid users = kenji
+        valid users = kenji,chihiro
         hosts allow = 172.25.0.0/24
     ' >> /etc/samba/smb.conf
     firewall-cmd --permanent --add-service=samba
     firewall-cmd --reload
     systemctl restart smb nmb
     systemctl enable smb nmb
+    echo 'done'
 
 然后在客户端desktop0上:
 
@@ -377,15 +391,15 @@ lab smtp-nullclient grade
     //server0.example.com/devops    /mnt/dev    cifs username=kenji,password=redhat,multiuser,sec=ntlmssp,_netdev 0 0
     [root@desktopX ~]# mount -a
 
-非交互式一键执行命令：
+上面是交互式操作，上面的内容也可以替换为下面的非交互式一键执行命令：
 
-::
+.. code-block:: basg
 
     yum -y install samba-client cifs-utils &>/dev/null
     mkdir -p /mnt/dev
     echo '//server0.example.com/devops    /mnt/dev    cifs username=kenji,password=redhat,multiuser,sec=ntlmssp,_netdev 0 0' >> /etc/fstab
     mount -a
-
+    echo 'done'
 
 验证多用户访问（在 desktop0 上）：chihiro 可读写
 
@@ -445,7 +459,7 @@ server0:
 
 - 非交互式操作，可使用以下命令，复制粘贴一次性全部完成
 
-::
+.. code-block:: bash
 
     lab nfskrb5 setup
     mkdir /public
@@ -461,8 +475,7 @@ server0:
     firewall-cmd --reload
     systemctl enable nfs-server nfs-secure-server
     systemctl start nfs-server nfs-secure-server
-
-
+    echo 'done'
 
 挂载 NFS 共享试题概述：
 ==============================================
