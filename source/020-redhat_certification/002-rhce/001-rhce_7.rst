@@ -275,7 +275,7 @@ lab smtp-nullclient grade
 
 ::
 
-    yum install samba expect -y
+    yum install samba expect -y >/dev/null
     mkdir -p /common
     setsebool -P samba_export_all_rw=on  ##取消selinux限制
     useradd harry;
@@ -385,7 +385,7 @@ lab smtp-nullclient grade
 
 .. code-block:: bash
 
-    [root@desktopX ~]# yum -y install samba-client cifs-utils
+    [root@desktopX ~]# yum -y install samba-client cifs-utils >/dev/null
     [root@desktopX ~]# mkdir -p /mnt/dev
     [root@desktopX ~]# vim /etc/fstab
     //server0.example.com/devops    /mnt/dev    cifs username=kenji,password=redhat,multiuser,sec=ntlmssp,_netdev 0 0
