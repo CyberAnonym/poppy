@@ -259,11 +259,10 @@ server端：
             firewall-cmd --reload
             echo 'Mail Data.' |mail -s 'Test1' student
 
-    最后在desktop端验证：
+    最后在desktop端验证，看邮件有没有收到：
 
         .. code-block:: bash
 
-            lab smtp-nullclient setup
             mail -u student
 
 
