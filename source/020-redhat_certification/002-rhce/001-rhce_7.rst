@@ -402,7 +402,22 @@ lab smtp-nullclient grade
     echo 'done'
 
 
-验证多用户访问（在 desktop0 上）：chihiro 可读写， 这里因为要切换用户，所以不进行非交互式的方式，不一次性辅助粘贴全部。
+验证多用户访问（在 desktop0 上）：chihiro 可读写， 这
+
+.. code-block:: bash
+
+    yum install expect -y >/dev/null
+    touch /mnt/dev/alvin  #确认当前没有权限
+    expect <<eof
+    spawn cifscreds add -u chihiro server0
+    expect "Password:"
+    send "redhat\n"
+    expect eof
+    eof
+    touch /mnt/dev/poppy  #确认当前是否有权限
+
+
+也可以切换到其他普通用户，试试是否能提升权限，这里因为要切换用户，所以不进行非交互式的方式，不一次性辅助粘贴全部。
 
 .. code-block:: bash
 
