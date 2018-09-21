@@ -300,6 +300,8 @@ server端：
     yum install samba -y
     mkdir -p /common
     setsebool -P samba_export_all_rw=on  ##取消selinux限制
+    semanage fcontext -a -t samba_share_t '/common(/.*)?'
+    restorecon -R /common/
     useradd harry ； pdbedit -a harry ##启用共享账号并设置redhat
     vim /etc/samba/smb.conf
     [global]
@@ -323,6 +325,8 @@ server端：
 
         yum install samba expect -y >/dev/null
         mkdir -p /common
+        semanage fcontext -a -t samba_share_t '/common(/.*)?'
+        restorecon -R /common/
         setsebool -P samba_export_all_rw=on  ##取消selinux限制
         useradd harry;
         expect <<eof
@@ -380,6 +384,8 @@ server端：
     [root@serverX ~]# useradd kenji ; pdbedit -a kenji
     [root@serverX ~]# useradd chihiro; pdbedit -a chihiro
     [root@serverX ~]# setfacl -m u:chihiro:rwx /devops/
+    [root@serverX ~]# semanage fcontext -a -t samba_share_t '/devops(/.*)?'
+    [root@serverX ~]# restorecon -R /devops/
     [root@serverX ~]# vim /etc/samba/smb.conf
     [devops]
         path = /devops
@@ -400,6 +406,8 @@ server端：
         useradd kenji
         useradd chihiro
         setfacl -m u:chihiro:rwx /devops/
+        setfacl -m u:chihiro:rwx /devops/
+        semanage fcontext -a -t samba_share_t '/devops(/.*)?'
         expect <<eof
         spawn pdbedit -a kenji
         expect "password:"

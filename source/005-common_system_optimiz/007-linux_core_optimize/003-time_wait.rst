@@ -3,7 +3,7 @@ time_wait的快速回收和重用
 
 TCP四次挥手：
 
-.. image:: ../../images/opt1.png
+.. image:: ../../../images/opt1.png
 
 
 查看各种连接状态的数量：
