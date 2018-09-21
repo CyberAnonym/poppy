@@ -407,6 +407,8 @@ lab smtp-nullclient grade
 .. code-block:: bash
 
     yum install expect -y >/dev/null
+    useradd user1
+    su - user1
     touch /mnt/dev/alvin  #确认当前没有权限
     expect <<eof
     spawn cifscreds add -u chihiro server0
@@ -414,20 +416,10 @@ lab smtp-nullclient grade
     send "redhat\n"
     expect eof
     eof
-    touch /mnt/dev/poppy  #确认当前是否有权限
+    touch /mnt/dev/alvin  #确认当前是否有权限
+    ll /mnt/dev/alvin
 
 
-也可以切换到其他普通用户，试试是否能提升权限，这里因为要切换用户，所以不进行非交互式的方式，不一次性辅助粘贴全部。
-
-.. code-block:: bash
-
-    useradd mike   ##添加普通测试用户
-    useradd chihiro
-    echo redhat |passwd --stdin chihiro
-    su - mike    //切换到普通用户
-    su - chihiro
-    cifscreds add -u chihiro server0    #向服务器提交用户认证凭据，密码是redhat
-    touch /mnt/dev/b.txt     #确认有写入权限（新建文件)
 
 配置 NFS 共享服务试题概述：
 ==============================================
