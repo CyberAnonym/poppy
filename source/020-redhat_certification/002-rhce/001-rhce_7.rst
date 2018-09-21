@@ -408,6 +408,7 @@ server端：
         setfacl -m u:chihiro:rwx /devops/
         setfacl -m u:chihiro:rwx /devops/
         semanage fcontext -a -t samba_share_t '/devops(/.*)?'
+        restorecon -R /devops/
         expect <<eof
         spawn pdbedit -a kenji
         expect "password:"
