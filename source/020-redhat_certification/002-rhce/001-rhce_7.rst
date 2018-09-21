@@ -211,6 +211,7 @@ server端：
 
 .. code-block:: bash
 
+    # lab smtp-nullclient setup
     # vim /etc/postfix/main.cf
     relayhost=[smtp0.example.com]
     inet_interfaces = loopback-only
@@ -224,8 +225,19 @@ server端：
     # firewall-cmd --add-service=smtp
     # firewall-cmd --reload
 
+然后在desktop0 执行 lab smtp-nullclient setup
+
+然后继续在server0执行
+
+.. code-block:: bash
+
     # echo 'Mail Data.' |mail -s 'Test1' student
 
+然后去desktop0验证
+
+.. code-block:: bash
+
+    # mail -u student
 
 .. note::
 
@@ -264,6 +276,7 @@ server端：
         .. code-block:: bash
 
             mail -u student
+
 
 
 
