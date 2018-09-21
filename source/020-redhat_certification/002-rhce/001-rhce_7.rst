@@ -212,7 +212,7 @@ server端：
 .. code-block:: bash
 
     # vim /etc/postfix/main.cf
-    relayhost=[smtpX.example.com]
+    relayhost=[smtp0.example.com]
     inet_interfaces = loopback-only
     myorigin = desktopX.example.com
     mynetworks = 127.0.0.0/8 [::1]/128
@@ -231,28 +231,40 @@ server端：
 
     上面是交互式操作，上面的内容也可以替换为下面的非交互式配置samba，可直接复制粘贴一键完成
 
-    .. code-block:: bash
+    先在desktop0执行:
 
-        lab smtp-nullclient setup
-        echo '
-        relayhost=[smtpX.example.com]
-        inet_interfaces = loopback-only
-        myorigin = desktopX.example.com
-        mynetworks = 127.0.0.0/8 [::1]/128
-        local_transport = error:local
-        mydestination =
-        ' >> /etc/postfix/main.cf
-        systemctl restart postfix
-        systemctl enable postfix
-        firewall-cmd --add-service=smtp
-        firewall-cmd --reload
+        .. code-block:: bash
 
-desktop端验证：
+            lab smtp-nullclient setup
 
-.. code-block:: bash
+    因为desktop上环境准备好了，server才能把邮件发过来。
 
-    lab smtp-nullclient setup
-    mail -u student
+
+    然后在server0执行:
+
+        .. code-block:: bash
+
+            lab smtp-nullclient setup
+            echo '
+            relayhost=[smtp0.example.com]
+            inet_interfaces = loopback-only
+            myorigin = desktop0.example.com
+            mynetworks = 127.0.0.0/8 [::1]/128
+            local_transport = error:local
+            mydestination =
+            ' >> /etc/postfix/main.cf
+            systemctl restart postfix
+            systemctl enable postfix
+            firewall-cmd --add-service=smtp
+            firewall-cmd --reload
+            echo 'Mail Data.' |mail -s 'Test1' student
+
+    最后在desktop端验证：
+
+        .. code-block:: bash
+
+            lab smtp-nullclient setup
+            mail -u student
 
 
 
