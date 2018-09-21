@@ -270,6 +270,7 @@ server端：
             firewall-cmd --add-service=smtp
             firewall-cmd --reload
             echo 'Mail Data.' |mail -s 'Test1' student
+            echo 'done'
 
     最后在desktop端验证，看邮件有没有收到：
 
@@ -448,10 +449,11 @@ server端：
         mkdir -p /mnt/dev
         echo '//server0.example.com/devops    /mnt/dev    cifs username=kenji,password=redhat,multiuser,sec=ntlmssp,_netdev 0 0' >> /etc/fstab
         mount -a
+        df
         echo 'done'
 
 
-验证多用户访问（在 desktop0 上）：chihiro 可读写， 这
+验证多用户访问（在 desktop0 上）：chihiro 可读写，
 
 .. code-block:: bash
 
@@ -465,6 +467,7 @@ server端：
     send "redhat\n"
     expect eof
     eof
+    sleep 4
     touch /mnt/dev/alvin  #确认当前是否有权限
     ll /mnt/dev/alvin
 
