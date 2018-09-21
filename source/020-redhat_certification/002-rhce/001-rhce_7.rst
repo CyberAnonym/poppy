@@ -393,7 +393,7 @@ lab smtp-nullclient grade
 
 上面是交互式操作，上面的内容也可以替换为下面的非交互式一键执行命令：
 
-.. code-block:: basg
+.. code-block:: bash
 
     yum -y install samba-client cifs-utils &>/dev/null
     mkdir -p /mnt/dev
@@ -401,18 +401,18 @@ lab smtp-nullclient grade
     mount -a
     echo 'done'
 
-验证多用户访问（在 desktop0 上）：chihiro 可读写
+
+验证多用户访问（在 desktop0 上）：chihiro 可读写， 这里因为要切换用户，所以不进行非交互式的方式，不一次性辅助粘贴全部。
 
 .. code-block:: bash
 
-    useradd mike   //添加普通测试用户
+    useradd mike   ##添加普通测试用户
     useradd chihiro
     echo redhat |passwd --stdin chihiro
     su - mike    //切换到普通用户
     su - chihiro
-    cifscreds add -u chihiro server0    //向服务器提交用户认证凭据
-    Password:                         //提供 Samba 用户 chihiro 的密码
-    touch /mnt/dev/b.txt     //确认有写入权限（新建文件)
+    cifscreds add -u chihiro server0    #向服务器提交用户认证凭据，密码是redhat
+    touch /mnt/dev/b.txt     #确认有写入权限（新建文件)
 
 配置 NFS 共享服务试题概述：
 ==============================================
