@@ -55,7 +55,7 @@ alv.pub:    172.24.3.0/24
 
 按以下要求配置 SSH 访问：
 
-- 用户能够从域 groupX.example.com 内的客户端 SSH 远程访问您的两个虚拟机系统
+- 用户能够从域 group0.example.com 内的客户端 SSH 远程访问您的两个虚拟机系统
 - 在域 alv.pub 内的客户端不能访问您的两个虚拟机系统
 
 .. code-block:: bash
