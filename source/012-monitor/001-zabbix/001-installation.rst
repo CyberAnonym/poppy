@@ -68,5 +68,6 @@ Configure Zabbix frontend
 Connect to your newly installed Zabbix frontend: http://server_ip_or_name/zabbix
 Follow steps described in Zabbix documentation: Installing frontend
 
+Default user name is Admin, password is zabbix.
 
 

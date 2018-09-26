@@ -60,8 +60,8 @@ alv.pub:    172.24.3.0/24
 
 .. code-block:: bash
 
-    echo "sshd : 172.25.0.0/24">> /etc/hosts.allow
-    echo "sshd : 172.24.3.0/24" >>/etc/hosts.deny
+    echo "sshd : 172.25.0.0/24" >> /etc/hosts.allow
+    echo "sshd : 172.24.3.0/24" >> /etc/hosts.deny
 
 
 
