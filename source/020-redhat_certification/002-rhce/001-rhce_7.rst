@@ -77,7 +77,7 @@ alv.pub:    172.24.3.0/24
 
 .. code-block:: bash
 
-    echo "alias qtast='/bin/ps -Ao pid,tt,user,fname,rsz'">>/etc/bashrc
+    echo "alias qtast='/bin/ps -Ao pid,tt,user,fname,rsz'" >> /etc/bashrc
     source /etc/bashrc
     qsast
 
