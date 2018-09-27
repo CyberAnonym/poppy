@@ -12,19 +12,17 @@ RHCSA练习题
 重设root 密码
 ------------------
 
-#. 重启虚拟机 server，出现 GRUB 启动菜单时按 e 键进入编辑状态
-#. 找到 linux16 所在行，末尾添加 rd.break console=tty0，按 Ctrl+x 键进恢复模式
-#. 以可写方式挂载硬盘中的根目录，并重设root 密码：
-
+重置密码为redhat
 
 
 配置主机名、IP地址/掩码/默认网关/DNS 地址
 -------------------------------------------
 
-
-修改ip地址
----------------
-
+- Hostname: server0.example.com
+- IP address: 172.25.0.11
+- Netmask: 255.255.255.0
+- Gateway: 172.25.0.254
+- Name server: 172.25.0.254
 
 
 
