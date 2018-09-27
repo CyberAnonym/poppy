@@ -27,7 +27,7 @@
 
 ::
 
-    hostnamectl set-hostname serverX.example.com
+    hostnamectl set-hostname server0.example.com
 
 
 修改ip地址
@@ -59,7 +59,8 @@ SeLinux 的工作模式为 enforcing 要求系统重启后依然生效
 配置yum
 ----------
 
-YUM 的软件库源为 http://rhgls.domainX.example.com/pub/x86_64/Server.将此配置为 您的系统的默认软件仓库
+建立Yum软件仓库，该Yum仓库将作为默认仓库。 YUM REPO: http://content.example.com/rhel7.0/x86_64/dvd
+
 
 ::
 
@@ -78,76 +79,106 @@ YUM 的软件库源为 http://rhgls.domainX.example.com/pub/x86_64/Server.将此
 调整逻辑卷的大小
 ------------------
 
-请按照以下要求调整本地逻辑卷 lvm1 的容量：
+请按照以下要求调整本地逻辑卷 loans 的容量：
 
-- 调整后的逻辑卷及文件系统大小为 770MiB 调整后确保文件系统中已存在的内容不能被破坏调整后的容量可能出现误差，只要在 730MiB - 805MiB 之间都是允许的调整后，保证其挂载目录不改变，文件系统完成
+- 调整后的逻辑卷及文件系统大小为 770MiB 调整后确保文件系统中已存在的内容不能被破坏调整后的容量可能出现误差，只要在 730MiB - 805MiB 之间都是允许的.
 
-考试时候系统中只有一块硬盘 vda，而且已经使用三个分区 vda1 vda2 vda3。
-
-如果卷组需要扩容，将剩余所有空间划分给第四个分区，第四个分区类型是扩展分区
+- 调整后，保证其挂载目录不改变，文件系统完成
 
 
-::
 
-    lvm 信息
-    [root@server0 ~]# pvs
-    PV	VG	Fmt	Attr PSize	PFree
-    /dev/vdb1	vg1	lvm2 a--	508.00m 252.00m
-    [root@server0 ~]# vgs
-    VG	#PV #LV #SN Attr	VSize	VFree vg1	1	1	0 wz--n- 508.00m 252.00m
+.. note::
+
+    #. 考试时候系统中只有一块硬盘 vda，而且已经使用三个分区 vda1 vda2 vda3。
+    #. 如果卷组需要扩容，将剩余所有空间划分给第四个分区，第四个分区类型是扩展分区
+
+
+
+.. code-block:: bash
+    :linenos:
+    :emphasize-lines: 1,8,16,19,24,30,34,35,38,41-43,46,55,56,58,60,74
+
+    [root@server0 ~]# lab lvm setup
+    Creating partition on /dev/vdb ...
+    Adding PV ...
+    Adding VG ...
+    Adding LV ...
+    Creating XFS on LV ...
+    SUCCESS
+    [root@server0 ~]# df
+    Filesystem                1K-blocks    Used Available Use% Mounted on
+    /dev/vda1                  10473900 3120140   7353760  30% /
+    devtmpfs                     927072       0    927072   0% /dev
+    tmpfs                        942660      80    942580   1% /dev/shm
+    tmpfs                        942660   17024    925636   2% /run
+    tmpfs                        942660       0    942660   0% /sys/fs/cgroup
+    /dev/mapper/finance-loans    258732   13288    245444   6% /finance/loans
     [root@server0 ~]# lvs
-    LV	VG	Attr	LSize	Pool Origin Data%	Move Log Cpy%Sync Convert
-    lvm1 vg1	-wi-ao---- 256.00m
-    当前卷组中没有足够的容量给 lvm1 扩容，需要扩卷组容量。原卷组有 508M，新建一个 500M 分区，加入到该卷组中。
+      LV    VG      Attr       LSize   Pool Origin Data%  Move Log Cpy%Sync Convert
+      loans finance -wi-ao---- 256.00m
+    [root@server0 ~]# vgs
+      VG      #PV #LV #SN Attr   VSize   VFree
+      finance   1   1   0 wz--n- 508.00m 252.00m
+
+    [root@server0 ~]#
     [root@server0 ~]# fdisk /dev/vdb
     Welcome to fdisk (util-linux 2.23.2).
-    Changes will remain in memory only, until you decide to write them. Be careful before using the write command.
+
+    Changes will remain in memory only, until you decide to write them.
+    Be careful before using the write command.
+
     Command (m for help): n
     Partition type:
-    p	primary (1 primary, 0 extended, 3 free) e	extended
-    Select (default p):
-    Using default response p
-    Partition number (2-4, default 2):
+       p   primary (1 primary, 0 extended, 3 free)
+       e   extended
+    Select (default p): p
+    Partition number (2-4, default 2): 2
     First sector (1050624-20971519, default 1050624):
     Using default value 1050624
-    Last sector, +sectors or +size{K,M,G} (1050624-20971519, default 20971519): +500M
-    Partition 2 of type Linux and of size 500 MiB is set
+    Last sector, +sectors or +size{K,M,G} (1050624-20971519, default 20971519): +1G
+    Partition 2 of type Linux and of size 1 GiB is set
+
     Command (m for help): t
-    Partition number (1-3, default 3): 2
+    Partition number (1,2, default 2): 2
     Hex code (type L to list all codes): 8e
     Changed type of partition 'Linux' to 'Linux LVM'
+
     Command (m for help): w
     The partition table has been altered!
+
     Calling ioctl() to re-read partition table.
-    WARNING: Re-reading the partition table failed with error 16: Device or resource busy. The kernel still uses the old table.
-    The new table will be used at the next reboot or after you run partprobe(8) or kpartx(8) Syncing disks.
+
+    WARNING: Re-reading the partition table failed with error 16: Device or resource busy.
+    The kernel still uses the old table. The new table will be used at
+    the next reboot or after you run partprobe(8) or kpartx(8)
+    Syncing disks.
     [root@server0 ~]# partprobe
-    [root@server0 ~]# vgextend vg1 /dev/vdb2
-    Physical volume "/dev/vdb2" successfully created
-    Volume group "vg1" successfully extended
-    [root@server0 ~]# lvextend -r -L 770M /dev/vg1/lvm1
-    Rounding size to boundary between physical extents: 772.00 MiB
-    Extending logical volume lvm1 to 772.00 MiB
-    Logical volume lvm1 successfully resized meta-data=/dev/mapper/vg1-lvm1	isize=256	agcount=4, agsize=16384 blks
-        =	sectsz=512	attr=2, projid32bit=1
-        =	crc=0
-    data	=	bsize=4096	blocks=65536, imaxpct=25
-        =	sunit=0	swidth=0 blks
-    naming	=version 2	bsize=4096	ascii-ci=0 ftype=0 log	=internal	bsize=4096	blocks=853, version=2
-    =	sectsz=512	sunit=0 blks, lazy-count=1 realtime =none	extsz=4096	blocks=0, rtextents=0
+    [root@server0 ~]# pvcreate /dev/vdb2
+      Physical volume "/dev/vdb2" successfully created
+    [root@server0 ~]# vgextend finance /dev/vdb2
+      Volume group "finance" successfully extended
+    [root@server0 ~]# lvextend -r -L 770M /dev/finance/loans
+      Rounding size to boundary between physical extents: 772.00 MiB
+      Extending logical volume loans to 772.00 MiB
+      Logical volume loans successfully resized
+    meta-data=/dev/mapper/finance-loans isize=256    agcount=4, agsize=16384 blks
+             =                       sectsz=512   attr=2, projid32bit=1
+             =                       crc=0
+    data     =                       bsize=4096   blocks=65536, imaxpct=25
+             =                       sunit=0      swidth=0 blks
+    naming   =version 2              bsize=4096   ascii-ci=0 ftype=0
+    log      =internal               bsize=4096   blocks=853, version=2
+             =                       sectsz=512   sunit=0 blks, lazy-count=1
+    realtime =none                   extsz=4096   blocks=0, rtextents=0
     data blocks changed from 65536 to 197632
-    [root@server0 ~]#
-    验证：
     [root@server0 ~]# df -h
-    Filesystem	Size	Used Avail Use% Mounted on
-    /dev/vda1 10G 3.1G 7.0G 31%
-    / devtmpfs 906M 0 906M 0%
-    /dev tmpfs 921M 140K 921M 1%
-    /dev/shm tmpfs	921M	17M	904M	2%
-    /run tmpfs	921M	0	921M	0%
-    /sys/fs/cgroup
-    /dev/mapper/vg1-lvm1	769M	14M	756M	2%
-    /vg1/lvm1
+    Filesystem                 Size  Used Avail Use% Mounted on
+    /dev/vda1                   10G  3.0G  7.1G  30% /
+    devtmpfs                   906M     0  906M   0% /dev
+    tmpfs                      921M   80K  921M   1% /dev/shm
+    tmpfs                      921M   17M  904M   2% /run
+    tmpfs                      921M     0  921M   0% /sys/fs/cgroup
+    /dev/mapper/finance-loans  769M   14M  756M   2% /finance/loans
 
 
 创建用户和用户组
