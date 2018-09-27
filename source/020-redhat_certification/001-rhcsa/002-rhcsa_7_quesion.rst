@@ -103,14 +103,6 @@ SeLinux 的工作模式为 enforcing 要求系统重启后依然生效
 新内核的 RPM 包位于
 http://content.example.com/rhel7.0/x86_64/errata/Packages/
 
-系统重启后，默认以新内核启动系统，原始的内核将继续可用
-
-在 foundation 上使用浏览 http://content.example.com/rhel7.0/x86_64/errata/Packages/, 找到文件，复制下载链接
-
-
-
-验证：查看当前内核版本信息，重启后再查看内核版本信息。
-
 
 
 配置ldap客户端
