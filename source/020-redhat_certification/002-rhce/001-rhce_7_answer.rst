@@ -1,9 +1,9 @@
+RHCE7练习题和参考解答
+##############################
 
-RHCE 7 参考
-========================
 
 环境说明
-----------------
+================
 
 真实机（无 root 权限）：foundation.groupX.example.com
 
@@ -14,7 +14,7 @@ RHCE 7 参考
 考试服务器（提供 DNS/YUM/认证/素材	）：server1.groupX.example.com、host.groupX.example.com
 
 练习环境说明
--------------------
+==================
 
 真实机（无 root 权限）：foundationX.example.com
 
@@ -33,7 +33,7 @@ alv.pub:    172.24.3.0/24
 下面的实验中，我的练习环境是使用的172.25.0.0/24网段，使用的编号是0，所以我使用的域名也是server0.example.com， desktop0.example.com， 如果实际你练习或考试使用的网段是其他网段，比如14网段，那就改成server14.server0.com，这里我再重复了一遍。
 
 注意事项
---------------
+===========
 
 一定要等classroom完全启动完了，再启动desktop和server。
 
@@ -821,6 +821,7 @@ server0:
     [root@server0 ~]# firewall-config
 
 .. image:: ../../../images/rhce1.jpg
+
 
 .. code-block:: bash
 

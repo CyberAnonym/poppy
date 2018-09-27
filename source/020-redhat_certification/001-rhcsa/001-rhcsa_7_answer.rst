@@ -1,10 +1,13 @@
+RHCSA练习题和参考解答
+#############################
+
 虚拟机系统信息
 
-- Hostname: server0.example.com
-- IP address: 172.25.0.11
-- Netmask: 255.255.255.0
-- Gateway: 172.25.0.254
-- Name server: 172.25.0.254
+    - Hostname: server0.example.com
+    - IP address: 172.25.0.11
+    - Netmask: 255.255.255.0
+    - Gateway: 172.25.0.254
+    - Name server: 172.25.0.254
 
 重设root 密码
 ------------------
@@ -392,6 +395,7 @@ http://content.example.com/rhel7.0/x86_64/errata/Packages/
 本题如果自动挂载失败，可能是时间与服务器不一致到值得。可以先做 NTP 服务配置，再回来完成此题。如果还是不行，使用 date 命令手动设置时间。
 
 先查看物理主机时间
+
 ::
 
     date
