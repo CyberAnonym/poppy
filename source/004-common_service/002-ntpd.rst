@@ -36,8 +36,8 @@ ntpd 是时间服务器
 
 .. code-block:: bash
 
-    $ sudo systemctl start ntp
-    $ sudo systemctl enable ntp
+    $ sudo systemctl start ntpd
+    $ sudo systemctl enable ntpd
 
 
 
