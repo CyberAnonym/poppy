@@ -868,28 +868,33 @@ server0:
 - 创建的用户登陆 Shell 为/bin/false，此脚本不需要为用户设置密码
 - 您可以从下面的 URL 获取用户名列表作为测试用： http://smtp0.example.com/materials/userlist
 
-.. code-block:: sh
+.. code-block:: bash
+    :linenos:
 
-    cd /root
-    vim batchusers
+    [root@server0 ~]# vim /root/batchusers
     #!/bin/bash
     if [ $# -eq 0 ];then
-    echo 'Usage: /root/batchusers userfile'
+      echo 'Usage: /root/batchusers userfile'
     exit 1
     fi
-    if [ ! -f $1 ];then
-    echo 'Input file not found'
-    exit 1
-    fi
-    while read line
-    do
-    useradd -s /bin/false $line
-    done < $1
 
-    vim userlist
-    tom
-    bob
-    jack
+    if [ ! -f $1 ];then
+      echo 'Input file not found'
+    exit 1
+
+    fi
+
+    for i in `cat $1`
+    do
+      useradd -s /bin/false $i
+    done
+    [root@server0 ~]# vim /root/userlist
+    user1
+    user2
+    alvin
+    poppy
+    china
+
 
 
 配置 iSCSI 服务端试题概述：
