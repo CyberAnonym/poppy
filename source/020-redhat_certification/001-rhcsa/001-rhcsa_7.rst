@@ -298,9 +298,9 @@ http://content.example.com/rhel7.0/x86_64/errata/Packages/
 
 在 classroom.example.com 上已经部署了一台 LDAP 认证服务器，按以下要求将你的系统加入到该 LDAP 服务中，并使用 ldap 认证用户密码：
 
-该 LDAP 认证服务的 Base DN 为：dc=example,dc=com 该 LDAP 认证服务的 LDAP Server 为：classroom.example.com
-
-认证的会话连接需要使用 TLS 加密，加密所用证书请在此下载 http://classroom.example.com/pub/example-ca.crt
+    #. 该LDAP 认证服务的 Base DN 为：dc=example,dc=com
+    #. 该 LDAP 认证服务的 LDAP Server 为：classroom.example.com
+    #. 认证的会话连接需要使用 TLS 加密，加密所用证书请在此下载 http://classroom.example.com/pub/example-ca.crt
 
 上一次考试只给了 Base DN 和 ldap 服务器，ldap 服务器名填写题目中提到的主机名。
 
@@ -352,9 +352,9 @@ http://content.example.com/rhel7.0/x86_64/errata/Packages/
 
 请使用 LDAP 服务器上的用户 ldapuser0 登陆系统，并满足以下要求：
 
-#. ldapuser0 用户的家目录路径为/home/guests/ldapuser0
-#. ldapuser0 用户登陆后，家目录会自动挂载到 classroom.example.com 服务通过 nfs 服务到处的/home/guests/ldapuser0
-#. 客户端挂载使用 nfs 版本 3
+    #. ldapuser0 用户的家目录路径为/home/guests/ldapuser0
+    #. ldapuser0 用户登陆后，家目录会自动挂载到 classroom.example.com 服务通过 nfs 服务到处的/home/guests/ldapuser0
+    #. 客户端挂载使用 nfs 版本 3
 
 解答：
 
