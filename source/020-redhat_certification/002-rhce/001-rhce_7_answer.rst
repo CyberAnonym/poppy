@@ -1,4 +1,4 @@
-RHCE7练习题和参考解答
+RHCE练习题和参考解答
 ##############################
 
 
@@ -193,12 +193,12 @@ desktop0
 配置本地邮件服务试题概述：
 ==============================================
 
-在系统 system1 和 desktop0 上配置邮件服务，满足以下要求：
+在系统 server0 和 desktop0 上配置邮件服务，满足以下要求：
 
 - 这些系统不接收外部发送来的邮件
 - 在这些系统上本地发送的任何邮件都会自动路由到 smtp0.example.com
 - 从这些系统上发送的邮件显示来自于 desktop0.example.com
-- 您可以通过发送邮件到本地用户arthur来测试您的配置，系统
+- 您可以通过发送邮件到本地用户student来测试您的配置，系统
 - smtp0.example.com	已经配置把此用户的邮件转到下列URL：http://smtp0.example.com/received_mail/3
 
 - 解题参考：
@@ -509,7 +509,7 @@ server0:
     [root@server0 ~]# lab nfskrb5 setup   #练习环境
     [root@server0 ~]# mkdir /public
     [root@server0 ~]# mkdir -p /protected/project
-    [root@system1~]# chown ldapuser0 /protected/project
+    [root@server0 ~]# chown ldapuser0 /protected/project
     [root@server0 ~]# vim /etc/exports
     /public 172.25.0.0/24(ro,sync)
     /protected 172.25.0.0/24(rw,sync,sec=krb5p)
