@@ -8,6 +8,7 @@ RHCSA练习题和参考解答
     - Netmask: 255.255.255.0
     - Gateway: 172.25.0.254
     - Name server: 172.25.0.254
+    - search domain: example.com
 
 重设root 密码
 ------------------
@@ -32,9 +33,6 @@ RHCSA练习题和参考解答
 
     hostnamectl set-hostname server0.example.com
 
-
-修改ip地址
----------------
 
 .. code-block:: bash
 
@@ -67,7 +65,7 @@ SeLinux 的工作模式为 enforcing 要求系统重启后依然生效
 
 ::
 
-    rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-*
+    [root@server0 ~]# rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-*
     [root@server0 ~]# cd /etc/yum.repos.d/
     [root@server0 yum.repos.d]# vim base.repo
     [root@server0 yum.repos.d]# cat base.repo

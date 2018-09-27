@@ -8,6 +8,8 @@ RHCSA练习题
 - Netmask: 255.255.255.0
 - Gateway: 172.25.0.254
 - Name server: 172.25.0.254
+- search domain: example.com
+
 
 重设root 密码
 ------------------
@@ -165,7 +167,7 @@ http://content.example.com/rhel7.0/x86_64/errata/Packages/
 查找文件
 ------------
 
-请把系统上拥有者为 ira 用户的所有文件，并将其拷贝到/root/findfiles 目录中
+请把系统上拥有者为 student 用户的所有文件，并将其拷贝到/root/findfiles 目录中
 
 
 
