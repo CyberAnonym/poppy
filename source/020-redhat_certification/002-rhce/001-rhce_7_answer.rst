@@ -223,7 +223,7 @@ server端：
     # vim /etc/postfix/main.cf
     relayhost=[smtp0.example.com]
     inet_interfaces = loopback-only
-    myorigin = desktopX.example.com
+    myorigin = desktop0.example.com
     mynetworks = 127.0.0.0/8 [::1]/128
     local_transport = error:local
     mydestination =
