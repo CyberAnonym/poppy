@@ -144,8 +144,8 @@ alv.pub:    172.24.3.0/24
 
 在 system1 配置 NFS 服务，要求如下：
 
-- 以只读的方式共享目录/public，同时只能被 groupX.example.com 域中的系统访问
-- 以读写的方式共享目录/protected，能被 groupX.example.com 域中的系统访问
+- 以只读的方式共享目录/public，同时只能被 group0.example.com 域中的系统访问
+- 以读写的方式共享目录/protected，能被 group0.example.com 域中的系统访问
 - 访问/protected 需要通过 Kerberos 安全加密，您可以使用下面 URL 提供的密钥： http://classroom.example.com/pub/keytabs/server0.keytab
 - 目录/protected 应该包含名为 project 拥有人为 ldapuser0 的子目录
 - 用户 ldapuser0 能以读写方式访问/protected/project
@@ -154,7 +154,7 @@ alv.pub:    172.24.3.0/24
 挂载 NFS 共享试题概述：
 ==============================================
 
-在 desktop0 上挂载一个来自 system1.goup3.exmaple.com 的共享，并符合下列要求：
+在 desktop0 上挂载一个来自 server0.example.com的共享，并符合下列要求：
 
 - /public 挂载在下面的目录上/mnt/nfsmount
 - /protected 挂载在下面的目录上/mnt/nfssecure 并使用安全的方式，密钥下载 URL： http://classroom.example.com/pub/keytabs/desktop0.keytab
@@ -169,7 +169,7 @@ ldapuser0的密码是 kerberos
 
 为 http://server0.example.com 配置 Web 服务器：
 
-- 从http://smtp0.example.com/materials/station.html 下载一个主页文件，并将该文件重命名为 index.html
+- 从http://classroom.example.com/materials/station.html 下载一个主页文件，并将该文件重命名为 index.html
 - 将文件 index.html 拷贝到您的 web 服务器的 DocumentRoot 目录下
 - 不要对文件 index.html 的内容进行任何修改
 - 来自于 group0.example.com 域的客户端可以访问此 Web 服务
@@ -194,16 +194,13 @@ ldapuser0的密码是 kerberos
 配置虚拟主机试题概述：
 ==============================================
 
-在 system1 上扩展您的 web 服务器，为站点 http://www.groupX.example.com 创建一个虚拟主机，然后执行下述步骤：
+在 system1 上扩展您的 web 服务器，为站点 http://www0.example.com 创建一个虚拟主机，然后执行下述步骤：
 
 - 设置 DocumentRoot 为/var/www/virtual
-- 从 http://smtp0.example.com/materials/www.html 下载文件并重命名为index.html
+- 从 http://classroom.example.com/materials/www.html 下载文件并重命名为index.html
 - 不要对文件 index.html 的内容做任何修改
 - 将文件 index.html 放到虚拟主机的 DocumentRoot 目录下
 - 确保 harry 用户能够在/var/www/virtual 目录下创建文件
-
-
-
 
 配置 web 内容的访问
 =========================
@@ -212,7 +209,7 @@ ldapuser0的密码是 kerberos
 
 在 server0 上的 web 服务器的 DocumentRoot 目录下创建一个名为 secret 的目录，要求如下：
 
-- 从 http://rhgls.domain1.example.com/materials/private.html 下载一个文件副本到这个目录，并且重命名为 index.html，不要对这个文件的内容做任何修改。
+- 从 http://classroom.example.com/materials/private.html 下载一个文件副本到这个目录，并且重命名为 index.html，不要对这个文件的内容做任何修改。
 - 从 server0 上，任何人都可以浏览 secret 的内容，但是从其它系统不能访问这个目录的内容
 
 
@@ -227,9 +224,30 @@ ldapuser0的密码是 kerberos
 
 - 动态内容由名为 alt.groupX.example.com 的虚拟主机提供
 - 虚拟主机侦听在端口 8998
-- 从 http://smtp0.example.com/materials/webinfo.wsgi 下载一个脚本， 然后放在适当的位置，无论如何不要修改此文件的内容
-- 客户端访问 http://alt.groupX.example.com:8998 可接收到动态生成的 Web 页
-- 此 http://alt.groupX.example.com:8998/必须能被 groupX.example.com 域内的所有系统访问
+- 从 http://classroom.com/materials/webinfo.wsgi 下载一个脚本， 然后放在适当的位置，无论如何不要修改此文件的内容
+- 客户端访问 http://webapp0.example.com:8998 可接收到动态生成的 Web 页
+- 此 http://webapp0.example.com:8998/必须能被 groupX.example.com 域内的所有系统访问
+
+
+
+.. note::
+
+    webinfo.wsgi脚本内容如下：
+
+    ::
+
+        #!/usr/bin/env python
+        import time
+        def application (environ, start_response):
+            response_body = 'UNIX EPOCH time is now: %s\n' % time.time()
+            status = '200 OK'
+            response_headers = [('Content-Type', 'text/plain'),
+                                ('Content-Length', '1'),
+                                ('Content-Length', str(len(response_body)))]
+            start_response(status, response_headers)
+            return [response_body]
+
+
 
 
 创建一个脚本试题概述：
@@ -262,17 +280,17 @@ ldapuser0的密码是 kerberos
 配置 iSCSI 服务端试题概述：
 ==============================================
 
-配置 system1 提供 iSCSI 服务，磁盘名为 iqn.2016-02.com.example.groupX:system1，并符合下列要求：
+配置 system1 提供 iSCSI 服务，磁盘名为iqn.2016-02.com.example:server0，并符合下列要求：
 
 - 服务端口为 3260
 - 使用 iscsi_store 作其后端卷，其大小为 3GiB
-- 此服务只能被 desktop0.groupX.example.com 访问
+- 此服务只能被 group0.example.com 访问
 
 
 配置 iSCSI 客户端试题概述：
 ==============================================
 
-配置 desktop0 使其能连接 system1 上提供的 iqn.2016-02.com.example.groupX:system1，并符合以下要求：
+配置 desktop0 使其能连接 system1 上提供的 iqn.2016-02.com.example:server0，并符合以下要求：
 
 - iSCSI 设备在系统启动的期间自动加载
 - 块设备 iSCSI 上包含一个大小为 2100MiB 的分区，并格式化为 ext4 文件系统,此分区挂载在/mnt/data 上，同时在系统启动的期间自动挂载
@@ -286,6 +304,28 @@ ldapuser0的密码是 kerberos
 - 数据库只能被 localhost 访问
 - 除了 root 用户，此数据库只能被用户 Raikon 查询，此用户密码为 redhat
 - root 用户的密码为 redhat，同时不允许空密码登陆。
+
+
+.. note::
+
+    数据库的内容参考如下：
+
+    ::
+
+        vim users.sql
+        use Contacts;
+
+        create table if not exists base (id INT PRIMARY KEY auto_increment NOT NULL, name VARCHAR(100), password VARCHAR (100));
+        create table if not exists location (id INT PRIMARY KEY auto_increment NOT NULL, name VARCHAR(100), city VARCHAR (100));
+
+        insert into base(name,password) values ('bobo','123');
+        insert into base(name,password) values ('harry','456');
+        insert into base(name,password) values ('natasha','789');
+        insert into base(name,password) values ('Barbara','solicitous');
+        insert into location(name,city )values ('bobo','beijing');
+        insert into location(name,city )values ('harry','shanghai');
+        insert into location(name,city )values ('natasha','tianjin');
+        insert into location(name,city )values ('Barbara','Sunnyvale');
 
 
 数据库查询（填空） 试题概述：

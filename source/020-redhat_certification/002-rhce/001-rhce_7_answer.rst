@@ -213,7 +213,7 @@ desktop0
     #. myorigin 用于重写本地发布的电子邮件,使其显示为来自该域。这样有助于确保响应返回入站邮件服务器,默认:myorigin = $myhostname
     #. mydestination  收到地址为这些域的电子邮件将传递至MDA,以进行本地发送。默认:mydestination = $myhostname, localhost.$mydomain, localhost， "mydestination=" 不发送到本地，而空客户端将所有邮件发送到中继器
     #. mynetworks IP地址和网络的逗号分隔列表(采用CIDR表示法)。这些地址和网络可以通过此MTA转发至任何位置,无需进一步身份验证。 默认:mynetworks = 127.0.0.0/8
-    #. local_transport=error: local delivery disabled 空客户端拒绝接收任何邮件
+    #. local_transport = error:local delivery disabled 空客户端拒绝接收任何邮件
 
 server端：
 
@@ -225,7 +225,7 @@ server端：
     inet_interfaces = loopback-only
     myorigin = desktop0.example.com
     mynetworks = 127.0.0.0/8 [::1]/128
-    local_transport = error:local
+    local_transport = error:local delivery disabled
     mydestination =
 
     # systemctl restart postfix
@@ -270,7 +270,7 @@ server端：
             inet_interfaces = loopback-only
             myorigin = desktop0.example.com
             mynetworks = 127.0.0.0/8 [::1]/128
-            local_transport = error:local
+            local_transport = error:local delivery disabled
             mydestination =
             ' >> /etc/postfix/main.cf
             systemctl restart postfix
@@ -496,8 +496,8 @@ server端：
 
 在 system1 配置 NFS 服务，要求如下：
 
-- 以只读的方式共享目录/public，同时只能被 groupX.example.com 域中的系统访问
-- 以读写的方式共享目录/protected，能被 groupX.example.com 域中的系统访问
+- 以只读的方式共享目录/public，同时只能被 group0.example.com 域中的系统访问
+- 以读写的方式共享目录/protected，能被 group0.example.com 域中的系统访问
 - 访问/protected 需要通过 Kerberos 安全加密，您可以使用下面 URL 提供的密钥： http://classroom.example.com/pub/keytabs/server0.keytab
 - 目录/protected 应该包含名为 project 拥有人为 ldapuser0 的子目录
 - 用户 ldapuser0 能以读写方式访问/protected/project
@@ -558,7 +558,7 @@ server0:
 挂载 NFS 共享试题概述：
 ==============================================
 
-在 desktop0 上挂载一个来自 system1.goup3.exmaple.com 的共享，并符合下列要求：
+在 desktop0 上挂载一个来自 server0.example.com 的共享，并符合下列要求：
 
 - /public 挂载在下面的目录上/mnt/nfsmount
 - /protected 挂载在下面的目录上/mnt/nfssecure 并使用安全的方式，密钥下载 URL： http://classroom.example.com/pub/keytabs/desktop0.keytab
@@ -615,7 +615,7 @@ desktop0:
 
 为 http://server0.example.com 配置 Web 服务器：
 
-- 从http://smtp0.example.com/materials/station.html 下载一个主页文件，并将该文件重命名为 index.html
+- 从http:/classroom.example.com/materials/station.html 下载一个主页文件，并将该文件重命名为 index.html
 - 将文件 index.html 拷贝到您的 web 服务器的 DocumentRoot 目录下
 - 不要对文件 index.html 的内容进行任何修改
 - 来自于 group0.example.com 域的客户端可以访问此 Web 服务
@@ -657,7 +657,7 @@ server0:
 ==============================================
 
 
-描述： 为站点 http://server0.example.com 配置TLS 加密
+为站点 http://server0.example.com 配置TLS 加密
 
 - 一个已签名证书从http://classroom/pub/tls/certs/www0.crt获取
 - 此证书的密钥从http://classroom/pub/tls/private/www0.key获取
@@ -703,10 +703,10 @@ desktop0:
 配置虚拟主机试题概述：
 ==============================================
 
-在 system1 上扩展您的 web 服务器，为站点 http://www.groupX.example.com 创建一个虚拟主机，然后执行下述步骤：
+在 system1 上扩展您的 web 服务器，为站点 http://www0.example.com 创建一个虚拟主机，然后执行下述步骤：
 
 - 设置 DocumentRoot 为/var/www/virtual
-- 从 http://smtp0.example.com/materials/www.html 下载文件并重命名为index.html
+- 从 http://classroom.example.com/materials/www.html 下载文件并重命名为index.html
 - 不要对文件 index.html 的内容做任何修改
 - 将文件 index.html 放到虚拟主机的 DocumentRoot 目录下
 - 确保 harry 用户能够在/var/www/virtual 目录下创建文件
@@ -729,7 +729,7 @@ server0:
     ServerName www0.example.com
     </VirtualHost>
     [root@server0 ~]# cd /var/www/virtual/
-    [root@server0 virtual]# wget -O index.html http://rhgls.domain1.example.com/materials/www.html
+    [root@server0 virtual]# wget -O index.html http://classroom.example.com/materials/www.html
     [root@server0 virtual]# cat index.html
     www.example.com.
     [root@server0 virtual]# cd
@@ -749,7 +749,7 @@ desktop0:
 
 在 server0 上的 web 服务器的 DocumentRoot 目录下创建一个名为 secret 的目录，要求如下：
 
-- 从 http://rhgls.domain1.example.com/materials/private.html 下载一个文件副本到这个目录，并且重命名为 index.html，不要对这个文件的内容做任何修改。
+- 从 http://classroom.example.com/materials/private.html 下载一个文件副本到这个目录，并且重命名为 index.html，不要对这个文件的内容做任何修改。
 - 从 server0 上，任何人都可以浏览 secret 的内容，但是从其它系统不能访问这个目录的内容
 
 
@@ -768,7 +768,7 @@ server0:
     </Directory>
     [root@server0 ~]# systemctl restart httpd.service
     [root@server0 ~]# cd /var/www/html/secret/
-    [root@server0 secret]# wget -O index.html http://rhgls.domain1.example.com/materials/private.html
+    [root@server0 secret]# wget -O index.html http://classroom.example.com/materials/private.html
     [root@server0 secret]# cat index.html private test.
     [root@server0 ~]# systemctl restart httpd.service
     [root@server0 ~]# firefox
@@ -784,9 +784,9 @@ server0:
 
 - 动态内容由名为 alt.groupX.example.com 的虚拟主机提供
 - 虚拟主机侦听在端口 8998
-- 从 http://smtp0.example.com/materials/webinfo.wsgi 下载一个脚本， 然后放在适当的位置，无论如何不要修改此文件的内容
-- 客户端访问 http://alt.groupX.example.com:8998 可接收到动态生成的 Web 页
-- 此 http://alt.groupX.example.com:8998/必须能被 groupX.example.com 域内的所有系统访问
+- 从 http://classroom.com/materials/webinfo.wsgi 下载一个脚本， 然后放在适当的位置，无论如何不要修改此文件的内容
+- 客户端访问 http://webapp0.example.com:8998 可接收到动态生成的 Web 页
+- 此 http://webapp0.example.com:8998/必须能被 groupX.example.com 域内的所有系统访问
 
 .. code-block:: bash
 
@@ -900,11 +900,11 @@ server0:
 配置 iSCSI 服务端试题概述：
 ==============================================
 
-配置 system1 提供 iSCSI 服务，磁盘名为 iqn.2016-02.com.example.groupX:system1，并符合下列要求：
+配置 system1 提供 iSCSI 服务，磁盘名为 iqn.2016-02.com.example:server0，并符合下列要求：
 
 - 服务端口为 3260
 - 使用 iscsi_store 作其后端卷，其大小为 3GiB
-- 此服务只能被 desktop0.groupX.example.com 访问
+- 此服务只能被 group0.example.com 访问
 
 .. code-block:: sh
     :linenos:
@@ -933,7 +933,7 @@ server0:
 配置 iSCSI 客户端试题概述：
 ==============================================
 
-配置 desktop0 使其能连接 system1 上提供的 iqn.2016-02.com.example.groupX:system1，并符合以下要求：
+配置 desktop0 使其能连接 system1 上提供的 iqn.2016-02.com.example:server0，并符合以下要求：
 
 - iSCSI 设备在系统启动的期间自动加载
 - 块设备 iSCSI 上包含一个大小为 2100MiB 的分区，并格式化为 ext4 文件系统,此分区挂载在/mnt/data 上，同时在系统启动的期间自动挂载

@@ -12,3 +12,4 @@
     005-bash-completion
     006-vim
     010-language
+    011-ctrl+key
