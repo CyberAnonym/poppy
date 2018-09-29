@@ -497,7 +497,7 @@ server端：
 在 system1 配置 NFS 服务，要求如下：
 
 - 以只读的方式共享目录/public，同时只能被 group0.example.com 域中的系统访问
-- 以读写的方式共享目录/protected，能被 group0.example.com 域中的系统访问
+- 以读写的方式共享目录/securenfs，能被 group0.example.com 域中的系统访问
 - 访问/protected 需要通过 Kerberos 安全加密，您可以使用下面 URL 提供的密钥： http://classroom.example.com/pub/keytabs/server0.keytab
 - 目录/protected 应该包含名为 project 拥有人为 ldapuser0 的子目录
 - 用户 ldapuser0 能以读写方式访问/protected/project
@@ -541,10 +541,10 @@ server0:
 
         lab nfskrb5 setup
         mkdir /public
-        mkdir -p /protected/project
+        mkdir -p /securenfs/project
         chown ldapuser0 /protected/project
         echo '/public 172.25.0.0/24(ro,sync)' > /etc/exports
-        echo '/protected 172.25.0.0/24(rw,sync,sec=krb5p)' >> /etc/exports
+        echo '/securenfs 172.25.0.0/24(rw,sync,sec=krb5p)' >> /etc/exports
         wget -q -O /etc/krb5.keytab http://classroom.example.com/pub/keytabs/server0.keytab
         sed  -i 's/RPCNFSDARGS=.*/RPCNFSDARGS="-V 4.2"/' /etc/sysconfig/nfs
         firewall-cmd --permanent --add-service=nfs
@@ -584,7 +584,7 @@ desktop0:
     [root@desktop0 ~]# mkdir -p /mnt/nfssecure
     [root@desktop0 ~]# vim /etc/fstab
     172.25.0.11:/public /mnt/nfsmount nfs defaults,_netdev 0 0
-    172.25.0.11:/protected /mnt/nfssecure nfs defaults,sec=krb5p,v4.2,_netdev 0 0
+    172.25.0.11:/securenfs /mnt/secureshare nfs defaults,sec=krb5p,v4.2,_netdev 0 0
     [root@desktop0 ~]# mount -a
     [root@desktop0 ~]# df -Th
     [root@desktop0 ~]# su - ldapuser0   #验证ldapuser0的权限 使用root切换用户时是无法访问/mnt/nfssecure的。需要再su - ldaouser0一次，使用密码登录，才能访问/mnt/nfssecure/project

@@ -140,9 +140,6 @@ http://content.example.com/rhel7.0/x86_64/errata/Packages/
 
 
 
-设置 chronyd 服务开机启动并重启服务
---------------------------------------
-
 打包文件
 -------------
 

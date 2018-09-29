@@ -413,6 +413,7 @@ http://content.example.com/rhel7.0/x86_64/errata/Packages/
 使用 chrony 配置或者 ntp 配置，都可以得分。
 
 确认 chrony 软件包已经安装
+
 ::
 
     yum list chrony
@@ -430,7 +431,8 @@ server classroom.example.com iburst
     :wq 保存退出。
 
 设置 chronyd 服务开机启动并重启服务
---------------------------------------
+
+
 ::
 
     [root@server0 ~]# systemctl enable chronyd
