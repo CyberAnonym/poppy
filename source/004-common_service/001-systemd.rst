@@ -93,3 +93,5 @@ systemd里的可用参数
 
     ExecStartPre=/usr/bin/mkdir -p /etc/kubernetes/manifests  #设置一个启动前执行的命令。
     ExecStart=/usr/bin/python2 -m CGIHTTPServer 8001    #启动的命令。
+    EnvironmentFile=-/opt/py3/bin/activate        #定义一个需要引用的放环境变量的文件所在路径，文件名前面加-
+    Environment=TMPDIR=/var/tmp   #定义环境变量
