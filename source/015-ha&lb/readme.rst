@@ -7,3 +7,4 @@
     001-lvs/readme.rst
     002-keepalived
     003-haproxy
+    004-pcs/readme

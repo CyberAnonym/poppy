@@ -9,3 +9,5 @@
     003-dig
     004-nslookup
     005-ab
+    006-nslookup
+    007-host
