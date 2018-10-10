@@ -106,6 +106,13 @@
     pcs cluster start --all
 
 
+将资源vip移动的指定节点node3
+----------------------------------
+
+.. code-block:: bash
+
+    pcs resource move vip node3
+
 查看节点id和票数
 -------------------------
 
@@ -132,3 +139,62 @@
             nodeid: 3
             quorum_votes: 3
            }
+
+
+开启日志文件并指定日志文件路径
+------------------------------------------
+
+.. code-block:: bash
+
+    logging {
+    to_syslog: yes
+    to_file: yes
+    logfile: /var/log/cluster/cluster.lo
+    }
+
+使配置文件生效
+------------------
+
+.. code-block:: bash
+
+    pcs cluster reload corosync --all
+
+
+
+
+从集群里删除指定节点
+-----------------------------
+
+.. code-block:: bash
+
+    pcs cluster node remove node4
+
+
+安装fence
+-----------------
+
+.. code-block:: bash
+
+    yum install fence-virt* -y
+
+创建fence的key
+----------------------
+
+.. code-block:: bash
+
+    dd if=/dev/zero of=/etc/cluster/fence_kvm.key bs=1024 count=4
+
+设置fence
+-------------------
+
+.. code-block:: bash
+
+    fence_virtd -c
+
+
+通过fence重启指定服务器
+---------------------------------
+
+.. code-block:: bash
+
+    fence_xvm -o reboot -H node2
