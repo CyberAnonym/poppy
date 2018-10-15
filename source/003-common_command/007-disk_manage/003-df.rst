@@ -63,6 +63,24 @@ df
     tmpfs                497     0       497   0% /sys/fs/cgroup
     tmpfs                100     0       100   0% /run/user/0
 
+强制以1g为单位显示
+=========================
+
+.. code-block:: bash
+
+    [root@saltstack ~]# df -B 1g
+    Filesystem                     1G-blocks  Used Available Use% Mounted on
+    /dev/mapper/vg_root-lv_root           19    11         8  58% /
+    devtmpfs                               2     0         2   0% /dev
+    tmpfs                                  2     1         2   3% /dev/shm
+    tmpfs                                  2     1         2   1% /run
+    tmpfs                                  2     0         2   0% /sys/fs/cgroup
+    /dev/sda1                              1     1         1  26% /boot
+    tmpfs                                  1     0         1   0% /run/user/10001
+    overlay                               19    11         8  58% /var/lib/docker/overlay2/bcef486bd7760628a375d7b047ad14d039d75e5076c9af1145241387166616c1/merged
+    shm                                    1     0         1   0% /var/lib/docker/containers/3cd109d54535691371dc92269114eb7d133a5a602e26e4b482f34db44e5c0d92/mounts/shm
+    dc.alv.pub:/ldapUserData/alvin       983   598       344  64% /sophiroth/alvin
+
 查看各文件系统inode使用情况
 ===================================
 
@@ -76,3 +94,5 @@ df
     tmpfs            125K   469  124K    1% /run
     tmpfs            125K    16  125K    1% /sys/fs/cgroup
     tmpfs            125K     1  125K    1% /run/user/0
+
+

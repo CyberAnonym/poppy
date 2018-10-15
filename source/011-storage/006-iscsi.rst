@@ -159,3 +159,122 @@ _netdev：代表该挂载的磁盘分区为网络磁盘分区
 
 
 如果设置了开机自动挂iscsi磁盘，iscsid 服务即使不设置为enable，也会在开机时自动启动，如过关闭该服务，iscsi磁盘将无法正常读写。
+
+客户端其他操作
+==================
+
+当环境里有多和target时，需要单独指定target操作
+
+登录指定记录
+-------------------
+
+.. code-block:: bash
+
+    iscsiadmin -m node -T iqn.2018-10.pub.alv:iscsi -p iscsi.alv.pub -l
+
+退出登录指定记录
+-------------------------
+
+.. code-block:: bash
+
+    iscsiadmin -m node -T iqn.2018-10.pub.alv:iscsi -p iscsi.alv.pub -u
+
+断开所有target
+--------------------
+
+.. code-block:: bash
+
+    iscsiadmin -m node -u ALL
+
+但是断开之后，重启之后还是会自动连接，我们需要删除记录才不会自动连接
+
+删除指定记录
+-----------------
+
+.. code-block:: bash
+
+    iscsiadmin -m node -T iqn.2018-10.pub.alv:iscsi -p iscsi.alv.pub -o delete
+
+
+删除所有记录
+---------------
+
+.. code-block:: bash
+
+    iscsiadmin -m node -o all
+
+查看我们和服务器连接的详细信息
+------------------------------------
+
+P2显示的内容比P1更详细，P3最详细。
+
+.. code-block:: bash
+
+    iscsiadm -m session -P1
+    iscsiadm -m session -P2
+    iscsiadm -m session -P3
+
+
+查看timeout相关信息
+-------------------------
+
+.. code-block:: bash
+
+[root@node1 ~]# iscsiadm -m session -P3|grep -A5 Timeouts
+                Timeouts:
+                *********
+                Recovery Timeout: 120
+                Target Reset Timeout: 30
+                LUN Reset Timeout: 30
+                Abort Timeout: 15
+
+配置timeout相关信息
+------------------------
+
+.. code-block:: bash
+
+    [root@node1 ~]# vim /etc/iscsi/iscsid.conf
+    node.session.err_timeo.abort_timeout = 30
+
+然后需要重启服务，重新登录target才能生效
+
+.. code-block:: bash
+
+    [root@node1 ~]# systemctl restart iscsi
+    [root@node1 ~]# iscsiadm -m node -u all
+    Logging out of session [sid: 1, target: iqn.2018-10.example.com:node4, portal: 192.168.122.40,3260]
+    Logout of [sid: 1, target: iqn.2018-10.example.com:node4, portal: 192.168.122.40,3260] successful.
+    [root@node1 ~]# iscsiadm -m discovery -t st -p node4
+    192.168.122.40:3260,1 iqn.2018-10.example.com:node4
+    [root@node1 ~]# iscsiadm -m node -l
+    Logging in to [iface: default, target: iqn.2018-10.example.com:node4, portal: 192.168.122.40,3260] (multiple)
+    Login to [iface: default, target: iqn.2018-10.example.com:node4, portal: 192.168.122.40,3260] successful.
+    [root@node1 ~]# iscsiadm -m session -P3|grep -A5 Timeouts
+                    Timeouts:
+                    *********
+                    Recovery Timeout: 120
+                    Target Reset Timeout: 30
+                    LUN Reset Timeout: 30
+                    Abort Timeout: 30
+
+
+iscsi数据的同步
+----------------------
+
+一个iscsi target挂载在多个服务上时，数据是不能实时同步的， iscsi是属于单机版文件系统，只能一个服务器上挂载、写入文件、卸载掉了，另一台服务器上挂载，数据才会同步到另一台服务器上去。
+
+
+确认磁盘wwid
+--------------------
+
+.. code-block:: bash
+
+    /usr/lib/udev/scsi_id -u -g /dev/sda
+
+
+
+dlm分布式锁管理
+====================
+
+
+

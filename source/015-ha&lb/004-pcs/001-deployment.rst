@@ -113,6 +113,21 @@
 
     pcs resource move vip node3
 
+查看资源组列表
+-------------------
+
+.. code-block:: bash
+
+    pcs resource group list
+
+查看指定资源信息
+-----------------------
+这里我们查看名为vip的资源的信息。
+
+.. code-block:: bash
+
+    pcs resource show vip
+
 查看节点id和票数
 -------------------------
 
@@ -198,3 +213,28 @@
 .. code-block:: bash
 
     fence_xvm -o reboot -H node2
+
+
+
+资源的约束条件
+=======================
+
+限制---资源的约束条件
+
+    colocation---保证所有的资源在同一台机器上运行
+    location---保证哪个节点优先运行资源
+    order---保证资源的自动顺序
+
+把多个资源放在一个group里，往group存放的顺序很重要
+
+    放在同一个group里的资源 使用会保持在同一台机器运行
+
+    使用group的话，实现了两种约束条件
+
+        colocation
+        order
+
+
+
+
+如果我们想把资源从一台机器移动到另一台机器上的话，我们只要移动vip就可以了，也就是group里的第一个资源。 group内的其他资源，始终会跟随第一个资源。

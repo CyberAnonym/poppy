@@ -8,3 +8,4 @@
     002-keepalived
     003-haproxy
     004-pcs/readme
+    005-lvm2-cluster
