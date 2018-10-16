@@ -204,7 +204,7 @@
 
 .. code-block:: bash
 
-    fence_virtd -c
+    fence_vpcs cluster node remove node3irtd -c
 
 
 通过fence重启指定服务器
