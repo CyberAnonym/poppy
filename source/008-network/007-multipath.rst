@@ -108,7 +108,7 @@ blacklist 里配置的是不配置多路径的磁盘。比如我们写devnode "^
            wwid 26353900f02796769
             devnode "^(ram|raw|loop|fd|md|dm-|sr|scd|st)[0-9]*"
             devnode "^[vs]d[a-z]"
-}
+    }
 
 blacklist_exceptions 里配置就是在blacklist里已经配置包含了的磁盘，但我们又要用的，就在这里写出来。
 
