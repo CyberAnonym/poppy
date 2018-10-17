@@ -127,7 +127,7 @@ node3被选择成为了DC, 也就是指定协调器。
 
 .. image:: ../../../images/ha6.png
 
-.. image:: ../../../images/ha7.png
+.. image:: ../../../images/ha7.jpg
 
 然后我们可以查看确认下vip是否生效,这里我们使用ssh命令，顺便确认下vip在哪台服务器上。
 

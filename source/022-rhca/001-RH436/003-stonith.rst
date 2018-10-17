@@ -41,14 +41,14 @@ stonith --- Shoot The Other Node In The Head
 
      mkdir /etc/cluster
 
-然后创建key,这里我们使用如下命令创建key，经过测试，key的大小必须是4k。
+然后创建key,这里我们使用如下命令创建key，经过测试，如果我们创建的key不是4k的，则这个key是不会生效的。
 
 .. code-block:: bash
 
     dd if=/dev/zero of=/etc/cluster/fence_xvm.key bs=1024 count=4
 
 
-然后我们设置一下，执行fence_virtd -c，相应的一些选项中多一般默认的配置和我们的实际环境信息是一样的，那就不用特地设置了，用默认的就好了。
+那么如果定义它就是一个key呢？所以我们来设置一下，执行fence_virtd -c，相应的一些选项中多一般默认的配置和我们的实际环境信息是一样的，那就不用特地设置了，用默认的就好了。
 
 .. code-block:: bash
 
@@ -60,3 +60,49 @@ stonith --- Shoot The Other Node In The Head
 
     systemctl restart fence_virtd
 
+
+
+然后我们需要在每个节点上都创建一个/etc/cluster目录
+
+
+
+.. code-block:: bash
+
+    mkdir -p /etc/cluster
+
+
+然后我们将可以传到三个node节点上去
+
+.. code-block:: bash
+
+    scp /etc/cluster/fence_xvm.key node1:/etc/cluster/
+    scp /etc/cluster/fence_xvm.key node2:/etc/cluster/
+    scp /etc/cluster/fence_xvm.key node3:/etc/cluster/
+
+
+查看我们可以管理的节点
+============================
+
+
+.. code-block:: bash
+
+    [root@server1 ~]# fence_xvm -o list
+    node1                c56fb624-9d7a-4870-976b-ca2c2a2dad11 on
+    node2                0ee3c3b6-92d2-4210-9660-698e651d863b on
+    node3                1ac1efd2-551b-4bb4-a2cb-5a3b3db564a1 on
+    node4                66afbc63-2af3-4435-8b7c-9cf9f301f114 off
+    node5                14761fe7-aacf-4e2a-87ec-0788231a4e1c off
+
+
+在每个节点上都安装fence
+===================================
+
+在每个节点上都安装fence，节点可以使用fence-virt的各种脚本利用key和我们的物理机fence通信，告诉它你要关掉谁关掉谁。
+
+.. code-block:: bash
+
+    yum install fence-virt* -y
+
+然后我们切换到dashboard里去，点到cluster properties里，勾选Stonith Enabled
+
+.. image:: ../../../images/ha9.jpg
