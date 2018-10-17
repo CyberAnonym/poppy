@@ -32,6 +32,7 @@ Welcome to Alvin's document center Poppy !
     017-devops/readme
     018-open_source/readme
     019-other/readme
+    021-rhce/readme
     022-rhca/readme
 
 
