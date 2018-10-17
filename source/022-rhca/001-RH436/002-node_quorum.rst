@@ -1,5 +1,5 @@
-节点管理及quorum
-#######################
+第二章：节点管理及quorum
+###################################
 
 
 
@@ -364,7 +364,7 @@ node3被选择成为了DC, 也就是指定协调器。
 
 然后我们停掉node1 和node2，安装预想的，应该不会影响node3上的vip
 
-.. code-block:: basj
+.. code-block:: bash
 
     pcs cluster  stop node1 --force
     pcs cluster  stop node2 --force

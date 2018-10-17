@@ -1,5 +1,5 @@
-stonith
-###############
+第三章：stonith
+##########################
 stonith --- Shoot The Other Node In The Head
 
 | stonith 的使用是为了防止脑裂，就是一个节点没有问题，但是没有应答另一个节点告诉它说自己还活着是正常的，另一个节点以为前面这节点挂了，所以要启动抢占资源，比如把vip弄到自己身上，把自己的服务启起来，存储挂起来等。
@@ -103,6 +103,62 @@ stonith --- Shoot The Other Node In The Head
 
     yum install fence-virt* -y
 
+
+启动Stonith
+===================
+
 然后我们切换到dashboard里去，点到cluster properties里，勾选Stonith Enabled
 
 .. image:: ../../../images/ha9.jpg
+
+这里有一个选项是Stonith Action，也就是当Stonith触发时做的事情，这里当前的选项是Reboot，也就是当触发Stonith时，我们Reboot目标节点。
+
+
+
+添加fence设备
+===================
+
+
+| 然后添加一个fence，dashboard管理界面点击FENCE DEVICES，然后点ADD 添加。
+| 这里我们选择fence类型是fence_xvm，这里出现的各种类型，就是我们刚才安装的那些包。
+
+.. image:: ../../../images/ha10.png
+
+然后再过一小会，就running了
+
+.. image:: ../../../images/ha11.png
+
+
+手动fence指定节点
+=========================
+
+现在我们来尝试手动fence一个节点
+
+在node1上执行
+
+.. code-block:: bash
+
+    [root@node1 ~]# fence_xvm -o reboot -H node2
+
+然后发现，node2在重启了，也就是fence掉了，触发了fence的操作，重启。
+
+
+使用集群命令触发fence
+==============================
+前面我们是直接用fence的命令来fence一个节点，现在我们通过集群发送fence指令。
+
+.. code-block:: bash
+
+    pcs stonith fence node2
+
+模拟节点故障，触发fence
+=============================
+
+现在我们来模拟一个故障，让集群触发fence，node2的主要网卡是eth0,我们在node2上执行ifdown eth0, 这样node2就没有IP地址了。
+
+如下图所示
+
+.. image:: ../../../images/ha12.png
+
+然后，我们发现，node2就自动重启了。 可见fence被触发了，生效了。
+
