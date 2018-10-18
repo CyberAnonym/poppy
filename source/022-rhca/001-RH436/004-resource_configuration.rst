@@ -2,6 +2,7 @@
 #########################
 
 
+吧
 
 
 .. note:: 集群环境里我们要提供web服务必须几个资源？
@@ -118,3 +119,66 @@
     [root@node2 ~]# curl 192.168.122.100
     alvin web service
 
+
+创建mysql高可用环境
+===============================
+下面，我们来做个mysql的高可用
+
+创业mysql的共享存储
+------------------------------
+
+下面我们创建了/db目录，并使用nfs共享，然后设置权限所有者和所属组ID为27，27是mysql用户和组的id，如果不设置这个权限，客户端在挂载之后，mysql会没有权限访问这个目录。
+
+.. code-block:: bash
+
+    [root@server1 ~]# mkdir -p /db
+    [root@server1 ~]# echo '/db *(rw,sync)' >> /etc/exports
+    [root@server1 ~]# exportfs -rav
+    exporting *:/db
+    exporting *:/www
+    [root@server1 ~]# chown 27:27 /db/
+    [root@server1 ~]# ls -ld /db/
+    drwxr-xr-x. 2 27 27 6 Oct 17 17:43 /db/
+
+安装mysql服务
+----------------------
+
+在三个节点上都安装
+
+.. code-block:: bash
+
+    yum install mariadb-server mariadb -y
+
+创建集群内资源
+-------------------
+
+然后我们开始在集群里创建资源，创建vip、存储和服务。
+
+
+- 创建vip
+
+.. image:: ../../../images/ha18.png
+
+- 创建共享存储
+
+fs就是file system，文件系统的意思，也是存储
+
+.. image:: ../../../images/ha19.png
+
+- 创建mariadb服务
+
+.. image:: ../../../images/ha20.png
+
+| mysql的服务的启动顺序很重要，存储一定要先启动，然后再启动服务，否则服务启动的时候，数据都写到本地磁盘去了，然后你存储后面才挂上去，那就要出问题了。
+| 所以我们启动的顺序是，vip,存储，服务。
+
+那么这里我们使用order来管理启动顺序，
+
+这里我先设置一个vip在存储前面启动
+
+.. image:: ../../../images/ha21.png
+
+然后设置一个mysql服务在存储之后启动。
+
+
+.. image:: ../../../images/ha22.png
