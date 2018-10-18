@@ -105,7 +105,28 @@ server1 这边确认邮件已接收。
     mail -u admin
 
 
-然后我们去配置资源，触发告警,这里我们添加一个mailto服务，资源名命名为web_mon ，也就是web monitor的意思。 email也就是收件人地址写admin@node，
+然后我们去配置资源，触发告警,这里我们添加一个mailto服务，资源名命名为web_mon ，也就是web monitor的意思。 email也就是收件人地址写admin@node，加入到web_group
 
 .. image:: ../../../images/ha/001.png
 
+
+然后我们去执行一个资源切换的操作,当前web集群资源在node2上，我们让其切换到node3上去。
+
+.. code-block:: bash
+
+    pcs resource move vip node3
+
+
+然后去server1上查看是否收到了邮件,如下图所示，我们收到了相应的邮件。
+
+.. code-block:: bash
+
+    mail -u admin
+
+.. image:: ../../../images/ha/002.png
+
+
+或者我们可以资源的收件人邮箱写成我们的外网有相关，那我们也可以可以收到邮件，这里我们将收件人admin@node, 改成了我的alvin.wan@xxxxxx.com 邮箱。结果如下图所示，也收到了邮件。
+
+
+.. image:: ../../../images/ha/003.png
