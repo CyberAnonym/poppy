@@ -182,3 +182,92 @@ fs就是file system，文件系统的意思，也是存储
 
 
 .. image:: ../../../images/ha22.png
+
+然后创建一个组，然后将三个资源都放到这个组，加入组的时候注意顺序，先加vip，然后是存储，然后是服务，加入同一个组确保它们在同一个节点上。
+
+
+.. image:: ../../../images/ha23.png
+
+然后在命令行里也查看一下，确保都在同一个节点，一切运行正常
+
+.. code-block:: bash
+
+    [root@node1 ~]# crm_mon -1
+    Last updated: Thu Oct 18 10:59:32 2018
+    Last change: Thu Oct 18 10:55:44 2018
+    Stack: corosync
+    Current DC: node2 (2) - partition with quorum
+    Version: 1.1.12-a14efad
+    3 Nodes configured
+    7 Resources configured
+
+
+    Online: [ node1 node2 node3 ]
+
+     fence_xvm_test1        (stonith:fence_xvm):    Started node1
+     Resource Group: web_group
+         vip        (ocf::heartbeat:IPaddr2):       Started node1
+         web_fs     (ocf::heartbeat:Filesystem):    Started node1
+         web_svc    (systemd:httpd):        Started node1
+     Resource Group: mysql_group
+         mysql_vip  (ocf::heartbeat:IPaddr2):       Started node2
+         mysql_fs   (ocf::heartbeat:Filesystem):    Started node2
+         mysql_svc  (systemd:mariadb):      Started node2
+
+mysql服务在node2上面，所以现在我们去node2上面进入数据库，配置下用户权限,这里我们将root用户的密码设置成了alvin，不做其他设置。
+
+.. code-block:: bash
+
+    [root@node2 ~]# mysql -uroot -p
+    Enter password:
+    Welcome to the MariaDB monitor.  Commands end with ; or \g.
+    Your MariaDB connection id is 5
+    Server version: 5.5.41-MariaDB MariaDB Server
+
+    Copyright (c) 2000, 2014, Oracle, MariaDB Corporation Ab and others.
+
+    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+    MariaDB [(none)]> grant all privileges on *.* to 'root'@'%' identified by 'alvin';
+    Query OK, 0 rows affected (0.00 sec)
+
+    MariaDB [(none)]> flush privileges;
+    Query OK, 0 rows affected (0.00 sec)
+
+    MariaDB [(none)]> exit
+    Bye
+
+然后我们在客户端server1上验证一下
+
+.. code-block:: bash
+
+    [root@server1 ~]# mysql -uroot -palvin -h192.168.122.200 -e 'select @@hostname' 2>/dev/null
+    +------------+
+    | @@hostname |
+    +------------+
+    | node2      |
+    +------------+
+
+验证资源可用性
+----------------------
+
+然后我们迁移一下服务实施，我们就迁移那个火车头，mysql_vip,让其他服务跟着它迁移
+
+.. code-block:: bash
+
+    crm_mon -1
+    pcs resource move mysql_vip node3
+    crm_mon -1
+
+迁移前后我们有查看集群状态，确认mysql需要的三个资源都从node2迁移到node3去了。
+
+然后我们又去客户端验证一下,确认服务以及迁移到node3上去了， 数据库用户依然可用，因为node3上的数据盘是挂载的共享存储。
+
+.. code-block:: bash
+
+    [root@server1 ~]# mysql -uroot -palvin -h192.168.122.200 -e 'select @@hostname'
+    +------------+
+    | @@hostname |
+    +------------+
+    | node3      |
+    +------------+
