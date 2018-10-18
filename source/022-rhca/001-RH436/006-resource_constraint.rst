@@ -224,3 +224,12 @@ location用来确定，资源会运行在哪个节点上。
       Operations: start interval=0s timeout=20s (vip-start-timeout-20s)
                   stop interval=0s timeout=20s (vip-stop-timeout-20s)
                   monitor interval=10s timeout=20s (vip-monitor-interval-10s)
+
+
+上面我们演示了为vip这样一个资源设置resource-stickiness，那么，当跟随vip的web_fs和web_svc也有设置resource-stickiness的时候呢？是否会影响呢？ 答案是，会影响的。
+
+- 当web_fs，web_svc都没有设置resource-stickiness的时候，那么vip的stickiness+node3的location的值大于node1的location的值的时候，不切换回来。
+- 当web_fs,web_svc有设置resource-stickiness的值的时候，那么vip的stickiness+web_fs的stickiness+web_svc的stickiness+node3的location的值大于location的时候，不切换回来，也就是关闭failback.(这里大于或等于都可以，只要不小于就可以了。)
+
+这里我们就不在文档里记录演示了，节省篇幅。操作和上面的差不多。
+
