@@ -170,21 +170,21 @@ _netdev：代表该挂载的磁盘分区为网络磁盘分区
 
 .. code-block:: bash
 
-    iscsiadmin -m node -T iqn.2018-10.pub.alv:iscsi -p iscsi.alv.pub -l
+    iscsiad -m node -T iqn.2018-10.pub.alv:iscsi -p iscsi.alv.pub -l
 
 退出登录指定记录
 -------------------------
 
 .. code-block:: bash
 
-    iscsiadmin -m node -T iqn.2018-10.pub.alv:iscsi -p iscsi.alv.pub -u
+    iscsiadm -m node -T iqn.2018-10.pub.alv:iscsi -p iscsi.alv.pub -u
 
 断开所有target
 --------------------
 
 .. code-block:: bash
 
-    iscsiadmin -m node -u ALL
+    iscsiadm -m node -u ALL
 
 但是断开之后，重启之后还是会自动连接，我们需要删除记录才不会自动连接
 
@@ -193,7 +193,7 @@ _netdev：代表该挂载的磁盘分区为网络磁盘分区
 
 .. code-block:: bash
 
-    iscsiadmin -m node -T iqn.2018-10.pub.alv:iscsi -p iscsi.alv.pub -o delete
+    iscsiadm -m node -T iqn.2018-10.pub.alv:iscsi -p iscsi.alv.pub -o delete
 
 
 删除所有记录
@@ -201,7 +201,7 @@ _netdev：代表该挂载的磁盘分区为网络磁盘分区
 
 .. code-block:: bash
 
-    iscsiadmin -m node -o all
+    iscsiadm -m node -o delete
 
 查看我们和服务器连接的详细信息
 ------------------------------------
