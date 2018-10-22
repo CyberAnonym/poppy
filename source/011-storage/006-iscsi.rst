@@ -220,13 +220,13 @@ P2显示的内容比P1更详细，P3最详细。
 
 .. code-block:: bash
 
-[root@node1 ~]# iscsiadm -m session -P3|grep -A5 Timeouts
-                Timeouts:
-                *********
-                Recovery Timeout: 120
-                Target Reset Timeout: 30
-                LUN Reset Timeout: 30
-                Abort Timeout: 15
+    [root@node1 ~]# iscsiadm -m session -P3|grep -A5 Timeouts
+                    Timeouts:
+                    *********
+                    Recovery Timeout: 120
+                    Target Reset Timeout: 30
+                    LUN Reset Timeout: 30
+                    Abort Timeout: 15
 
 配置timeout相关信息
 ------------------------

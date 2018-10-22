@@ -614,19 +614,4 @@ LVM
     [root@server0 ~]# lvdisplay /dev/exam/lvm2
 
 
-最后检查
------------
 
-重启前检查一遍考试涉及到的服务是否设置开机启动，selinux 问题服务包涵：定时计划任务 crond，ntp 对时 chronyd，自动挂载 autofs
-
-第一遍做完一定要重启，保证有充足的时间排错。不要到最后 5 分钟再重启系统。
-
-扩文件系统分两步：扩逻辑卷和扩文件系-统，也可以在 lvextend 时候使用-r 参数直接扩文件系统，ext4 和 xfs 都支持。
-
-ldap 题目使用 authconfig-tui 字符界面完成。
-
-
-成绩自检：
--------------
-
-server0： lab examrhcsa grade

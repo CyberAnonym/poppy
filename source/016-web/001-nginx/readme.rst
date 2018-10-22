@@ -1,7 +1,6 @@
 nginx
 #####
 
-nginx
 
 .. toctree::
     :maxdepth: 2
@@ -17,3 +16,13 @@ nginx
     009-load_balance
     010-concurrence
     011-match_rule
+
+
+..
+    目录计划：
+    第一章: nginx的安装
+    第二章：nginx的虚拟主机
+    第三章：nginx反向代理及正则匹配
+    第四章: nginx负载均衡
+    第五章：nginx配置SSL
+    参考url:https://www.cnblogs.com/pycode/p/6588910.html

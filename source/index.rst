@@ -12,6 +12,7 @@ Welcome to Alvin's document center Poppy !
 .. toctree::
     :maxdepth: 2
     :caption: Contents:
+    :numbered: 1
 
     001-introduction/readme
     002-security/readme
