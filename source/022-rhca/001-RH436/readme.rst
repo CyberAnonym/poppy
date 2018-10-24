@@ -17,3 +17,4 @@ RH436(集群与存储管理)
     009-multipath
     010-cluster_lvm
     011-gfs2
+    012-other_think

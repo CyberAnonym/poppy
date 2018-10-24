@@ -136,3 +136,225 @@
        5/5 [127924c7] 3/65698 (0x3/0x100a2): File    journal2
        6/6 [657e1451] 4/98537 (0x4/0x180e9): File    journal3
        7/7 [fb1a81f2] 4/262698 (0x4/0x4022a): File    journal4
+
+
+
+设置acl权限
+=================
+
+现在我们在三个节点上都创建两个用户，top和bob
+
+.. code-block:: bash
+
+    useradd -u 1001 bob
+
+然后我们在/mnt里创建一个文件，/mnt是/dev/vg0/lv0挂载过来的。
+
+.. code-block:: bash
+
+    mount /dev/vg0/lv0 /mnt
+    cp /etc/hosts /mnt
+
+然后我们给它设置acl, 这个时候我们会发现，报错了，提示权限拒绝
+
+.. code-block:: bash
+
+    [root@node1 ~]# setfacl -m u:bob:rwx /mnt/hosts
+    setfacl: /mnt/hosts: Operation not supported
+
+我们需要给它添加一个acl属性，才能使用acl,否则，它这里是只能getfacl, 使用已设置的acl，而不能修改acl的。
+
+.. code-block:: bash
+
+    [root@node1 ~]# mount -o remount,acl /mnt/
+    [root@node1 ~]# setfacl -m u:bob:r /mnt/hosts
+    [root@node1 ~]#
+
+然后，我们去node2上试试，看在node1上设置的acl权限在node2上是否生效，我们先试试不加acl参数，然后加acl，看看区别。
+
+.. code-block:: bash
+
+    [root@node2 ~]# mount /dev/vg0/lv0 /mnt
+    [root@node2 ~]# su - bob
+    [bob@node2 ~]$ echo hello >> /mnt/hosts
+    -bash: /mnt/hosts: Permission denied
+    [bob@node2 ~]$
+    [bob@node2 ~]$ getfacl /mnt/hosts
+    getfacl: Removing leading '/' from absolute path names
+    # file: mnt/hosts
+    # owner: root
+    # group: root
+    user::rw-
+    group::rwx
+    other::r--
+
+    [bob@node2 ~]$ exit
+    [root@node2 ~]# mount -o remount,acl /mnt
+    [root@node2 ~]# su - bob
+    Last login: Wed Oct 24 15:24:09 CST 2018 on pts/0
+    [bob@node2 ~]$ echo hello >> /mnt/hosts
+    [bob@node2 ~]$ getfacl /mnt/hosts
+    getfacl: Removing leading '/' from absolute path names
+    # file: mnt/hosts
+    # owner: root
+    # group: root
+    user::rw-
+    user:bob:rwx
+    group::r--
+    mask::rwx
+    other::r--
+
+    [bob@node2 ~]$
+
+如上面的命令和反馈的结果所示，不加acl的时候，可以查看acl权限，但会发现没有，加了acl之后，再查看acl权限，就发现有了，可以使用了。
+
+
+**设置开机自动挂载**
+
+.. code-block:: bash
+
+    $ vim /etc/fstab
+    /dev/vg0/lv0 /mnt gfs2 defaults,acl,_netdev 0 0
+
+
+quota磁盘配额
+=====================
+
+挂载的时候添加参数quota=on参数，使用磁盘配额，关于quota的配置我们有以下三种类型。
+    quota=on
+    quota=off
+    quota=account
+
+设置配置的时候，我们要指定是对什么做配额，比如是对用户做配额，或是对组做配额，下面我们启用对用户做配额
+
+.. code-block:: bash
+
+    [root@node1 ~]# quotacheck -u /mnt
+
+然后我们来配置那个配额,下面我们执行edquota -u bob, 就会看到如下的执行结果。
+    | 我们看到，有三行内容，其中最后一行前面是/dev/mapper/vg0-lv0，这个就是我们的/mnt目录所在的文件系统，因为我们的配额，虽然配置是是指定的目录，但其实是目录所在的文件系统生效的。
+    | blocks 代表当前bob用户已经使用的磁盘空间，soft代表软限制，超过这个限制系统就会告警，提醒他已经超过了限制，但还能用。hard是硬限制，bob写的数据要超过那个限制的时候，就会拒绝，会给bob报错。这里的数字是以k为单位的。
+    | inodes就是我们的inodes 的限制了，表示当前已使用的inodes数，后面soft和hard也分别代表inodes的软限制和硬限制。
+    | 下面我们是为bob用户设置了一些限制，软限制为1024k，硬限制为40960k，也就是40M.
+
+.. code-block:: bash
+
+    [root@node1 ~]# edquota -u bob
+    Disk quotas for user bob (uid 1001):
+      Filesystem                   blocks       soft       hard     inodes     soft     hard
+      /dev/mapper/vg0-lv0           0       1024      40960          0        0        0
+
+
+那么下面我们就来测试一下，刚才的设置是否生效了。
+
+.. note::
+
+    如果下面执行repquota命令没有看到我们设置的用户的配额信息，可执行quotasync -ug /mnt， -u是指用户g是指组，我们这里没有设置组，只是演示一下，不加也可以。
+
+    .. code-block:: bash
+
+        quotasync -u /mnt
+
+.. code-block:: bash
+
+
+    [root@node1 ~]# su - bob -c 'dd if=/dev/zero of=/mnt/yes bs=1k count=1200' #创建一个1200k的文件，成功创建
+    [root@node1 ~]# ll /mnt/ -h
+    total 1.2M
+    -rw-r--r--+ 1 root root    0 Oct 24 15:13 alvin
+    -rw-rwxr--+ 1 root root  288 Oct 24 15:25 hosts
+    -rw-rw-r--. 1 bob  bob  1.2M Oct 24 15:56 yes
+    [root@node1 ~]# repquota -a   #查看quota配额状态
+    *** Report for user quotas on device /dev/mapper/vg0-lv0
+    Block grace time: 00:00; Inode grace time: 00:00
+                            Block limits                File limits
+    User            used    soft    hard  grace    used  soft  hard  grace
+    ----------------------------------------------------------------------
+    root      --      24       0       0              0     0     0
+    bob       --       8    1024   40960              0     0     0
+
+
+
+    [root@node1 ~]# su - bob -c 'dd if=/dev/zero of=/mnt/yes bs=100k count=1200'  # 创建一个120M的文件，如愿报错了，
+    dd: error writing ‘/mnt/yes’: Disk quota exceeded
+    409+0 records in
+    408+0 records out
+    41852928 bytes (42 MB) copied, 2.51882 s, 16.6 MB/s
+    [root@node1 ~]# repquota -a     #查看状态，发现空间已经用满了。
+    *** Report for user quotas on device /dev/mapper/vg0-lv0
+    Block grace time: 00:00; Inode grace time: 00:00
+                            Block limits                File limits
+    User            used    soft    hard  grace    used  soft  hard  grace
+    ----------------------------------------------------------------------
+    root      --      24       0       0              0     0     0
+    bob       +-   40960    1024   40960              0     0     0
+
+
+    [root@node1 ~]# ll /mnt/ -h
+    total 41M
+    -rw-r--r--+ 1 root root   0 Oct 24 15:13 alvin
+    -rw-rwxr--+ 1 root root 288 Oct 24 15:25 hosts
+    -rw-rw-r--. 1 bob  bob  40M Oct 24 15:57 yes
+    [root@node1 ~]# su - bob -c 'touch /mnt/hello'    #再次尝试创建文件，已经创建不动了。提示已经超过了配额了。
+    touch: cannot touch ‘/mnt/hello’: Disk quota exceeded
+
+
+现在我们去别的节点，确认quota也是同样生效的。
+
+.. code-block:: bash
+
+    [root@node2 ~]# umount /mnt
+    [root@node2 ~]# mount /dev/vg0/lv0 /mnt/ -o acl,quota=on
+    [root@node2 ~]# repquota -a
+    *** Report for user quotas on device /dev/mapper/vg0-lv0
+    Block grace time: 00:00; Inode grace time: 00:00
+                            Block limits                File limits
+    User            used    soft    hard  grace    used  soft  hard  grace
+    ----------------------------------------------------------------------
+    root      --      24       0       0              0     0     0
+    bob       +-   40964    1024   40960              0     0     0
+
+作为资源加入到集群
+=========================
+
+现在我们将它在各节点上都卸载掉，作为资源加入到集群里去。
+
+.. code-block:: bash
+
+    echo ----------gfs2 filesystem----- > /mnt/index.html
+    umount /mnt
+
+
+现在我们加到资源里去，这个文件系统资源是可以同时在所有节点上的，所以我们勾选clone
+
+.. image:: ../../../images/ha/024.png
+
+然后访问验证一下，确认无误
+
+.. code-block:: bash
+
+    [root@node1 ~]# curl 192.168.122.100
+    ----------gfs2 filesystem-----
+    [root@node1 ~]# crm_mon -1
+    Last updated: Wed Oct 24 16:24:49 2018
+    Last change: Wed Oct 24 16:23:02 2018
+    Stack: corosync
+    Current DC: node2 (2) - partition with quorum
+    Version: 1.1.12-a14efad
+    3 Nodes configured
+    12 Resources configured
+
+
+    Online: [ node1 node2 node3 ]
+
+     fence_xvm_test1        (stonith:fence_xvm):    Started node1
+     Resource Group: web_group
+         vip        (ocf::heartbeat:IPaddr2):       Started node1
+         web_svc    (systemd:httpd):        Started node1
+     Clone Set: dlm_1-clone [dlm_1]
+         Started: [ node1 node2 node3 ]
+     Clone Set: clvm_1-clone [clvm_1]
+         Started: [ node1 node2 node3 ]
+     Clone Set: web_gfs-clone [web_gfs]
+         Started: [ node1 node2 node3 ]
+
