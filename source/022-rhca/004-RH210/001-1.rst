@@ -1,0 +1,10 @@
+openstack
+#####################
+
+
+安装openstack的方式：
+    devstack
+    packstack----RDO
+    fuse---图形化界面的方式安装
+
+    手动部署

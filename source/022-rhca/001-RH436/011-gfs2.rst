@@ -1,4 +1,138 @@
 第十一章：gfs2
 ###################
 
+文件系统
+=============
 
+我们常见的文件系统，比如xfs/ext3/ext4，都是单机版文件系统
+
+一般一个磁盘有一母分区，母分区里面我们会给它创建文件系统，文件系统里面，有一部分空间会用来存放日志。
+
+- 单机版文件系统的特点
+
+    | 当我们有一个母分区之后，我们给它创建一个文件系统，创建一个文件之后，它会拿出一块东西，给它做日志，然后其他的空间是我们创建的文件系统，创建文件系统的时候，它会给我们创建一个一个的小格子，每个小格子的默认文件大小是4k，他叫做block.
+    | 下面的就是日志，journal. 这个journal，它是和这个文件系统是处于同一个分区里的，这种journal，我们把它称为内部journal。
+
+    .. image:: ../../../images/ha/023.png
+
+ 每个分区里面都是三部分内容
+    一部分是inode
+    一部分是block
+    一部分是日志
+
+当我们删除了一个文件，或是添加了一个文件、对一个文件的属性做了修改，或是写了多少文件之类的，所有的操作，都会记录到日志里面。 日志是不能多个人同时去访问的。
+
+| 现在比如我们共享了一个分区，有两个节点挂载了这个分区，当其中一个节点要在这个分区上写文件的时候，它首先会给日志加锁。加锁了之后，比如我现在往分区里里写了一个文件。
+| 这个时候，这个文件就被加锁了，别的节点上就访问不到这文件，因为同时只能有一个节点能访问。
+
+考虑创建几个日志，根据节点数来创建日志
+
+    推荐：日志数=节点数+1
+
+
+
+
+
+
+
+创建集群文件系统
+====================
+
+不同的节点我们使用不同的日志，所以我们需要使用锁协议。
+    锁协议有两种
+        lock_dlm #现在只支持这个协议。
+        lock_nolock #使用在非集群环境，现在已经不支持这个协议了.
+
+-j 数字， 这个数字就是指定你要格式化出几个日志。
+
+::
+
+    mkfs.gfs2 -p 锁协议 -t 集群名:文件系统别名 -j 数字 /dev/设备
+
+**之前的学习中我们添加了文件系统资源，现在我们先将那个资源移除，这里不做操作演示。**
+
+
+
+开始做下面的操作前，我们可以先同步下时间
+
+.. code-block:: bash
+
+    hwclock -s
+
+然后在每个节点上安装gfs2文件系统安装包。 存储服务器上不用安装，和存储没关系
+
+.. code-block:: bash
+
+    yum install gfs2-utils -y
+
+查看一下当前的逻辑卷
+
+.. code-block:: bash
+
+    [root@node1 ~]# lvscan
+      ACTIVE            '/dev/vg0/lv0' [10.00 GiB] inherit
+      ACTIVE            '/dev/rhel/swap' [512.00 MiB] inherit
+      ACTIVE            '/dev/rhel/root' [3.97 GiB] inherit
+
+
+然后我们开始对逻辑卷进行格式化
+
+.. code-block:: bash
+
+    [root@node1 ~]# mkfs.gfs2 -p lock_dlm -t cluster1:alvin001 -j 4 /dev/vg0/lv0
+    It appears to contain an existing filesystem (xfs)
+    /dev/vg0/lv0 is a symbolic link to /dev/dm-4
+    This will destroy any data on /dev/dm-4
+    Are you sure you want to proceed? [y/n]y
+    Device:                    /dev/vg0/lv0
+    Block size:                4096
+    Device size:               10.00 GB (2621440 blocks)
+    Filesystem size:           10.00 GB (2621436 blocks)
+    Journals:                  4
+    Resource groups:           42
+    Locking protocol:          "lock_dlm"
+    Lock table:                "cluster1:alvin001"
+    UUID:                      19af8d08-25e0-3097-b532-4cfbfe355960
+
+.. code-block:: bash
+
+    [root@node1 ~]# mount /dev/vg0/lv0 /mnt/
+    [root@node1 mnt]# df -hT /mnt/
+    Filesystem          Type  Size  Used Avail Use% Mounted on
+    /dev/mapper/vg0-lv0 gfs2   10G  518M  9.5G   6% /mnt
+
+这个时候我们在其他节点上将该逻辑卷也挂载到/mnt目录，然后在其中一个节点上在/mnt目录里写一个文件，其他节点是可以马上看到的。
+
+同时，上面我们执行df -hT /mnt后后可以看到，这个逻辑卷已经使用了518M， 哪用的518M呢？ 这，就是日志。因为我们设置了4个日志，每个日志128MB，那么四个就是128*4=512, 和518基本上是差不多的了，这里面还有一些基本的元数据信息。
+
+
+查看日志数量
+====================
+已经创建好文件系统了之后，可通过下面的命令查看日志的数量.下面反馈的结果显示，是4个日志。
+
+.. code-block:: bash
+
+    [root@node1 ~]# gfs2_edit -p jindex /dev/vg0/lv0 |grep journal
+       3/3 [fc7745eb] 1/20 (0x1/0x14): File    journal0
+       4/4 [8b70757d] 2/32859 (0x2/0x805b): File    journal1
+       5/5 [127924c7] 3/65698 (0x3/0x100a2): File    journal2
+       6/6 [657e1451] 4/98537 (0x4/0x180e9): File    journal3
+
+增加journal数
+======================
+增加journal数，也就是日志数。 当我们增加了节点之后，就需要增加journal数的。 通过gfs2_jadd -j1 /dev/vg0/lv0命令，就可以添加一个。
+
+
+.. code-block:: bash
+
+    [root@node1 ~]# gfs2_jadd -j1 /dev/vg0/lv0
+    Filesystem: /mnt
+    Old Journals: 4
+    New Journals: 5
+    [root@node1 ~]#
+    [root@node1 ~]# gfs2_edit -p jindex /dev/vg0/lv0 |grep journal
+       3/3 [fc7745eb] 1/20 (0x1/0x14): File    journal0
+       4/4 [8b70757d] 2/32859 (0x2/0x805b): File    journal1
+       5/5 [127924c7] 3/65698 (0x3/0x100a2): File    journal2
+       6/6 [657e1451] 4/98537 (0x4/0x180e9): File    journal3
+       7/7 [fb1a81f2] 4/262698 (0x4/0x4022a): File    journal4

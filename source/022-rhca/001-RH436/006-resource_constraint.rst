@@ -180,9 +180,13 @@ location用来确定，资源会运行在哪个节点上。
 
     crm_mon -1
 
-但有些时候我们不希望它跑回来，因为有些大型服务启动较慢，不必来回折腾，这个时候我们，我就需要关闭failback
 
-那么这里有一个值，就是resource-stickiness，资源粘性， 当resource-stickiness+vip在node2上的location的值 > node1的location的值，则关闭了failback.
+resource-stickiness 粘值设置
+==========================================
+
+有些时候我们不希望它跑回来，因为有些大型服务启动较慢，不必来回折腾，这个时候我们，我就需要关闭failback
+
+那么这里有一个值，就是resource-stickiness，资源粘性、粘值 当resource-stickiness+vip在node2上的location的值 > node1的location的值，则关闭了failback.
 
 那下面我们就来设置一下resource-stickiiness，当前vip在node1的location score是120，node2的location score是100,那么我们设置一个resource-stickiness为50. 我们是在Resource Meta Attributes 下添加
 
