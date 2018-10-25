@@ -7,7 +7,7 @@
     001-lvm
     002-swap
     003-nfs
-    004-samba
+    004-samba/readme.rst
     005-autofs
     006-iscsi
     007-ceph

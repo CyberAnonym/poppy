@@ -15,6 +15,8 @@
 
 
 
-用拷贝出的虚拟机文件，安装一个新的虚拟机，这里我们定义了多个参数，包括-r 指定ram内存，-n 直接虚拟机名，-m指定MAC地址。 --disk指定磁盘地址。
+用拷贝出的虚拟机文件，安装一个新的虚拟机，这里我们定义了多个参数，包括-memory 指定内存，-n 指定虚拟机名，-m指定MAC地址。 --disk指定磁盘地址。
 
-    [root@kvm ~]# virt-install -r 2048 -n test2.alv.pub --os-variant rhel7 -m 00:11:22:33:44:10 -w default --graphics vnc,keymap=en-us --disk=/var/lib/libvirt/images/test1.alv.pub.qcow2 --import
+.. code-block:: bash
+
+    [root@kvm ~]# virt-install -memory 2048 -n test2.alv.pub --os-variant rhel7 -m 00:11:22:33:44:10 -w default --graphics vnc,keymap=en-us --disk=/var/lib/libvirt/images/test1.alv.pub.qcow2 --import
