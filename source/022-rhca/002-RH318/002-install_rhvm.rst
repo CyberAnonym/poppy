@@ -64,6 +64,12 @@ Configure yum repository
 .. code-block:: bash
 
     [root@rhevm ~]# vim /etc/yum.repos.d/rhv.repo
+    [base]
+    name=base
+    baseurl=file:///mnt/iso
+    gpgcheck=0
+    enable=1
+
     [r1]
     name=r1
     baseurl=file:///common
@@ -107,3 +113,155 @@ Configure yum repository
     Cleaning repos: base r1 r2 r3 r4 r5 r6
     Cleaning up everything
     [root@rhevm ~]# yum repolist
+
+
+关闭防火墙和selinux 安装常用软件
+========================================
+
+#. 关闭selinux和防火墙
+
+    .. code-block:: bash
+
+        [root@rhevm ~]# setenforce 0
+        [root@rhevm ~]# sed -i 's/SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
+        [root@rhevm ~]# systemctl disable firewalld
+        Removed symlink /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service.
+        Removed symlink /etc/systemd/system/basic.target.wants/firewalld.service.
+        [root@rhevm ~]# systemctl stop firewalld
+
+#. 安装常用工具
+
+    .. code-block:: bash
+
+        $ yum install vim lrzsz *open*vm*tool* bash* -y
+
+
+#. 重启系统
+
+    .. code-block:: bash
+
+        reboot
+
+
+安装rhevm
+=================
+然后我们开始安装rhevm
+
+#. 安装依赖包virtio-win
+
+    .. code-block:: bash
+
+        $ yum install /alvin/virtio-win-1.8.0-1.el6.noarch.rpm -y
+#. 安装rhevm
+
+    .. code-block:: bash
+
+        $ yum install rhevm -y
+
+
+运行rhevm
+==============
+
+
+
+现在我们开始安装rhevm，除了防火墙是No，密码那里设置了密码redhat，其他的都是默认值，
+
+.. code-block:: bash
+
+    $ engine-setup
+
+
+
+然后我们打开浏览器，访问我们这台服务器，访问地址https://rhevm.alv.pub. 客户端使用的dns里也是做好了域名对rhevm.alv.pub的解析的。
+
+.. image:: ../../../images/virtual/001.png
+
+然后我们点击Console Client Resources, 去下载资源的页面
+
+.. image:: ../../../images/virtual/002.png
+
+然后点击Virt Viewer for 64-bit Windows 进行下载,我的电脑是64位的，所以我下载64位的。
+
+.. image:: ../../../images/virtual/003.png
+
+然后安装
+
+然后我们在主页点击Administration Portal
+
+然后在登录界面开始登录，用户名是admin,密码，是刚才我们在命令行安装的时候设置的密码，这里我设置的是redhat。
+
+.. image:: ../../../images/virtual/004.png
+
+成功登录，至此，我们的RHEVM就配置结束了。
+
+.. image:: ../../../images/virtual/005.png
+
+
+安装RHVH
+==============
+
+RHVH就是 Red Hat Virtual Host
+
+现在我们开始在VMware Workstation 里面创建一个RHVH虚拟机，先创建虚拟机，创建虚拟机的时候，有两个地方注意下，第一个是选择IO控制类型的时候，选择LSI Logic SAS，而不是用默认的配置。
+
+.. image:: ../../../images/virtual/006.png
+
+第二个是在选择磁盘容量的界面，选择Store virtual disk as a single file. 而不是默认的，如下图所示。注意：下图中磁盘容量是20G，20G是进入这个页面时默认的容量，实际上我改成了100G,我们就使用100G.
+
+.. image:: ../../../images/virtual/007.png
+
+创建虚拟机之后，不要启动，要先去修改虚拟机的配置文件。
+
+在虚拟机的配置文件rhvh1.alv.pub.vmx 的最后一行 **添加 apic.xapic.enable = "FALSE"，** 然后保存，然后再开启虚拟机。
+
+
+安装系统就像安装RHEL系统一样，磁盘这里我们使用自动分区，然后配置好网络、主机名，文档里不演示过程。
+
+
+安装完成后，我们登录系统,按照提示，执行nodectl check 看下。
+
+.. code-block:: bash
+
+      node status: OK
+      See `nodectl check` for more information
+
+    Admin Console: https://192.168.127.201:9090/
+
+    [root@rhvh1 ~]#
+    [root@rhvh1 ~]# nodectl check
+    Status: OK
+    Bootloader ... OK
+      Layer boot entries ... OK
+      Valid boot entries ... OK
+    Mount points ... OK
+      Separate /var ... OK
+      Discard is used ... OK
+    Basic storage ... OK
+      Initialized VG ... OK
+      Initialized Thin Pool ... OK
+      Initialized LVs ... OK
+    Thin storage ... OK
+      Checking available space in thinpool ... OK
+      Checking thinpool auto-extend ... OK
+    vdsmd ... OK
+    [root@rhvh1 ~]#
+
+
+根据提示，我们可以通过https://192.168.127.201:9090/来访问 Admin Console,如下图所示
+
+.. image:: ../../../images/virtual/008.png
+
+
+输入系统的用户名密码就可以登录了，
+
+.. image:: ../../../images/virtual/009.png
+
+查看dashboard
+
+
+.. image:: ../../../images/virtual/010.png
+
+
+在RHVM里添加RHVH
+=======================
+

@@ -6,7 +6,7 @@ saltstack
 .. toctree::
     :maxdepth: 2
 
-    install_saltstack
-    saltstack_agent
-    group
-    salt-ui-halite
+    001-install_saltstack
+    002-saltstack_agent
+    003-group
+    004-salt-ui-halite

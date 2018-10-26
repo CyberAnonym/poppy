@@ -2,7 +2,7 @@ RH318学习环境介绍
 ##############################
 
 
-RHVM
+RHEVM
     RAM:4G
     CPU:4core
     Disk:100G

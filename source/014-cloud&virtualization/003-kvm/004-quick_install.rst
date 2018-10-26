@@ -20,3 +20,4 @@
 .. code-block:: bash
 
     [root@kvm ~]# virt-install -memory 2048 -n test2.alv.pub --os-variant rhel7 -m 00:11:22:33:44:10 -w default --graphics vnc,keymap=en-us --disk=/var/lib/libvirt/images/test1.alv.pub.qcow2 --import
+
