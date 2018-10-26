@@ -25,11 +25,13 @@ Nginx站点根目录:/www/share
 
 #编辑nginx配置文件，添加以下内容：
 
-autoindex on; #开启nginx目录浏览功能
+::
 
-autoindex_exact_size off; #文件大小从KB开始显示
+    autoindex on; #开启nginx目录浏览功能
 
-autoindex_localtime on; #显示文件修改时间为服务器本地时间
+    autoindex_exact_size off; #文件大小从KB开始显示
+
+    autoindex_localtime on; #显示文件修改时间为服务器本地时间
 
 
 

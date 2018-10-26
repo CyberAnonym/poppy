@@ -7,8 +7,8 @@ yum的全称是Yellowdog Updater Modified
     :maxdepth: 4
     :numbered:
 
-    001-yum
-    002-yum_iso_local
+    001-yum_iso_local
+    002-yum
     003-yum_http
     004-common_opensource_yum
     005-custom_repo

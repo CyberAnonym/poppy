@@ -202,7 +202,7 @@ Configure yum repository
 
 RHVH就是 Red Hat Virtual Host
 
-现在我们开始在VMware Workstation 里面创建一个RHVH虚拟机，先创建虚拟机，创建虚拟机的时候，有两个地方注意下，第一个是选择IO控制类型的时候，选择LSI Logic SAS，而不是用默认的配置。
+现在我们开始在VMware Workstation 里面创建一个RHVH虚拟机，先创建虚拟机，创建虚拟机的时候，有两个地方注意下，第一个是选择IO控制类型的时候，选择LSI Logic SAS，而不是用默认的配置。 CPU一定要开启虚拟化。
 
 .. image:: ../../../images/virtual/006.png
 
@@ -265,3 +265,14 @@ RHVH就是 Red Hat Virtual Host
 在RHVM里添加RHVH
 =======================
 
+在hosts里店家New，添加一台RHVH主机
+
+.. image:: ../../../images/virtual/011.png
+
+然后会提示没有配置电源管理，电源管理配置后是可以做远程开机和关机的，这里我先不配置电源管理。
+
+.. image:: ../../../images/virtual/012.png
+
+然后就开始等待，安装可能需要几分钟的时间，安装完成之后，前面的箭头会成为一个向上的三角
+
+.. image:: ../../../images/virtual/013.png
