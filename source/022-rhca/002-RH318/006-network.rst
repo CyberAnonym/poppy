@@ -59,3 +59,20 @@
 
 .. image:: ../../../images/virtual/035.png
 
+
+添加网卡完成后，我们的rhvh里就多了两张网卡，之前我们只有ens32,现在多了ens35和ens36.
+
+.. code-block:: bash
+
+    [root@rhvh1 ~]# ip a s|grep ens
+    2: ens32: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast master ovirtmgmt state UP qlen 1000
+    3: ens35: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    4: ens36: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
+
+
+通过网卡mac地址我们可以看到rhvh1上的ens35是是host only的那张网卡，所以用来做迁移网络，ens36则用来做内部数据传输网络。这里我们在web上操作。
+
+先把迁移网络设置的分配勾选，表示启用，这里不再图片演示。
+
+然后我们去hosts那里，点击rhvh1，点击Network Interfaces，点击Setup Host Networks,然后在弹出的界面中将右边的网络，拖到左边指定对应的接口那里。
+
