@@ -76,3 +76,34 @@
 
 然后我们去hosts那里，点击rhvh1，点击Network Interfaces，点击Setup Host Networks,然后在弹出的界面中将右边的网络，拖到左边指定对应的接口那里。
 
+.. image:: ../../../images/virtual/036.png
+
+
+然后点击网络那里的那支笔，进入修改网络
+
+.. image:: ../../../images/virtual/037.png
+
+然后开始ip地址等信息，这里该网段我们使用的是192.168.38.0/24网段。
+
+.. image:: ../../../images/virtual/038.png
+
+然后mi_network里我们也配置一下网络，设置IP地址为192.168.10.201，这里图片省略
+
+
+然后rhvh2主机也用同样的方式是设置一下两块网卡的网络，这里图片略。
+
+然后我们去两台rhvh上看一下网络状况
+
+.. code-block:: bash
+
+    [root@rhvh1 ~]# ip a s|grep  global
+        inet 192.168.38.201/24 brd 192.168.38.255 scope global ens35
+        inet 192.168.127.201/24 brd 192.168.127.255 scope global ovirtmgmt
+        inet 192.168.10.201/24 brd 192.168.10.255 scope global data_network
+
+.. code-block:: bash
+
+    [root@rhvh2 ~]# ip a s|grep global
+        inet 192.168.38.202/24 brd 192.168.38.255 scope global ens35
+        inet 192.168.127.202/24 brd 192.168.127.255 scope global ovirtmgmt
+        inet 192.168.10.202/24 brd 192.168.10.255 scope global data_network

@@ -192,6 +192,14 @@ Now search LDAP DIT for all records
     getent passwd ldapuser1
     id ldapuser1
 
+重启服务
+-------------
+如果修改过客户端的配置，比如换了一台ldap服务器，那么需要重启一下服务,重新加载nslce进程，执行下面的命令
+
+.. code-block:: bash
+
+    #service nslcd restart
+    systemctl restart nslcd
 
 
 

@@ -149,7 +149,7 @@ NFS共享的话，当我们在多个节点同时去往NFS共享里去写数据�
 
 .. code-block:: bash
 
-    iscsiad -m node -T iqn.2018-10.com.example:node4 -p node4 -l
+    iscsiadm -m node -T iqn.2018-10.com.example:node4 -p node4 -l
 
 退出登录指定记录
 -------------------------
