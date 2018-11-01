@@ -27,10 +27,10 @@
     python -c "$(curl -fsSL https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/common_tools/pullLocalYum.py)"
 
 
-加入natasha的ldap系统
+加入ipa的alv.pub的ldap系统
 ================================
 
-描述：加入到natasha.alv.pub ldap系统，并配置autofs将dc.alv.pub的用户数据目录挂载过来，dc.alv.pub是alvin的虚拟机，仅alvin自己可以访问。
+描述：加入到ipa.alv.pub ldap系统，并配置autofs将dc.alv.pub的用户数据目录挂载过来，dc.alv.pub是alvin的虚拟机，仅alvin自己可以访问。
 
 .. code-block:: bash
 

@@ -13,7 +13,7 @@ def processCommand(command,successLog,failedLog): #定义确认命令是否执�
 def installLDAPSoft(): #安装ldap客户端需要的软件
     processCommand(os.system('yum install nss-pam-ldapd setuptool -y'),"nss-pam-ldapd setuptool已安装完成。","nss-pam-ldapd setuptool安装失败")
 def joinLDAP(): #加入ldap
-    processCommand(os.system('authconfig --enableldap  --enableldapauth --ldapserver=ldap://ldap.alv.pub --disableldaptls  --enablemkhomedir --ldapbasedn="dc=alv,dc=pub" --update'),"已成功加入到ldap.alv.pub LDAP系统。","错误，没有成功加入到LDAP")
+    processCommand(os.system('authconfig --enableldap  --enableldapauth --ldapserver=ldap://ipa.alv.pub --disableldaptls  --enablemkhomedir --ldapbasedn="dc=alv,dc=pub" --update'),"已成功加入到ldap.alv.pub LDAP系统。","错误，没有成功加入到LDAP")
 def installAutofs(): #安装autofs
     processCommand(os.system('yum -y install autofs nfs-utils'),"autofs has been installed","Failed install autofs")
 def configureAuthfs(): #配置autofs
@@ -36,7 +36,7 @@ def main():
         installLDAPSoft()
         joinLDAP()
         installAutofs()
-        configureAuthfs()
+        #configureAuthfs()
         startAutofs()
     except Exception as e:
         print('Detected error,Please check your setting.')
