@@ -164,11 +164,14 @@ Configure yum repository
 
 
 
-现在我们开始安装rhevm，除了防火墙是No，密码那里设置了密码redhat，其他的都是默认值，
+现在我们开始安装rhevm，除了防火墙是No，密码那里设置了密码redhat，确认使用若密码Yes,其他的都是默认值，
 
 .. code-block:: bash
 
     $ engine-setup
+    Do you want Setup to configure the firewall? (Yes, No) [Yes]: No
+    Use weak password? (Yes, No) [No]: yes
+
 
 
 

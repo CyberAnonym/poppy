@@ -39,6 +39,10 @@ dig命令是常用的域名查询工具，可以用来测试域名系统工作�
 实例
 =====
 
+
+查看指定域名的A记录
+---------------------------
+
 .. code-block:: bash
 
     [alvin@poppy ~]$ dig alv.pub
@@ -67,28 +71,29 @@ dig命令是常用的域名查询工具，可以用来测试域名系统工作�
 
 
 
-向指定dns服务器验证指定域名的txt记录
-
+向指定dns服务器查看指定域名的txt记录
+------------------------------------------
 
 .. code-block:: bash
 
-    [alvin@poppy ~]$ dig -t TXT  _acme-challenge.xaas.vip @8.8.8.8
+    [alvin@diana ~]$ dig -t txt  alv.pub @8.8.8.8
 
-    ; <<>> DiG 9.9.4-RedHat-9.9.4-61.el7 <<>> -t TXT _acme-challenge.xaas.vip @8.8.8.8
+    ; <<>> DiG 9.9.4-RedHat-9.9.4-51.el7_4.1 <<>> -t txt alv.pub @8.8.8.8
     ;; global options: +cmd
     ;; Got answer:
-    ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 45317
+    ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 48629
     ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
 
     ;; OPT PSEUDOSECTION:
     ; EDNS: version: 0, flags:; udp: 512
     ;; QUESTION SECTION:
-    ;_acme-challenge.xaas.vip.	IN	TXT
+    ;alv.pub.			IN	TXT
 
     ;; ANSWER SECTION:
-    _acme-challenge.xaas.vip. 599	IN	TXT	"Bw6MoggNImrqELPG7wYfT7MWw8JpZy5Dc3Bv5uNcdqU"
+    alv.pub.		599	IN	TXT	"201802280000004w87wry7rvoyzajtz6t9db636pmrmnerhelfaiy0ibuteba2yk"
 
-    ;; Query time: 57 msec
+    ;; Query time: 1263 msec
     ;; SERVER: 8.8.8.8#53(8.8.8.8)
-    ;; WHEN: Tue Aug 28 11:16:07 CST 2018
-    ;; MSG SIZE  rcvd: 109
+    ;; WHEN: Fri Nov 02 09:08:06 CST 2018
+    ;; MSG SIZE  rcvd: 113
+
