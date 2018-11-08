@@ -12,3 +12,19 @@ RHEV ----> oVirt
 rhv-hypervisor  -- rhvh1   精简版的RHEL系统。
 
 这章讲述RHV框架，这里不便描述，省略。
+
+
+
+#. 云计算只是一种概念，IaaS，PaaS和SaaS服务模式
+
+#. 虚拟化是一种技术，cpu/io/内存/网络虚拟化
+
+#. 虚拟化软件有kvm／xen／lxc
+
+#. kvm只是内核中对cpu的虚拟化，然而qemu有对其他设备的虚拟化，所以kvm借鉴了qemu，合并为了qemu-kvm，支持全虚拟化
+
+#. xen是直接运行在裸机上的虚拟化管理程序，所以它支持半虚拟化和全虚拟化
+
+#. lxcLinux Container容器是一种内核虚拟化技术，个人感觉有点象docker
+
+#. libvirt 是一套免费、开源的支持Linux下主流虚拟化工具的C函数库

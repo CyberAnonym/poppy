@@ -125,6 +125,7 @@
 .. note::
 
     通过cp scp 或是xftp等工具直接传到这个目录的iso文件，要注意手动修改文件权限，然后我们才能正常使用，
+
     .. code-block:: bash
 
         chown 36:36 *.iso
