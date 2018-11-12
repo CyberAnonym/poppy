@@ -19,13 +19,19 @@
 
 
 
-添加本地仓库
+添加alv.pub本地网络仓库
 =========================
 
 .. code-block:: bash
 
     python -c "$(curl -fsSL https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/common_tools/pullLocalYum.py)"
 
+将本地光盘作为repositories
+===================================
+
+.. code-block:: bash
+
+    curl -s https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/common_tools/create_local_repo.py|python
 
 加入ipa的alv.pub的ldap系统
 ================================
