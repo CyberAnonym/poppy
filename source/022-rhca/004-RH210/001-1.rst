@@ -8,3 +8,17 @@ openstack
     fuse---图形化界面的方式安装
 
     手动部署
+    ansible
+    director
+
+
+
+
+
+
+安装openstack
+======================
+
+安装openstack(RHOSP10)
+
+    安装在RHEL7.3上。
