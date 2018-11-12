@@ -1,0 +1,5 @@
+[base]
+gpgcheck=0
+enabled=1
+name=base
+baseurl=file:///mnt/iso
