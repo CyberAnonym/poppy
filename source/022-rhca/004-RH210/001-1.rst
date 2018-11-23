@@ -22,3 +22,28 @@ openstack
 安装openstack(RHOSP10)
 
     安装在RHEL7.3上。
+
+
+
+部署网络yum源
+====================
+
+先将一个相应的软件都上传到服务器上，RHEL7.3的镜像我们用本地挂载上来的/dev/sr0.
+
+.. code-block:: bash
+
+    [root@cl210controler ~]# ll /root/ops/
+    total 4295804
+    -rw-r--r-- 1 root root        377 Oct 24 07:17 aa.repo
+    -rw-r--r-- 1 root root 3183450112 Oct 24 07:26 RHEL7OSP-10.0-20170309.3-x86_64.iso
+    -rw-r--r-- 1 root root  177152000 Oct 24 07:18 rhel-7-server-extras-20170308.iso
+    -rw-r--r-- 1 root root  495140864 Oct 24 07:26 rhel-7-server-rh-common-20170308.iso
+    -rw-r--r-- 1 root root  543153092 Oct 24 07:24 rhel-guest-image-7-7.3-35.el7_3.noarch.rpm
+
+
+创建泳衣挂载的目标目录
+
+.. code-block:: bash
+
+    mkdir -p /var/ftp/{update,osp10,extras,common,dvd}
+

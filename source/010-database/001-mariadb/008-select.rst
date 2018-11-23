@@ -165,3 +165,21 @@ select
 ::
 
     select realname,case sex when 1 then '男' when 2 then '女' end 性别,ROUND((20180824-birthday)/10000) 年龄 from t_user t1 where  clazz_id = 121
+
+
+查询用户每日注册量
+===========================
+
+::
+
+
+    SELECT
+        DATE_FORMAT(createDate, '%Y-%m-%d') AS '注册日期',
+        count(id) '人数'
+    FROM
+        USER
+    WHERE
+        userType = 6
+    AND createDate LIKE '2018%'
+    GROUP BY
+        DATE_FORMAT(createDate, '%Y-%m-%d')
