@@ -205,6 +205,6 @@ openvpn的l3层就是用来nat上网的， l2层就是桥接，点对点通信�
 
 
 
-通过softether vpn 生存openvpn客户端配置文件，在windows下下载windows客户端工具，将客户端配置文件放到openvpn的安装目录的config里面，打开openvpn客户端，并可以在小图标那里选择连接。
+通过softether vpn 生成openvpn客户端配置文件，在windows下下载windows客户端工具，将客户端配置文件放到openvpn的安装目录的config里面，打开openvpn客户端，并可以在小图标那里选择连接。
 
 windows客户端下载地址： http://openvpn.ustc.edu.cn/openvpn-install-2.3.10-I601-x86_64.exe

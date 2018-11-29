@@ -100,3 +100,13 @@ yum升级指定包
 .. code-block:: bash
 
     $ sudo yum install docker-ce-17.12.1.ce    #这样也可以安装17版本，我们指定的版本docker-ce-17.12.1
+
+
+多个仓库时，使用指定仓库安装软件
+===========================================
+
+这里我们指定用名为base的仓库安装软件
+
+::
+
+    yum groupinstall virt* --enablerepo=base
