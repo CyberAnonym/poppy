@@ -32,18 +32,62 @@ openstack
 
 .. code-block:: bash
 
-    [root@cl210controler ~]# ll /root/ops/
-    total 4295804
-    -rw-r--r-- 1 root root        377 Oct 24 07:17 aa.repo
-    -rw-r--r-- 1 root root 3183450112 Oct 24 07:26 RHEL7OSP-10.0-20170309.3-x86_64.iso
-    -rw-r--r-- 1 root root  177152000 Oct 24 07:18 rhel-7-server-extras-20170308.iso
-    -rw-r--r-- 1 root root  495140864 Oct 24 07:26 rhel-7-server-rh-common-20170308.iso
-    -rw-r--r-- 1 root root  543153092 Oct 24 07:24 rhel-guest-image-7-7.3-35.el7_3.noarch.rpm
+    [root@cl210compute ~]# ll /rhca/CL210/soft/
+    total 5781717
+    -rwxr-xr-x 1 root root        377 Oct 24 07:17 aa.repo
+    -rwxr-xr-x 1 root root       2903 Nov 12 23:00 aa.template
+    drwxr-xr-x 2 root root          0 Nov 13 05:24 director镜像
+    -rwxr-xr-x 1 root root      36110 Nov 12 23:00 rabbitmqadmin
+    -rwxr-xr-x 1 root root 1518446592 Nov 12 23:00 rhel-7.3-server-updates-20170308.iso
+    -rwxr-xr-x 1 root root 3183450112 Oct 24 07:26 RHEL7OSP-10.0-20170309.3-x86_64.iso
+    -rwxr-xr-x 1 root root  177152000 Oct 24 07:18 rhel-7-server-extras-20170308.iso
+    -rwxr-xr-x 1 root root  495140864 Oct 24 07:26 rhel-7-server-rh-common-20170308.iso
+    -rwxr-xr-x 1 root root  543153092 Oct 24 07:24 rhel-guest-image-7-7.3-35.el7_3.noarch.rpm
+    -rwxr-xr-x 1 root root       2213 Nov 12 23:00 web_server.yaml
+    -rwxr-xr-x 1 root root    3080930 Nov 12 23:02 练习手册.docx
 
 
-创建泳衣挂载的目标目录
+
+创建用于挂载的目标目录
 
 .. code-block:: bash
 
     mkdir -p /var/ftp/{update,osp10,extras,common,dvd}
 
+设置挂载
+
+.. code-block:: bash
+
+
+    $ vim /etc/fstab
+    /rhca/CL210/soft/rhel-7.3-server-updates-20170308.iso /var/ftp/update iso9660 defaults 0 0
+    /rhca/CL210/soft/RHEL7OSP-10.0-20170309.3-x86_64.iso /var/ftp/osp10 iso9660 defaults 0 0
+    /rhca/CL210/soft/rhel-7-server-extras-20170308.iso /var/ftp/extras iso9660 defaults 0 0
+    /rhca/CL210/soft/rhel-7-server-rh-common-20170308.iso /var/ftp/common iso9660 defaults 0 0
+    /dev/sr0 /var/ftp/dvd iso9660 defaults 0 0
+    $ mount -a
+
+
+这个时候，osp10是还用不了的，因为他没有直接有repodata，接下来来我们要去创建
+
+.. code-block:: bash
+
+    yum install createrepo -y
+
+然后去卸载osp10
+
+.. code-block:: bash
+
+    vim /etc/fstab
+    umount /var/ftp/osp10
+
+
+
+然后我们创建一个临时目录
+
+.. code-block:: bash
+
+    mkdir -p /xx
+    mount /rhca/CL210/soft/RHEL7OSP-10.0-20170309.3-x86_64.iso /xx
+    cp -rf /xx/* /var/ftp/osp10/
+    cp /rhca/CL210/soft/rhel-guest-image-7-7.3-35.el7_3.noarch.rpm /var/ftp/osp10/

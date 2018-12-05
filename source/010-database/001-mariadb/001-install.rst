@@ -122,7 +122,8 @@ Installing MariaDB Galera Cluster with apt-get： https://mariadb.com/kb/en/libr
     ● mysql.service - LSB: start and stop MariaDB
        Loaded: loaded (/etc/rc.d/init.d/mysql; bad; vendor preset: disabled)
        Active: inactive (dead) since Mon 2018-09-03 15:50:09 CST; 9min ago
-         Docs: man:systemd-sysv-generator(8)
+         Docs: man
+         :systemd-sysv-generator(8)
       Process: 28588 ExecStop=/etc/rc.d/init.d/mysql stop (code=exited, status=0/SUCCESS)
       Process: 28458 ExecStart=/etc/rc.d/init.d/mysql start (code=exited, status=0/SUCCESS)
 

@@ -311,7 +311,9 @@ ipa-server的安装
 
 验证ldap
 
-authconfig --enableldap  --enableldapauth --ldapserver=ldap://ipa.alv.pub --disableldaptls  --enablemkhomedir --ldapbasedn="dc=alv,dc=pub" --update
+.. code-block:: bash
+
+    authconfig --enableldap  --enableldapauth --ldapserver=ldap://ipa.alv.pub --disableldaptls  --enablemkhomedir --ldapbasedn="dc=alv,dc=pub" --update
 
 如有需要，也可以用图形化shell的方式验证
 
