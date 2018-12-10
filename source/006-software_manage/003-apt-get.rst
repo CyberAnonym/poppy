@@ -23,6 +23,28 @@ apt-get 是ubuntu系统下安装软件的命令。
     # deb-src [arch=i386,ppc64el,amd64] http://mirrors.tuna.tsinghua.edu.cn/mariadb/repo/10.1/ubuntu xenial main
     deb-src http://mirrors.aliyuncs.com/ubuntu/ xenial-backports main restricted universe multiverse
 
+非阿里云内网，则可以使用阿里云的外网的镜像服务
+
+
+
+.. code-block:: bash
+
+    root@alvin:~# cat /etc/apt/sources.list
+    deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse
+    deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse
+    deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse
+    deb http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse
+    deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse
+    deb [arch=amd64,ppc64el,i386] http://mirrors.tuna.tsinghua.edu.cn/mariadb/repo/10.1/ubuntu xenial main
+    # deb-src [arch=amd64,ppc64el,i386] http://mirrors.tuna.tsinghua.edu.cn/mariadb/repo/10.1/ubuntu xenial main
+    # deb-src [arch=i386,ppc64el,amd64] http://mirrors.tuna.tsinghua.edu.cn/mariadb/repo/10.1/ubuntu xenial main
+    deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse
+
+
 
 更新软件源
 =============
