@@ -13,6 +13,7 @@ samba服务主要是用来做目录共享的，可以像一个网盘一样共享
 
 .. code-block:: bash
 
+    [root@poppy ~]# yum install samba -y
     [root@poppy ~]# mkdir -p /public
     [root@poppy ~]# vim /etc/samba/smb.conf
     [public]
