@@ -78,16 +78,67 @@ openstack
 
 .. code-block:: bash
 
-    vim /etc/fstab
-    umount /var/ftp/osp10
+    $ vim /etc/fstab
+    #rhca/CL210/soft/RHEL7OSP-10.0-20170309.3-x86_64.iso /var/ftp/osp10 iso9660 defaults 0 0
+    $ umount /var/ftp/osp10
 
 
 
-然后我们创建一个临时目录
+然后我们创建一个临时目录,并挂载到临时目录
 
 .. code-block:: bash
 
     mkdir -p /xx
     mount /rhca/CL210/soft/RHEL7OSP-10.0-20170309.3-x86_64.iso /xx
+
+拷贝到/var/ftp/ops10目录下，并创建repodata
+
+::
+
     cp -rf /xx/* /var/ftp/osp10/
     cp /rhca/CL210/soft/rhel-guest-image-7-7.3-35.el7_3.noarch.rpm /var/ftp/osp10/
+    createrepo -v /var/ftp/osp10/
+
+
+创建yum仓库
+
+::
+
+    $ vim /etc/yum.repos.d/aa.repo
+    [dvd]
+    name=dvd
+    baseurl=ftp://192.168.3.9/dvd
+    enabled=1
+    gpgcheck=0
+
+    [update]
+    name=update
+    baseurl=ftp://192.168.3.9/update
+    enabled=1
+    gpgcheck=0
+
+    [extras]
+    name=extras
+    baseurl=ftp://192.168.3.9/extras
+    enabled=1
+    gpgcheck=0
+
+    [common]
+    name=common
+    baseurl=ftp://192.168.3.9/common
+    enabled=1
+    gpgcheck=0
+
+    [osp10]
+    name=osp10
+    baseurl=ftp://192.168.3.9/osp10
+    enabled=1
+    gpgcheck=0
+
+
+拷贝到compute节点去
+
+::
+
+    scp /etc/yum.repos.d/aa.repo cl210compute:/etc/yum.repos.d/
+

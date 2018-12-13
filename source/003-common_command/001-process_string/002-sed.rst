@@ -220,17 +220,30 @@ a是append， 在匹配行后面增加一行指定内容，下面是在file文�
 
     [alvin@poppy ~]$ sed '/nologin/a clear' passwd
 
-i|在匹配行的上面添加内容
+i|保存修改文件
 ====================================
 
-匹配行前增加指定内容
+i|在匹配行的上面添加内容
 ---------------------------------
 
-i是insert， 在匹配行前面插入一行指定内容，下面是在file文件里在匹配到aa的行的前面增加内容qqq
+这里的i是insert， 在匹配行前面插入一行指定内容，下面是在file文件里在匹配到aa的行的前面增加内容qqq
 
 .. code-block:: bash
 
     sed -i /aa/i\qqq file
+
+修改一个文件时，备份源文件
+-------------------------------
+
+.. code-block:: bash
+
+    [root@cl210controller ~]# cat 2.txt
+    a b c d e
+    [root@cl210controller ~]# sed -i.bak 's/c/666/' 2.txt
+    [root@cl210controller ~]# cat 2.txt
+    a b 666 d e
+    [root@cl210controller ~]# cat 2.txt.bak
+    a b c d e
 
 
 
@@ -262,3 +275,11 @@ c|替换匹配到的行
     [alvin@poppy ~]$ sed '2c clear' passwd
 
 
+分组替换
+===========
+
+在做替换时，如果将前面的用户用括号()包裹起来了，那么可以在后面调用，第一个括号就是\1,使用分组时前面加-r参数。
+
+::
+
+    echo 'CONFIG_CINDER_KS_PW=sda3d34dd235d'|sed -r 's/(.+_PW)=[0-9a-z]+/\1=redhat/'
