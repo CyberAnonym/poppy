@@ -19,5 +19,5 @@ mariadb
     013-mysqldump
     014-function
     015-other-function
-
+    016-binlog.rst
 

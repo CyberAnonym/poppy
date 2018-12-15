@@ -29,6 +29,9 @@
 |rs21|            |url21|             |cm21|
 |rs22|            |url22|             |cm22|
 |rs23|            |url23|             |cm23|
+|rs24|            |url24|             |cm24|
+|rs25|            |url25|             |cm25|
+|rs26|            |url26|             |cm26|
 ============    ==============   ==========
 
 
@@ -150,3 +153,19 @@
 .. |rs23| replace:: 清华镜像
 .. |url23| replace:: https://mirrors.tuna.tsinghua.edu.cn/
 .. |cm23| replace:: 清华大学开源软件镜像站
+
+
+.. |rs24| replace:: centos镜像
+.. |url24| replace:: https://www.centos.org/download/mirrors/
+.. |cm24| replace:: centos各种镜像列表
+
+
+.. |rs25| replace:: centos全版本
+.. |url25| replace:: http://vault.centos.org/
+.. |cm25| replace:: centos全版本镜像和rpm
+
+.. |rs26| replace:: centos全版本
+.. |url26| replace:: http://archive.kernel.org/centos-vault/
+.. |cm26| replace:: centos全版本镜像和rpm及相关信息
+
+

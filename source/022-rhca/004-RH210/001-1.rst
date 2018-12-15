@@ -31,7 +31,9 @@ openstack
 先将一个相应的软件都上传到服务器上，RHEL7.3的镜像我们用本地挂载上来的/dev/sr0.
 
 .. code-block:: bash
+
     [root@cl210compute ~]# mkdir -p /rhca
+    [root@cl210compute ~]# yum install cifs-utils -y
     [root@cl210compute ~]# mount //192.168.3.5/public/rhca /rhca -o user=smb,password=wankaihao
     [root@cl210compute ~]# ll /rhca/CL210/soft/
     total 5781717
@@ -111,31 +113,31 @@ openstack
     $ vim /etc/yum.repos.d/aa.repo
     [dvd]
     name=dvd
-    baseurl=ftp://192.168.3.9/dvd
+    baseurl=ftp://192.168.3.4/dvd
     enabled=1
     gpgcheck=0
 
     [update]
     name=update
-    baseurl=ftp://192.168.3.9/update
+    baseurl=ftp://192.168.3.4/update
     enabled=1
     gpgcheck=0
 
     [extras]
     name=extras
-    baseurl=ftp://192.168.3.9/extras
+    baseurl=ftp://192.168.3.4/extras
     enabled=1
     gpgcheck=0
 
     [common]
     name=common
-    baseurl=ftp://192.168.3.9/common
+    baseurl=ftp://192.168.3.4/common
     enabled=1
     gpgcheck=0
 
     [osp10]
     name=osp10
-    baseurl=ftp://192.168.3.9/osp10
+    baseurl=ftp://192.168.3.4/osp10
     enabled=1
     gpgcheck=0
 
@@ -267,3 +269,7 @@ packstack安装的时候，有两种方式，
      * The generated manifests are available at: /var/tmp/packstack/20181213-200151-1wVxDo/manifests
 
 然后我们可以通过 http://192.168.3.9/dashboard 来访问了。
+
+后续如果服务器重启了，httpd服务无法启动，可以执行 mkdir -p /run/httpd 来解决。
+
+
