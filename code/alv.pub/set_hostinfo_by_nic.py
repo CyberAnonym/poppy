@@ -41,7 +41,7 @@ sysinfo['gw']='192.168.3.1'
 sysinfo['dns']='192.168.3.1'
 sysinfo['dns_search']='alv.pub'
 #sysinfo['nic']=subprocess.check_output("ip a s|grep state|grep -v lo|awk -F: '{print $2}'|sed 's/ //'",shell=True).split('\n')[0]
-sysinfo['nic']=subprocess.check_output("nmcli device show |grep -i CONNECTION|head -1|sed -r 's/(GENERAL.CONNECTION:[ ]+)([a-Z].*)/\2/'",shell=True)
+sysinfo['nic']=subprocess.check_output("nmcli device show |grep -i CONNECTION|head -1|sed -r 's/(GENERAL.CONNECTION:[ ]+)([a-Z].*)/\2/'",shell=True).split('\n')[0]
 sysinfo['hostname']=hostname[tail_1]+hostname_domain
 
 
