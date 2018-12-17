@@ -9,7 +9,8 @@ nextcloud
 
 .. code-block:: bash
 
-    $ sudo docker run -d -v nextcloud:/var/www/html -p 801:80  nextcloud
+    $ sudo docker run -d -v /nextcloud:/var/www/html -p 801:80 --restart=always -v /etc/localtime:/etc/localtime --name nextcloud  nextcloud
+
 
 
 

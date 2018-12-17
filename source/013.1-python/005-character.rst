@@ -22,3 +22,15 @@ format
     weather_dict4['high']='33'
     weather_dict4['low']='10'
     print('{high},{low})'.format(**weather_dict4))
+
+
+split
+============
+
+以':' 为分隔，打印最后一个索引的数据
+
+::
+
+    a='52:54:00:d9:94:10'
+
+    print(a.split(':')[-1])
