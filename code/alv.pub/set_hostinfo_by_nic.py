@@ -4,8 +4,8 @@ import subprocess
 hostname_domain='.alv.pub'
 
 hostname={}
-hostname['9']
-hostname['10']='meta'
+hostname['9']='meta'
+hostname['10']='redis'
 hostname['11']='redis1'
 hostname['12']='redis2'
 hostname['13']='redis3'
