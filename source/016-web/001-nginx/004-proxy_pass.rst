@@ -2,6 +2,25 @@
 #########
 
 
+最简单的反代
+=================
+
+效果：将http://u1.shenmin.com 转到http://u1.shenmin.com:5000
+
+.. code-block:: bash
+
+    server {
+        charset utf-8;
+        listen       80;
+        server_name  u1.shenmin.com;
+
+        location / {
+            proxy_pass http://u1.shenmin.com:5000;
+        }
+
+}
+
+
 设置反向代理
 ==================
 
