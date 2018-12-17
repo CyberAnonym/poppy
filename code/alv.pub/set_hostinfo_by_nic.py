@@ -4,17 +4,19 @@ import subprocess
 hostname_domain='.alv.pub'
 
 hostname={}
-hostname['2']='ipa'
-hostname['9']='meta'
-hostname['10']='mysql'
+hostname['2']='ipa' #ipa 服务。包括ldap，dns服务。
+hostname['3']='internal' #物理机 所有虚拟机都是安装在这里
+hostname['4']='zabbix' #zabbix监控
+hostname['9']='meta'  #其他虚拟机要创建的得时候，拷贝meta的盘。然后修改系统配置导入为新的虚拟机
+hostname['10']='mysql' #mysql前端
 hostname['11']='mysql1'
 hostname['12']='mysql2'
 hostname['13']='mysql3'
-hostname['20']='redis'
+hostname['20']='redis' #redis前端
 hostname['21']='redis1'
 hostname['22']='redis2'
 hostname['23']='redis3'
-hostname['30']='mongodb'
+hostname['30']='mongodb' #mongodb 前端
 hostname['31']='mongodb1'
 hostname['32']='mongodb2'
 hostname['33']='mongodb3'
@@ -38,7 +40,7 @@ sysinfo['ip']='192.168.3.%s'%tail_1
 sysinfo['gw']='192.168.3.1'
 sysinfo['dns']='192.168.3.1'
 sysinfo['dns_search']='alv.pub'
-sysinfo['nic']='eth0'
+sysinfo['nic']=subprocess.check_output("ip a s|grep state|grep -v lo|awk -F: '{print $2}'|sed 's/ //'",shell=True).split('\n')[0]
 sysinfo['hostname']=hostname[tail_1]+hostname_domain
 
 
