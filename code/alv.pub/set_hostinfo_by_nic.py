@@ -46,7 +46,6 @@ sysinfo['nic']=re.sub(r'(GENERAL.CONNECTION:\s+)','',subprocess.check_output("nm
 
 sysinfo['hostname']=hostname[tail_1]+hostname_domain
 
-a=subprocess.check_output('ls ok',shell=True)
 #设置ip地址
 
 def set_ip_info():
