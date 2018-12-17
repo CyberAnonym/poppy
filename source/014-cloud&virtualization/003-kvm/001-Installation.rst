@@ -118,3 +118,4 @@ virt-install其他配置参数
     --graphics keymap=en-us #指定键盘类型
     --import  #最后加这个参数，表示是导入一个虚拟机，使用的磁盘是一个已经装好的虚拟机磁盘，而不是创建一个虚拟机
     --vcpus 4 #指定cpu个数为4个
+    --os-variant rhel7  #指定variant
