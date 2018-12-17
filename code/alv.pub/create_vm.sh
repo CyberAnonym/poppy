@@ -4,7 +4,7 @@
 
 #定义新虚拟机的各种值
 
-read -p 'Please enter virtual machine name: ()' name
+read -p 'Please enter virtual machine name: ' name
 #name=ipa.alv.pub
 read -p 'Please enter you nic last number (00:00:00:00:00:??):' tmp_nic
 #nic=00:00:00:00:00:02
