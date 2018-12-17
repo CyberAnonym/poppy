@@ -13,3 +13,5 @@ response = urllib2.urlopen(url)
 content = response.read().decode('utf-8')
 
 print(content)
+a='GENERAL.CONNECTION:                     Bridge br0'
+print(a)

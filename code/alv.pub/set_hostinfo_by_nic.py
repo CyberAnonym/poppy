@@ -1,6 +1,6 @@
 #coding:utf-8
 import subprocess
-
+import re
 hostname_domain='.alv.pub'
 
 hostname={}
@@ -41,14 +41,16 @@ sysinfo['gw']='192.168.3.1'
 sysinfo['dns']='192.168.3.1'
 sysinfo['dns_search']='alv.pub'
 #sysinfo['nic']=subprocess.check_output("ip a s|grep state|grep -v lo|awk -F: '{print $2}'|sed 's/ //'",shell=True).split('\n')[0]
-sysinfo['nic']=subprocess.check_output("nmcli device show |grep -i CONNECTION|head -1|sed -r 's/(GENERAL.CONNECTION:[ ]+)([a-Z].*)/\2/'",shell=True).split('\n')[0]
+sysinfo['nic']=re.sub(r'(GENERAL.CONNECTION:\s+)','',subprocess.check_output("nmcli device show |grep -i CONNECTION|head -1",shell=True).split('\n')[0])
+
+
 sysinfo['hostname']=hostname[tail_1]+hostname_domain
 
-
+a=subprocess.check_output('ls ok',shell=True)
 #设置ip地址
 
 def set_ip_info():
-        if subprocess.call('nmcli connection modify {nic} ipv4.method manual ipv4.addresses {ip} ipv4.gateway {gw} ipv4.dns {dns} ipv4.dns-search {dns_search} autoconnect yes && nmcli con up {nic}'.format(**sysinfo),shell=True) == 0:
+        if subprocess.call('nmcli connection modify "{nic}" ipv4.method manual ipv4.addresses {ip} ipv4.gateway {gw} ipv4.dns {dns} ipv4.dns-search {dns_search} autoconnect yes && nmcli con up "{nic}"'.format(**sysinfo),shell=True) == 0:
             print('IP address has heen setup ok')
         else:
             print('IP address setup failed.')
