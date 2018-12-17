@@ -4,6 +4,7 @@ import subprocess
 hostname_domain='.alv.pub'
 
 hostname={}
+hostname['2']='ipa'
 hostname['9']='meta'
 hostname['10']='mysql'
 hostname['11']='mysql1'
@@ -44,14 +45,14 @@ sysinfo['hostname']=hostname[tail_1]+hostname_domain
 #设置ip地址
 
 def set_ip_info():
-        if subprocess.call('nmcli connection modify {nic} ipv4.method manual ipv4.addresses {ip} ipv4.gateway {gw} ipv4.dns {dns} ipv4.dns-search {dns_search} autoconnect yes && nmcli con up {nic}'.format(**sysinfo),shell=True):
+        if subprocess.call('nmcli connection modify {nic} ipv4.method manual ipv4.addresses {ip} ipv4.gateway {gw} ipv4.dns {dns} ipv4.dns-search {dns_search} autoconnect yes && nmcli con up {nic}'.format(**sysinfo),shell=True) == 0:
             print('IP address has heen setup ok')
         else:
             print('IP address setup failed.')
 
 
 def set_hostnaem():
-    if subprocess.call('hostnamectl set-hostname %s'%sysinfo['hostname'],shell=True):
+    if subprocess.call('hostnamectl set-hostname %s'%sysinfo['hostname'],shell=True) == 0:
         print('Hostname setup ok')
     else:
         print('Hostname setup failed.')
@@ -61,3 +62,6 @@ def set_hostnaem():
 def main():
     set_ip_info()
     set_hostnaem()
+
+if __name__ == '__main__':
+    main()
