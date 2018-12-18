@@ -2,11 +2,11 @@
 #本脚本用于自动安装配置ntp客户端
 import subprocess
 
-#本脚本网络地址：https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/alv.pub/auto_deploy_nfs_client.py
+#本脚本网络地址：https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/alv.pub/auto_deploy_ntp_client.py
 #shell下一键使用： curl -s https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/alv.pub/auto_deploy_nfs_client.py|python
 
 appdict={}
-appdict['ntp_server']='ipa.alv.pub'
+#appdict['ntp_server']='ipa.alv.pub'
 appdict['src_file']='https://raw.githubusercontent.com/AlvinWanCN/poppy/master/conf.d/common/etc/chrony.conf'
 appdict['dest_file']='/etc/chrony.conf'
 appdict['app_name']='chrony'
