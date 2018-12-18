@@ -8,3 +8,5 @@ alv.pub network(alvin的内网)
 
     001-system_info.rst
     002-meta.rst
+    003-ipa.rst
+    004-zabbix.rst

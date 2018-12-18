@@ -169,6 +169,11 @@ RH-Satellite-6 amanda-client amanda-k5-client bacula bacula-client bitcoin bitco
     firewall-cmd --add-masquerade # 允许防火墙伪装IP
     firewall-cmd --remove-masquerade# 禁止防火墙伪装IP
 
+
+.. note::
+
+    在kvm主机里，如果需要其他主机能ssh当前主机的虚拟机，那么当前主机必须要添加 firewall-cmd --add-masquerade , 否则其他机器就无法访问该主机的里的虚拟机的端口。
+
 指定网络中将本地端口5423转发到80
 =================================================
 将本地端口5423转发到80

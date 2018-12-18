@@ -7,3 +7,5 @@ zabbix
     :maxdepth: 2
 
     001-installation
+    002-alert
+    003-discovery

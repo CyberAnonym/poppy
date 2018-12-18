@@ -34,5 +34,11 @@ meta服务器用于我们将meta的那块盘拷贝，然后通过拷贝出的盘
     virt-install --virt-type kvm --name ipa.alv.pub --os-variant rhel7 --ram 4096 -m 00:00:00:00:00:02 --vcpus 4  \
     --disk=/kvm/ipa.alv.pub.raw --network bridge=br0 --graphics vnc,listen=0.0.0.0,port=5902,keymap=en-us --noautoconsole --import
 
+我们也可以用交互式脚本去创建， 脚本内容:
+
+.. literalinclude:: ../../code/alv.pub/create_vm.sh
+      :language: bash
+      :linenos:
+
 
 

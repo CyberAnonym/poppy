@@ -4,11 +4,7 @@ ipa.alv.pub
 ipa服务器
 
 
-创建服务器
-===============
 
-::
+参考我的文档 http://localhost:63342/poppy/build/html/022-rhca/002-RH318/004-user_and_role.html#ipa  配置ipa服务
 
-    qemu-img create -f raw /kvm/ipa.alv.pub.raw 20G
-    virt-install --virt-type kvm --name ipa.alv.pub -m 00:00:00:00:00:02 --ram 4096 --vcpus 2 --cdrom=/nextcloud/data/alvin/files/isos/centos/CentOS-7.4-x86_64-Everything-1708.iso \
-    --disk path=/kvm/ipa.alv.pub.raw --network bridge=br0 --graphics vnc,listen=0.0.0.0,port=5902 --noautoconsole
+

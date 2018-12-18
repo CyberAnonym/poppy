@@ -20,6 +20,10 @@ hostname['30']='mongodb' #mongodb 前端
 hostname['31']='mongodb1'
 hostname['32']='mongodb2'
 hostname['33']='mongodb3'
+hostname['68']='centos6u8'
+hostname['74']='centos7u4'
+hostname['73']='centos7u3'
+
 
 
 

@@ -13,6 +13,7 @@
 ====================
 
 在ansible的hosts配置里添加两台主机
+
 .. code-block::  bash
 
     $ sudo vim /etc/ansible/hosts

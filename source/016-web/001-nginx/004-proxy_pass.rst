@@ -17,8 +17,7 @@
         location / {
             proxy_pass http://u1.shenmin.com:5000;
         }
-
-}
+    }
 
 
 设置反向代理

@@ -11,3 +11,4 @@
     004-ssh
     005-cron
     006-ldap
+    007-vncserver
