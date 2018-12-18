@@ -41,6 +41,7 @@ def main():
     install_chrony()
     set_cfg_file()
     startup_app()
+    del appdict
 
 if __name__ == '__main__':
     main()
