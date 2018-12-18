@@ -1,4 +1,6 @@
 #coding:utf-8
+#本脚本用于通过mac地址来
+
 import subprocess
 import re
 hostname_domain='.alv.pub'
