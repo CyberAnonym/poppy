@@ -10,7 +10,7 @@ Installing MariaDB Galera Cluster with apt-get： https://mariadb.com/kb/en/libr
 
 配置yum仓库的地址： https://downloads.mariadb.org/mariadb/repositories/#mirror=tuna&distro=CentOS&distro_release=centos7-amd64--centos7&version=10.3
 
-这里我们选择了centos的yum配置
+这里我们选择了centos的yum配置， 我们要安装的是mariadb galera cluster
 
 
 本次安装配置的环境是两台服务器，db1 和db2，组成集群。
@@ -238,8 +238,7 @@ db1上创建数据库，然后添加一个用户。
     MariaDB [(none)]> create database sophiroth;
     Query OK, 1 row affected (0.01 sec)
 
-    MariaDB [(none)]> grant all privileges on sophiroth.* to 'alvin'@'%' identified by 'sophiroth'
-        -> ;
+    MariaDB [(none)]> grant all privileges on sophiroth.* to 'alvin'@'%' identified by 'sophiroth';
     Query OK, 0 rows affected (0.01 sec)
 
     MariaDB [(none)]> flush privileges;

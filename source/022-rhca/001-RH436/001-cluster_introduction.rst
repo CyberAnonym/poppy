@@ -70,7 +70,7 @@ heatbeat=== crm+通信。
 
 .. code-block:: bash
 
-    yum install pcsd -y
+    yum install pcs -y
 
 启动服务
 --------------

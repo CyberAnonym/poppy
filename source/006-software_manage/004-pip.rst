@@ -40,3 +40,10 @@ pip是安装python模块的一个命令。
     trusted-host=pypi.tuna.tsinghua.edu.cn
 
 
+更新pip
+==========
+
+::
+
+    pip install --upgrade pip
+
