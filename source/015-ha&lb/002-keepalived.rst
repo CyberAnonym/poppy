@@ -405,7 +405,7 @@ Vos1.alv.pub configuration
        notification_email_from Alvin.Wan.CN@hotmail.com
        smtp_server 127.0.0.1
        smtp_connect_timeout 300
-       router_id director #主备要不同
+       router_id ovs1 #主备要不同
     }
 
     vrrp_instance VI_1 {
@@ -468,11 +468,11 @@ vos2.alv.pub configuration
        notification_email_from Alvin.Wan.CN@hotmail.com
        smtp_server 127.0.0.1
        smtp_connect_timeout 300
-       router_id director
+       router_id ovs2
     }
 
     vrrp_instance VI_1 {
-        state MASTER
+        state BACKUP
         interface eth0
         virtual_router_id 51
         priority 100
