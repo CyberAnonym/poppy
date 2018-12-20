@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #coding:utf-8
 import sys,subprocess
 
@@ -8,11 +9,11 @@ import sys,subprocess
 
 hostinfo={}
 hostinfo['name']=sys.argv[1]+'.alv.pub'
-hostinfo['nic']='00:00:00:00:00:'+sys.argv[2]
-hostinfo['vncport']=59+sys.argv[2]
+hostinfo['nic']='00:00:00:00:00:'+str(sys.argv[2])
+hostinfo['vncport']='59'+str(sys.argv[2])
 hostinfo['disk']=sys.argv[1]+'.alv.pub'+'.raw'
 hostinfo['ram']=4096
-hostinfo['vpuss']=4
+hostinfo['vcpus']=4
 
 
 
