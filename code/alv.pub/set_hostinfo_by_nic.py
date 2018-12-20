@@ -29,6 +29,9 @@ hostname['61']='redis'
 hostname['68']='centos6u8'
 hostname['74']='centos7u4'
 hostname['73']='centos7u3'
+hostname['81']='k8s1'
+hostname['82']='k8s2'
+hostname['83']='k8s3'
 
 
 
