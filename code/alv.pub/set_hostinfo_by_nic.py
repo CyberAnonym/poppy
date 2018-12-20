@@ -48,7 +48,7 @@ if tail_2 == '01':tail_1='1'+tail_1
 sysinfo={}
 sysinfo['ip']='192.168.3.%s'%tail_1
 sysinfo['gw']='192.168.3.1'
-sysinfo['dns']='192.168.3.1'
+sysinfo['dns']='192.168.3.2'
 sysinfo['dns_search']='alv.pub'
 #sysinfo['nic']=subprocess.check_output("ip a s|grep state|grep -v lo|awk -F: '{print $2}'|sed 's/ //'",shell=True).split('\n')[0]
 sysinfo['nic']=re.sub(r'(GENERAL.CONNECTION:\s+)','',subprocess.check_output("nmcli device show |grep -i CONNECTION|head -1",shell=True).split('\n')[0])

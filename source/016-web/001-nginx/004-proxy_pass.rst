@@ -19,8 +19,14 @@
         }
     }
 
+各类参数解释
+=================
 
-设置反向代理
+proxy_set_header X-Forwarded-Proto https;   #转发到后端时，使用的协议。   （比如前段是https，后端实际上是http，如果这个时候加了这个参数，那么转发到后端时也会变成https，所以这个参数不要随便加。
+
+
+
+将80转到443示例
 ==================
 
 反向代理的内容，参考如下内容。
@@ -42,7 +48,7 @@
         listen       443 ssl;
         server_name  alv.pub t.alv.pub sophiroth.com;
 
-        proxy_set_header X-Forwarded-Proto https;
+        #proxy_set_header X-Forwarded-Proto https;
         ssl_certificate      conf.d/alv.pub.pem;
         ssl_certificate_key  conf.d/alv.pub.key;
 
@@ -72,7 +78,7 @@
     }
 
 
-nginx https转到iis http
+nginx https转到iis http示例
 =================================
 
 这里注意:
@@ -92,7 +98,7 @@ nginx https转到iis http
         error_log  /data2/nginx_log/vhost_interface/error.log;
 
         location / {
-            proxy_pass http://interface.shenmintech.cn:1080/;
+            proxy_pass http://interface.shen.cn:1080/;
             charset gb2312;
         }
     }
@@ -104,8 +110,8 @@ nginx https转到iis http
         access_log  /data2/nginx_log/vhost_interface_ssl/access.log;
         error_log  /data2/nginx_log/vhost_interface_ssl/error.log;
 
-        ssl_certificate      /etc/nginx/vhost_interface/interface.shenmintech.com.pem;
-        ssl_certificate_key  /etc/nginx/vhost_interface/interface.shenmintech.com.key;
+        ssl_certificate      /etc/nginx/vhost_interface/interface.shencom.pem;
+        ssl_certificate_key  /etc/nginx/vhost_interface/interface.shen.com.key;
 
         ssl_session_cache    shared:SSL:1m;
         ssl_session_timeout  5m;
@@ -114,7 +120,7 @@ nginx https转到iis http
         ssl_prefer_server_ciphers  on;
 
         location / {
-            proxy_pass http://interface.shenmintech.cn:1080/;
+            proxy_pass http://interface.shen.cn:1080/;
             charset gb2312;
         }
 
@@ -122,7 +128,7 @@ nginx https转到iis http
 
 
 
-nginx为tomcat反代携带真实IP
+nginx为tomcat反代携带真实IP 示例
 =========================================
 
 加了下面的黄色底纹部分之后，可以将客户端IP传到tomcat日志里面。

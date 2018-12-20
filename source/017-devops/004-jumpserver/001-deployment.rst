@@ -387,6 +387,7 @@ Luna 已改为纯前端，需要 Nginx 来运行访问
 
 解压 Luna
 ----------------
+Luna的发行版本记录： https://github.com/jumpserver/luna/releases
 
 ::
 
