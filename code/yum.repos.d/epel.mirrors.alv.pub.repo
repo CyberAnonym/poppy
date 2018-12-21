@@ -1,0 +1,23 @@
+[epel]
+name=Extra Packages for Enterprise Linux 7 - $basearch
+baseurl=http://mirrors.alv.pub/epel/7/$basearch
+failovermethod=priority
+enabled=1
+gpgcheck=1
+gpgkey =http://mirrors.alv.pub/epel/RPM-GPG-KEY-EPEL-7
+
+[epel-debuginfo]
+name=Extra Packages for Enterprise Linux 7 - $basearch - Debug
+baseurl=http://mirrors.alv.pub/epel/7/$basearch/debug
+failovermethod=priority
+enabled=1
+gpgkey =http://mirrors.alv.pub/epel/RPM-GPG-KEY-EPEL-7
+gpgcheck=1
+
+[epel-source]
+name=Extra Packages for Enterprise Linux 7 - $basearch - Source
+baseurl=http://mirrors.alv.pub/epel/7/SRPMS
+failovermethod=priority
+enabled=1
+gpgkey =http://mirrors.alv.pub/epel/RPM-GPG-KEY-EPEL-7
+gpgcheck=1

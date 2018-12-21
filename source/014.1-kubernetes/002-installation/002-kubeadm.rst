@@ -39,6 +39,7 @@ centos7下kubeadm安装k8s1.11
 #. master,nodes: 安装kubelet ,kubeadm,docker
 #. master: kubeadm init
 #. nodes: kubeadm join
+
     https://github.com/kubernetes/kubeadm/blob/master/docs/design/design_v1.10.md
 
 
@@ -65,8 +66,45 @@ k8s1上需要做的操作
     # systemctl enable docker
 
 
+
+
 初始化kubernetes
 =======================
+
+.. note::
+
+    下面的操作中，如果拉取k8s的镜像失败，可以参考这个网站里的内容来解决： https://blog.csdn.net/jinguangliu/article/details/82792617
+
+    国内的网络无法访问k8s.gcr.io，所以如果没有做特殊策略会拉不到镜像，docker.io仓库对google的容器做了镜像， 可以访问 https://hub.docker.com/r/mirrorgooglecontainers/ 查看
+
+    可以通过下面的命令拉取镜像
+
+     ::
+
+          docker pull mirrorgooglecontainers/kube-apiserver:v1.13.0
+          docker pull mirrorgooglecontainers/kube-controller-manager:v1.13.0
+          docker pull mirrorgooglecontainers/kube-scheduler:v1.13.0
+          docker pull mirrorgooglecontainers/kube-proxy:v1.13.0
+          docker pull mirrorgooglecontainers/pause:3.1
+          docker pull mirrorgooglecontainers/etcd:3.2.24
+          docker pull coredns/coredns:1.2.6
+
+
+     版本信息需要根据实际情况进行相应的修改。通过docker tag命令来修改镜像的标签：
+
+     ::
+
+          docker tag mirrorgooglecontainers/kube-proxy-amd64:v1.13.0 k8s.gcr.io/kube-proxy-amd64:v1.13.0
+          docker tag mirrorgooglecontainers/kube-apiserver-amd64:v1.13.0 k8s.gcr.io/kube-apiserver-amd64:v1.13.0
+          docker tag mirrorgooglecontainers/kube-controller-manager-amd64:v1.13.0 k8s.gcr.io/kube-controller-manager-amd64:v1.13.0
+          docker tag mirrorgooglecontainers/kube-scheduler-amd64:v1.13.0 k8s.gcr.io/kube-scheduler-amd64:v1.13.0
+          docker tag docker.io/mirrorgooglecontainers/etcd-amd64:3.2.18  k8s.gcr.io/etcd-amd64:3.2.18
+          docker tag docker.io/mirrorgooglecontainers/pause:3.1  k8s.gcr.io/pause:3.1
+          docker tag docker.io/coredns/coredns:1.1.3  k8s.gcr.io/coredns:1.1.3
+
+
+     使用docker rmi删除不用镜像，通过docker images命令显示，已经有我们需要的镜像文件，可以继续部署工作了：
+
 
 .. code-block:: bash
 

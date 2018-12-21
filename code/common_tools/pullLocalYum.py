@@ -14,9 +14,9 @@ def backupOriginRepo():
             shutil.move(os.path.join(originDIR,file),os.path.join(backDIR,file))
 def getRepo():
     systemVersion=re.findall(r'\d',os.popen('cat /etc/redhat-release').read())[0]
-    repoUrl='https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/yum.repos.d/centos%s.dc.alv.pub.repo'%systemVersion
-    os.system('curl -fsSL %s > /etc/yum.repos.d/centos%s.dc.alv.pub.repo'%(repoUrl,systemVersion))
-    os.system('curl -fsSL https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/yum.repos.d/epel.dc.alv.pub.repo > /etc/yum.repos.d/epel.dc.alv.pub.repo')
+    repoUrl='https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/yum.repos.d/centos%s.mirrors.alv.pub.repo'%systemVersion
+    os.system('curl -fsSL %s > /etc/yum.repos.d/centos%s.mirrors.alv.pub.repo'%(repoUrl,systemVersion))
+    os.system('curl -fsSL https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/yum.repos.d/epel.mirrors.alv.pub.repo > /etc/yum.repos.d/epel.mirrors.alv.pub.repo')
     os.system('curl -fsSL https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/yum.repos.d/sophiroth.repo > /etc/yum.repos.d/sophiroth.repo')
     os.system('yum repolist')
 def main():
