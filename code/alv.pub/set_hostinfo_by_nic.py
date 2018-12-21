@@ -62,7 +62,7 @@ sysinfo['hostname']=hostname[tail_1]+hostname_domain
 #设置ip地址
 
 def set_ip_info():
-        if subprocess.call('nmcli connection modify "{nic}" ipv4.method manual ipv4.addresses {ip} ipv4.gateway {gw} ipv4.dns {dns} ipv4.dns-search {dns_search} autoconnect yes && nmcli con up "{nic}"'.format(**sysinfo),shell=True) == 0:
+        if subprocess.call('nmcli connection modify "{nic}" ipv4.method manual ipv4.addresses {ip}/24 ipv4.gateway {gw} ipv4.dns {dns} ipv4.dns-search {dns_search} autoconnect yes && nmcli con up "{nic}"'.format(**sysinfo),shell=True) == 0:
             print('IP address has heen setup ok')
         else:
             print('IP address setup failed.')

@@ -2,4 +2,4 @@
 name=sophiroth
 gpgcheck=0
 enabled=1
-baseurl=http://mirrors.alv.pub/alvin_costom/
+baseurl=http://mirrors.alv.pub/alvin_custom/
