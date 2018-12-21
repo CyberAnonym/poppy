@@ -50,7 +50,7 @@ if tail_2 == '01':tail_1='1'+tail_1
 #设置ip等网络信息
 sysinfo={}
 sysinfo['ip']='192.168.3.%s'%tail_1
-sysinfo['gw']='192.168.3.1'
+sysinfo['gw']='192.168.3.3'
 sysinfo['dns']='192.168.3.2'
 sysinfo['dns_search']='alv.pub'
 #sysinfo['nic']=subprocess.check_output("ip a s|grep state|grep -v lo|awk -F: '{print $2}'|sed 's/ //'",shell=True).split('\n')[0]

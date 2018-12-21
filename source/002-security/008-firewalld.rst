@@ -236,3 +236,10 @@ RH-Satellite-6 amanda-client amanda-k5-client bacula bacula-client bitcoin bitco
 .. code-block:: bash
 
     firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address=192.168.127.1 port protocol="tcp" port="80" accept'
+
+允许指定网络ping
+======================
+
+::
+
+    firewall-cmd --permanent --add-rich-rule='rule family="ipv4" protocol value="icmp" source address="192.168.3.0/24" accept'
