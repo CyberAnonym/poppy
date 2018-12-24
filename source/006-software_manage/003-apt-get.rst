@@ -2,6 +2,29 @@ apt-get
 ##########
 apt-get 是ubuntu系统下安装软件的命令。
 
+
+source.list解析
+=======================
+
+deb http://cn.archive.ubuntu.com/ubuntu/ precise main restricted
+
+这句话到底怎么解释，对应着服务器上的什么目录呢？  对应的是：
+
+::
+
+    http://cn.archive.ubuntu.com/ubuntu/dists/precise/main
+
+    http://cn.archive.ubuntu.com/ubuntu/dists/precise/restricted
+
+
+
+也就是说，解析规则是这样的 ：
+
+
+uri + "dists" + 版本信息 + 若干个分类
+
+
+
 查看/设置软件源
 ===================
 这里我们是一台阿里云的服务器，使用的是阿里云的内网软件源。

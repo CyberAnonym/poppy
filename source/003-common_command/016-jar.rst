@@ -1,0 +1,114 @@
+jar
+#######
+
+jar命令可以用于解压war包和打包war包。
+
+
+安装软件
+============
+
+
+::
+
+
+    yum install  java-1.8.0-openjdk-devel -y
+
+
+
+
+解压war包
+==============
+
+这里我们将当前目录的war包frontend-236.war解压到了当前目录下。
+
+
+.. code-block:: bash
+
+    [root@internal test]# ll
+    total 24120
+    -rw-r--r-- 1 root root 24696670 Mar  5  2018 frontend-236.war
+    [root@internal test]# jar xf frontend-236.war
+    [root@internal test]# ll
+    total 24128
+    -rw-r--r-- 1 root root 24696670 Mar  5  2018 frontend-236.war
+    -rw-r--r-- 1 root root       52 Sep 23  2016 index.jsp
+    drwxr-xr-x 3 root root       38 Sep 23  2016 META-INF
+    -rw-r--r-- 1 root root      523 Sep 23  2016 testUpload.html
+    drwxr-xr-x 5 root root       82 Sep 23  2016 WEB-INF
+
+
+打包war包。
+================
+
+打包前，我们先修改下文件内容，将index.jsp 里的Hello改成了Hello Alvin Wan
+
+.. code-block:: bash
+
+    [root@internal test]# cat index.jsp
+    <html>
+    <body>
+    <h2>Hello World!</h2>
+    </body>
+    </html>
+    [root@internal test]# sed -i  's/Hello/& Alvin Wan/' index.jsp
+    [root@internal test]# cat index.jsp
+    <html>
+    <body>
+    <h2>Hello Alvin Wan World!</h2>
+    </body>
+    </html>
+
+
+然后我们先将之前war包移到别的地方，然后对当前目录开始打包，开始打包，这里我们将当前目录的文件打包成frontend.war
+
+.. code-block:: bash
+
+    [root@internal test]# mv frontend-236.war /tmp/
+    [root@internal test]#
+    [root@internal test]# ll
+    total 8
+    -rw-r--r-- 1 root root  52 Sep 23  2016 index.jsp
+    drwxr-xr-x 3 root root  38 Sep 23  2016 META-INF
+    -rw-r--r-- 1 root root 523 Sep 23  2016 testUpload.html
+    drwxr-xr-x 5 root root  82 Sep 23  2016 WEB-INF
+    [root@internal test]#
+    [root@internal test]# jar cf frontend.war .
+    [root@internal test]# ll
+    total 24144
+    -rw-r--r-- 1 root root 24714680 Dec 21 21:07 frontend.war
+    -rw-r--r-- 1 root root       62 Dec 21 21:06 index.jsp
+    drwxr-xr-x 3 root root       38 Sep 23  2016 META-INF
+    -rw-r--r-- 1 root root      523 Sep 23  2016 testUpload.html
+    drwxr-xr-x 5 root root       82 Sep 23  2016 WEB-INF
+
+
+
+验证修改的文件已打包到文件内容
+===============================
+
+这里我们先将之前解压出的文件和目录都删掉，只留frontend.war，用它重新解压。
+
+
+.. code-block:: bash
+
+    [root@internal test]# rm -rf `ls|grep -v frontend.war `
+    [root@internal test]# ll
+    total 24136
+    -rw-r--r-- 1 root root 24714680 Dec 21 21:07 frontend.war
+    [root@internal test]#
+    [root@internal test]# jar xf frontend.war
+    [root@internal test]# ll
+    total 24144
+    -rw-r--r-- 1 root root 24714680 Dec 21 21:07 frontend.war
+    -rw-r--r-- 1 root root       62 Dec 21 21:06 index.jsp
+    drwxr-xr-x 3 root root       38 Dec 21 21:07 META-INF
+    -rw-r--r-- 1 root root      523 Sep 23  2016 testUpload.html
+    drwxr-xr-x 5 root root       82 Sep 23  2016 WEB-INF
+    [root@internal test]# cat index.jsp
+    <html>
+    <body>
+    <h2>Hello Alvin Wan World!</h2>
+    </body>
+    </html>
+
+经过验证，我们对war包修改成功。
