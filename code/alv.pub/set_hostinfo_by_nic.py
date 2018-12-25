@@ -10,6 +10,7 @@ hostname['2']='ipa' #ipa 服务。包括ldap，dns服务。
 hostname['3']='internal' #物理机 所有虚拟机都是安装在这里
 hostname['4']='zabbix' #zabbix监控
 hostname['5']='jenkins' #自动化流程
+hostname['6']='gitlab' #代码服务器
 hostname['9']='meta'  #其他虚拟机要创建的得时候，拷贝meta的盘。然后修改系统配置导入为新的虚拟机
 hostname['10']='mysql_' #mysql前端
 hostname['11']='mysql1'
