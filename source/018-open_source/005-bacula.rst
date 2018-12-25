@@ -8,6 +8,8 @@ bacula
 
 Bacula是一个开源网络备份解决方案，允许您创建备份和执行计算机系统的数据恢复。它非常灵活和健壮，这使得它，虽然配置稍微麻烦，适合在许多情况下的备份。备份系统是在大多数服务器基础架构的重要组成部分 ，从数据丢失恢复往往是灾难恢复计划的重要组成部分。 在本教程中，我们将向您展示如何在CentOS 7服务器上安装和配置Bacula的服务器组件。我们将配置Bacula执行每周作业，创建本地备份（即其自己的主机的备份）。这本身并不是Bacula的特别引人注目的用途，但它将为您创建其他服务器（即备份客户端）的备份提供一个良好的起点。本系列的下一个教程将介绍如何通过安装和配置Bacula客户端以及配置Bacula服务器来创建其他远程服务器的备份。 如果您想使用Ubuntu 14.04代替，请点击此链接： 如何在Ubuntu 14.04安装Bacula的服务器 。
 
+本次安装中，备份服务器主机名是k8s1.alv.pub   客户端是k8s2.alv.pub ,都可以通过这两个域名访问到对应的ip。
+
 
 安装bacula
 ==================
@@ -27,6 +29,7 @@ bacula下载地址：http://blog.bacula.org/source-download-center/
 ----------
 
 ::
+
     tar xf bacula-9.4.1.tar.gz
 
 安装依赖包
@@ -63,6 +66,8 @@ bacula下载地址：http://blog.bacula.org/source-download-center/
 -------------------
 
 
+::
+
     $ vim /etc/profile
     export PATH=$PATH:/usr/local/bacula/sbin
     $ source /etc/profile
@@ -75,6 +80,7 @@ bacula下载地址：http://blog.bacula.org/source-download-center/
 
     yum install mariadb-server -y
     systemctl restart mariadb
+    systemctl enable mariadb
     cd /usr/local/bacula/etc
      ./grant_mysql_privileges
     ./create_mysql_database
@@ -88,6 +94,7 @@ bacula实例配置
 
 Console端的配置
 ---------------------------
+想要直接使用的话，默认配置不用做修改，下面的内容做示例解释。
 
 ::
 
@@ -623,16 +630,13 @@ Console端的配置
 
 ::
 
-    $vim fd.conf //客户端的配置文件
+    $ vim fd.conf //客户端的配置文件
 
     Director {      #定义一个允许连接FD的控制端
 
           Name = f10-64-build-dir  #这里的“Name”值必须和Director端配置文件
-
            #bacula-dir.conf中Director逻辑段名称相同
-
           Password = "ouDao0SGXx/F+Tx4YygkK4so0l/ieqGJIkQ5DMsTQh6t"  #这里的“Password”
-
            #值必须和Director端配置文件bacula-dir.conf中Client逻辑段密码相同
 
     }
@@ -640,11 +644,8 @@ Console端的配置
 
 
     Director {      #定义一个允许连接FD的监控端
-
           Name = f10-64-build-mon
-
           Password = "RSQy3sRjak3ktZ8Hr07gc728VkZHBr0QCjOC5x3pXEap"
-
           Monitor = yes
 
     }
@@ -652,27 +653,17 @@ Console端的配置
 
 
     FileDaemon {                #定义一个FD端
-
           Name = localhost.localdomain-fd
-
           FDport = 9102                  #监控端口
-
           WorkingDirectory = /usr/local/bacula/var/bacula/working
-
           Pid Directory = /var/run
-
           Maximum Concurrent Jobs = 20   #定义一次能处理的并发作业数
-
     }
 
 
-
     Messages {      #定义一个用于FD端的Messages
-
           Name = Standard
-
           director = localhost.localdomain-dir = all, !skipped, !restored
-
     }
 
 
@@ -738,13 +729,452 @@ Console端的配置
 
 
 
-客户端安装
-==================
+客户端独立安装配置
+========================
 
+
+安装软件
 
 ::
 
     yum install gcc gcc-c++ mysql-devel -y
+    wget http://soft.alv.pub/linux/bacula-9.4.1.tar.gz
+    tar xf bacula-9.4.1.tar.gz
     cd bacula-9.4.1/
-    ./configure --enable-client-only
+    ./configure --enable-client-only --prefix=/usr/local/bacula
+    make && make install && make install-autostart
+
+配置客户端
+
+
+这里我们要将配置文件里前面两个Director里的name改成服务器上的配置，
+
+
+::
+
+    $ vim /usr/local/bacula/etc/bacula-fd.conf
+    Director {
+      Name = k8s1.alv.pub-dir
+      Password = "F/FnmGaHpEeoFdSlAfMgmwchYh/eG/tUBd7IFcY1K1EZ"
+    }
+
+    #
+    # Restricted Director, used by tray-monitor to get the
+    #   status of the file daemon
+    #
+    Director {
+      Name = k8s1.alv.pub-mon
+      Password = "0h2sMW+pinqWRSMQ3i5xcYQKoMK8RCSEHQtRTesfXjhS"
+      Monitor = yes
+    }
+
+
+启动服务
+
+::
+
+    systemctl start bacula-fd
+
+
+
+客户端准备好要用于备份的目录。
+
+::
+
+    [root@k8s2 ~]# mkdir -p /data/dir{1..5}
+    [root@k8s2 ~]#
+    [root@k8s2 ~]# date >> /data/date.log
+    [root@k8s2 ~]# date >> /data/date.log
+    [root@k8s2 ~]#
+    [root@k8s2 ~]# ls /data/
+    date.log  dir1  dir2  dir3  dir4  dir5
+
+
+服务的将客户端加入到配置
+==============================
+
+我们先一次性都添加进去，后面再解释内容。  添加下面的内容到文件的尾部。
+
+::
+
+    $ vim /usr/local/bacula/etc/bacula-dir.conf
+    FileSet {
+      Name = "fileset k8s2 data and etc"
+      Include {
+        Options {
+          signature = MD5
+          compression = GZIP
+        }
+        File = /data
+        File = /etc
+      }
+      Exclude {
+        File = /data/dir3
+      }
+    }
+
+    Client {
+      Name = k8s2.alv.pub-fd
+      Address = k8s2.alv.pub
+      FDPort = 9102
+      Catalog = MyCatalog
+      Password = "F/FnmGaHpEeoFdSlAfMgmwchYh/eG/tUBd7IFcY1K1EZ"          # password for Remote FileDaemon
+      File Retention = 30 days            # 30 days
+      Job Retention = 6 months            # six months
+      AutoPrune = yes                     # Prune expired Jobs/Files
+    }
+
+    Job {
+      Name = "job Backup k8s2 data adn etc"
+      JobDefs = "DefaultJob"
+      Client = k8s2.alv.pub-fd
+      Pool = File
+      FileSet="fileset k8s2 data and etc"
+    }
+
+
+添加完后我们可以检测一下配置有没有错误，执行下面的命令，如果执行之后没输出任何信息，就是配置语法没有问题，
+
+.. code-block:: bash
+
+    bacula-dir -tc /usr/local/bacula/etc/bacula-dir.conf
+
+
+下面解释上面的三段配置
+
+添加文件集（服务器）
+-------------------------
+
+Bacula FileSet定义了一组文件或目录，用于包含或排除备份选择中的文件，并由Bacula Server上的备份作业使用。
+
+如果您按照设置Bacula Server组件的先决条件教程，您已经有一个名为“Full Set”的FileSet。如果要运行包含备份客户端上几乎所有文件的备份作业，则可以在作业中使用该FileSet。但是，您可能会发现，您通常不希望或不需要对服务器上的所有内容进行备份，并且数据的子集就足够了。
+
+如果文件集中包含的文件更具选择性，这将减少备份服务器运行备份作业所需的磁盘空间和时间。它还可以使恢复更简单，因为您不需要筛选“完整集”来查找要还原的文件。
+
+我们将向您展示如何创建新的FileSet资源，以便您可以更有选择性地备份。
+
+在Bacula Server上，filesets.conf在我们之前创建的Bacula Director配置目录中打开一个名为的文件：
+
+::
+
+    FileSet {
+      Name = "fileset k8s2 data and etc"
+      Include {
+        Options {
+          signature = MD5
+          compression = GZIP
+        }
+        File = /data
+        File = /etc
+      }
+      Exclude {
+        File = /data/dir3
+      }
+    }
+
+这个文件中有很多内容，但请记住以下几个细节：
+    #. FileSet名称必须是唯一的
+    #. 包括要备份的任何文件或分区
+    #. 排除您不想备份的，但是由于已经存在于包含的文件中而被选中的文件。
+    #. 如果愿意，您可以创建多个FileSet。完成后保存并退出。
+
+现在我们准备创建将使用我们新FileSet的备份作业。
+
+将客户端和备份作业添加到Bacula Server
+---------------------------------------------
+
+现在我们准备将我们的客户端添加到Bacula Server。为此，我们必须使用新的客户端和作业资源配置Bacula Director。
+
+添加客户端资源
+
+
+客户端资源为Director配置连接到客户端主机所需的信息。这包括客户端文件守护程序的名称，地址和密码。
+
+将此客户端资源定义粘贴到文件中。请务必在客户端主机名，私人FQDN和密码（来自客户端bacula-fd.conf）中替换：
+
+::
+
+    Client {
+      Name = k8s2.alv.pub-fd
+      Address = k8s2.alv.pub
+      FDPort = 9102
+      Catalog = MyCatalog
+      Password = "F/FnmGaHpEeoFdSlAfMgmwchYh/eG/tUBd7IFcY1K1EZ"          # password for Remote FileDaemon
+      File Retention = 30 days            # 30 days
+      Job Retention = 6 months            # six months
+      AutoPrune = yes                     # Prune expired Jobs/Files
+    }
+
+
+您只需为每个客户端执行一次此操作。
+
+
+
+创建备份作业
+-----------------
+
+备份作业必须具有唯一名称，它定义了应备份哪个客户端和哪些数据的详细信息。
+
+接下来，将此备份作业粘贴到文件中，请注意替换客户端主机名：
+
+::
+
+    Job {
+      Name = "job Backup k8s2 data adn etc"
+      JobDefs = "DefaultJob"
+      Client = k8s2.alv.pub-fd
+      Pool = File
+      FileSet="fileset k8s2 data and etc"
+    }
+
+
+
+重启服务
+-----------
+
+::
+
+    bacula restart
+    bacula status
+
+
+
+手动执行备份任务
+=====================
+
+::
+
+    bconsole
+    run
+    (输入我们定义的那个备份任务的编号，比如是4，就输入4)
+    yes  （是否允许，输入yes）
+
+    status director  （如果备份的很快，那么稍等片刻后，可以执行status director查看备份状态，看是否完成。如果未完成，报错了，也会显示）
+
+
+
+恢复文件
+===========
+
+首先，在bconsole里执行restore，
+
+
+::
+
+    restore
+    5  #然后根据我们的实际需求，去选择备份，比如我们要恢复最近的一次备份，那么就选择5
+    2 #然后选择客户端，比如这里我们选择第二个客户端，输入2
+    ls #然后我们可以执行ls查看本次备份的目录，前面有*的就是当前标记要恢复出来的，我们可以执行mask * 去标记全部，或者unmask 指定文件或目录去取消标记。 如果前面执行的命令是restore all,那么这里会默认标记全部
+    mask * #这里我们手动标记全部
+    ls
+    done #然后输入done，表示标记完毕，开始恢复。
+
+恢复之后，我们也还是可以执行 status director 来查看一下状态。
+
+
+然后我们可以去客户端k8s2上去确认是否已经恢复，在/tmp/bacula-restore 目录下。
+
+::
+
+    [root@k8s2 ~]# ll /tmp/bacula-restores/
+    total 12
+    drwxr-xr-x  6 root root   70 Dec 24 21:55 data
+    drwxr-xr-x 80 root root 8192 Dec 24 21:39 etc
+    [root@k8s2 ~]# ll /tmp/bacula-restores/data/
+    total 4
+    -rw-r--r-- 1 root root 58 Dec 24 21:56 date.log
+    drwxr-xr-x 2 root root  6 Dec 24 21:55 dir1
+    drwxr-xr-x 2 root root  6 Dec 24 21:55 dir2
+    drwxr-xr-x 2 root root  6 Dec 24 21:55 dir4
+    drwxr-xr-x 2 root root  6 Dec 24 21:55 dir5
+    [root@k8s2 ~]# cat /tmp/bacula-restores/data/date.log
+    Mon Dec 24 21:55:59 CST 2018
+    Mon Dec 24 21:56:01 CST 2018
+
+然后可以看到，已经成功恢复，我们在配置定义的不包含dir3,所以dir3没有被备份，所以那样配置也是生效了的。
+
+其他命令
+------------
+一下命令都是在bconsole终端里执行的
+
+::
+
+    list jobs  #查看任务列表
+    llist jobs #查看已执行过的任务详情
+    list clients # 查看客户端列表
+
+
+关于Schedule里时间的定义
+================================
+
+
+::
+
+    = on
+
+    = at
+
+    = 1st | 2nd | 3rd | 4th | 5th | first |
+
+    second | third | fourth | fifth
+
+    = sun | mon | tue | wed | thu | fri | sat |
+
+    sunday | monday | tuesday | wednesday |
+
+    thursday | friday | saturday
+
+    = w00 | w01 | ... w52 | w53
+
+    = jan | feb | mar | apr | may | jun | jul |
+
+    aug | sep | oct | nov | dec | january |
+
+    february | ... | december
+
+    = daily
+
+    = weekly
+
+    = monthly
+
+    = hourly
+
+    = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0
+
+    = |
+
+    <12hour> = 0 | 1 | 2 | ... 12
+
+    = 0 | 1 | 2 | ... 23
+
+    = 0 | 1 | 2 | ... 59
+
+    = 1 | 2 | ... 31
+
+    = : |
+
+    <12hour>:am |
+
+    <12hour>:pm
+
+    = |
+
+
+    =
+
+    = -
+
+    = -
+
+    = -
+
+    = | |
+
+
+    = | |
+
+    = |
+
+    = | |
+
+    | |
+
+    |
+
+    |
+
+
+    = | |
+
+
+    =
+
+    针对时间设定规范中的一些词解释一下：
+
+    mday
+
+    月的某一天
+
+    wday
+
+    周的某一天
+
+    wom
+
+    月的某一周
+
+    woy
+
+    年的某一周
+
+    下面举例说明一下
+
+    范例：每天在2:05执行完全备份。
+
+    Schedule {
+
+    Name = "Daily"
+
+    Run = Level=Full daily at 2:05
+
+    }
+
+    范例：周日2:05执行完全备份，周一到周六2:05执行增量备份。
+
+    Schedule {
+
+    Name = "WeeklyCycle"
+
+    Run = Level=Full sun at 2:05
+
+    Run = Level=Incremental mon-sat at 2:05
+
+    }
+
+    范例：每月第一周的周日2:05执行完全备份，每月第二到第五周的周日2:05执行差异备份，周一到周六2:05执行增量备份。
+
+    Schedule {
+
+    Name = "MonthlyCycle"
+
+    Run = Level=Full Pool=Monthly 1st sun at 2:05
+
+    Run = Level=Differential 2nd-5th sun at 2:05
+
+    Run = Level=Incremental Pool=Daily mon-sat at 2:05
+
+    }
+
+    范例：每月1日2:05执行完全备份，其余日期2:05执行增量备份。
+
+    Schedule {
+
+    Name = "First"
+
+    Run = Level=Full on 1 at 2:05
+
+    Run = Level=Incremental on 2-31 at 2:05
+
+    }
+
+    范例：每10分钟执行完全备份。
+
+    Schedule {
+
+    Name = "TenMinutes"
+
+    Run = Level=Full hourly at 0:05
+
+    Run = Level=Full hourly at 0:15
+
+    Run = Level=Full hourly at 0:25
+
+    Run = Level=Full hourly at 0:35
+
+    Run = Level=Full hourly at 0:45
+
+    Run = Level=Full hourly at 0:55
+
+    }
 
