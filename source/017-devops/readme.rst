@@ -8,4 +8,4 @@
     002-saltstack/readme.rst
     003-ansible/readme.rst
     004-jumpserver/readme.rst
-    005-git
+    005-gitlab

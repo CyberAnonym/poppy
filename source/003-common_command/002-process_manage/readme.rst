@@ -9,4 +9,4 @@
     003-top
     004-kill
     005-pkill
-
+    006-strace
