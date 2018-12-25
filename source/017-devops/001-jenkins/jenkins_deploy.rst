@@ -2,8 +2,9 @@ jenkins docker deployment
 ###############################
 Auto deploy all my service configuration file and bash scripts and python scripts and my codes.
 
-software installation
------------------------------
+software installation and startup with docker
+---------------------------------------------
+
 
 - Install docker-latest service
 
@@ -21,7 +22,6 @@ software installation
 
 
 pull jenkins image
--------------------------
 
 - docker jenkins image user manual
 
@@ -48,3 +48,25 @@ https://hub.docker.com/_/jenkins/
 
 
 
+
+software installation and startup with yum
+---------------------------------------------
+
+
+安装jenkins
+
+rpm packages ： https://pkg.jenkins.io/redhat/
+
+::
+
+    yum install java -y
+    yum install https://pkg.jenkins.io/redhat/jenkins-2.156-1.1.noarch.rpm -y
+
+
+
+启动jenkins
+
+::
+
+    systemctl start jenkins
+    systemctl enable jenkins
