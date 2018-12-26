@@ -333,7 +333,7 @@ push或pull (上传或下载)镜像
 .. code-block:: bash
 
     [root@k8s2 ~]# vim /lib/systemd/system/docker.service
-    ExecStart=/usr/bin/dockerd --insecure-registry registry.alv.pub:3000
+    ExecStart=/usr/bin/dockerd --insecure-registry registry.alv.pub:30001
     [root@k8s2 tmp]# systemctl daemon-reload
     [root@k8s2 tmp]# systemctl restart docker
 
