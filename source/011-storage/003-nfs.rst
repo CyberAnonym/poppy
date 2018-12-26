@@ -28,3 +28,10 @@ nfs - Network File System
     firewall-cmd --permanent --add-service=mountd
     firewall-cmd --reload
 
+
+重启服务
+============
+
+::
+
+    systemctl restart nfs
