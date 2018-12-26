@@ -12,3 +12,4 @@
     005-cron
     006-ldap
     007-vncserver
+    008-squid
