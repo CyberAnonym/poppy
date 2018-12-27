@@ -10,7 +10,7 @@ dashboard
 
 .. code-block:: bash
 
-    [alvin@k8s1 ~]$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+    [alvin@k8s1 ~]$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
     [alvin@k8s1 ~]$ kubectl get service -n kube-system
     NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)         AGE
     kube-dns               ClusterIP   10.96.0.10       <none>        53/UDP,53/TCP   1h

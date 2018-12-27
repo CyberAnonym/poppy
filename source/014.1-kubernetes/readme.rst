@@ -11,3 +11,4 @@ kubernetes
     005-action/readme.rst
     006-apps/readme.rst
     007-errors/readme.rst
+    008-jobs/readme.rst
