@@ -11,7 +11,7 @@ subprocess
     subprocess.call('ls aa',shell=True)
 
 
-调用shell命令，并返回标准输出
+调用shell命令，并返回标准输出的内容
 ==================================
 
 ::

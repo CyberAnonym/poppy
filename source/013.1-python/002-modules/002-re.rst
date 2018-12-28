@@ -1,0 +1,10 @@
+re
+#######
+
+re模块是我们常用的处理字符串的工具
+
+常用的功能包括
+
+re.findall  查找所有匹配的内容   举例：re.findall(r'l','hello')
+re.sub      替换所有匹配的内容   举例：re.sub(r'l','yes','hello')
+re.split    按照指定内容对字符串进行分割 举例 re.split(r'l','hello')

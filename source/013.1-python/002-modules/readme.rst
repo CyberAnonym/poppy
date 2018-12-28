@@ -7,3 +7,5 @@ python的各种模块
     :maxdepth: 2
 
     001-sys
+    002-re
+    009-subprocess
