@@ -13,3 +13,4 @@ python
     006-requests
     007-set_environment_variable
     008-django/readme
+    009-list

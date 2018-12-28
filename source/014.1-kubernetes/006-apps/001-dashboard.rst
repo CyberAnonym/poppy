@@ -40,6 +40,46 @@ dashboard
       namespace: kube-system
     [alvin@k8s1 ~]$ kubectl create -f dashboard-admin.yaml
 
+
+.. note::
+
+    上面是之前版本的步骤，如果上面的步骤之后还是无法正常访问dashboad, 可以用这里的步骤创建。
+
+    .. code-block:: bash
+
+        apiVersion: v1
+        kind: ServiceAccount
+        metadata:
+          labels:
+            k8s-app: kubernetes-dashboard
+          name: admin
+          namespace: kube-system
+        ---
+        apiVersion: rbac.authorization.k8s.io/v1
+        kind: ClusterRoleBinding
+        metadata:
+          name: admin
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: cluster-admin
+        subjects:
+        - kind: ServiceAccount
+          name: admin
+          namespace: kube-system
+
+
+然后我们查看一下token
+
+::
+
+    kubectl get secret -n kube-system  #查看一下那个secret的名字
+    kubectl describe secret admin-token-c9kql -n kube-system    ##这条命令后面的admin-token-c9kql,根据我们的实际的secret名而定。
+
+
+从上面的命令中查看
+
+
 然后这里我们可以通过nginx做代理，让外部网络可以访问
 
 .. code-block:: bash
@@ -52,3 +92,6 @@ dashboard
 
 
 然后就可以访问了。
+
+
+谷歌浏览器如果访问不了，可以使用火狐浏览器去访问https的链接。
