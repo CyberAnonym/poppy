@@ -109,6 +109,13 @@ strace参数
 ============
 
 
+从启动开始监控我的一个python程序
+
+::
+
+    strace -tt -f  /usr/bin/python2 manage.py runserver 0.0.0.0:8001
+
+
 通用的完整用法：
 
 ::

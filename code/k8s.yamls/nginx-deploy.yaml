@@ -6,6 +6,11 @@ metadata:
     run: nginx-deploy
 spec:
   replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 40%
+      maxUnavailable: 40%
+    type: RollingUpdate
   template:
     metadata:
       labels:

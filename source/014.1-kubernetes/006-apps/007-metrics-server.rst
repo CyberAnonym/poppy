@@ -22,6 +22,14 @@ deploy 的yaml所在目录: https://github.com/kubernetes-incubator/metrics-serv
 .. code-block:: bash
 
     kubectl edit deploy metrics-server -n kube-system   (添加在imagePullPolicy后面)
+
             command:
             - /metrics-server
-            - --source=kubernetes:https://kubernetes.default
+            - --kubelet-insecure-tls
+            - --kubelet-preferred-address-types=InternalIP
+
+
+..
+    command:
+    - /metrics-server
+    - --source=kubernetes:https://kubernetes.default

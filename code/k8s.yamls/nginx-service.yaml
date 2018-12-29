@@ -1,0 +1,16 @@
+apiVersion: v1   #api版本
+kind: Service    #定义创建的类型
+metadata:        #元数据
+  name: my-nginx #service 的名字
+  labels:         #标签
+    run: my-nginx #标签的key value
+spec:             #指定参数
+  type: NodePort
+  ports:          #定义端口策略
+  - name : nginx-port  #端口名称
+    port: 80      #服务使用的端口号
+    targetPort: 80    #需要转发到的后端pod的端口号
+    nodePort: 30110   #当spec.type=NodePort时，指定映射到物理机的端口号，默认必须大于30000。
+    protocol: TCP #目标端口使用的协议
+  selector:       #选择器
+    run: my-nginx #匹配key value
