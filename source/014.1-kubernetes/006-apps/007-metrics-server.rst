@@ -33,3 +33,5 @@ deploy 的yaml所在目录: https://github.com/kubernetes-incubator/metrics-serv
     command:
     - /metrics-server
     - --source=kubernetes:https://kubernetes.default
+
+
