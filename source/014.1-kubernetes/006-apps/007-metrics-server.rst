@@ -4,6 +4,8 @@ metrics-server
 deploy 的yaml所在目录: https://github.com/kubernetes-incubator/metrics-server/tree/master/deploy
 
 
+
+
 创建部署
 ================
 
