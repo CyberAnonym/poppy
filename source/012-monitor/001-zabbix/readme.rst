@@ -9,3 +9,4 @@ zabbix
     001-installation
     002-alert
     003-discovery
+    004-custom_monitor
