@@ -1,2 +1,41 @@
-014-top
-##########################################
+top
+###########
+top命令用于查看k8s里资源的使用情况
+
+
+查看节点的资源情况
+
+.. code-block:: bash
+
+    [root@k8s1 ~]# kubectl top nodes
+    NAME           CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
+    k8s1.alv.pub   118m         2%     2239Mi          60%
+    k8s2.alv.pub   88m          2%     1775Mi          48%
+    k8s3.alv.pub   66m          1%     2106Mi          57%
+
+
+
+查看指定命名空间pod的资源使用情况。
+
+.. code-block:: bash
+
+    [root@k8s1 ~]# kubectl top pod -n kube-system
+    NAME                                    CPU(cores)   MEMORY(bytes)
+    coredns-86c58d9df4-5nf9b                2m           13Mi
+    coredns-86c58d9df4-rftbv                2m           16Mi
+    default-http-backend-64c956bc67-lphw5   1m           4Mi
+    etcd-k8s1.alv.pub                       16m          328Mi
+    heapster-855fc65cd7-k2xgl               1m           39Mi
+    kube-apiserver-k8s1.alv.pub             20m          495Mi
+    kube-controller-manager-k8s1.alv.pub    23m          65Mi
+    kube-flannel-ds-amd64-6nt46             4m           16Mi
+    kube-flannel-ds-amd64-qp2pl             4m           20Mi
+    kube-flannel-ds-amd64-wxxmj             3m           15Mi
+    kube-proxy-r8sg5                        2m           13Mi
+    kube-proxy-wch9j                        2m           19Mi
+    kube-proxy-z999v                        4m           19Mi
+    kube-scheduler-k8s1.alv.pub             6m           16Mi
+    kubernetes-dashboard-57df4db6b-xpztl    1m           20Mi
+    metrics-server-68d85f76bb-5dj5r         1m           15Mi
+    monitoring-grafana-564f579fd4-rl2n9     1m           17Mi
+    monitoring-influxdb-8b7d57f5c-hqkqm     11m          129Mi

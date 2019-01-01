@@ -17,3 +17,12 @@ grafana这里我们也是下载文件后修改一下
 
 
 这里我们是将service的 spec.type的值设置为了NodePort, 然后添加了nodePort:30110
+
+
+
+
+在grafara的dashboard里我可以导入k8s的node的dashbaord,  到这个链接下载json 导入  https://grafana.com/dashboards/3646
+
+
+导入pod的dashboard  https://grafana.com/dashboards/3649
+
