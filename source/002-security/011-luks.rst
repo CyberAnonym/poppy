@@ -47,15 +47,15 @@ LUKS使用密码验证
 
     .. code-block:: bash
 
-    [root@common ~]# cryptsetup luksFormat /dev/sdb1
+        [root@common ~]# cryptsetup luksFormat /dev/sdb1
 
-    WARNING!
-    ========
-    This will overwrite data on /dev/sdb1 irrevocably.
+        WARNING!
+        ========
+        This will overwrite data on /dev/sdb1 irrevocably.
 
-    Are you sure? (Type uppercase yes): YES
-    Enter passphrase for /dev/sdb1:
-    Verify passphrase:
+        Are you sure? (Type uppercase yes): YES
+        Enter passphrase for /dev/sdb1:
+        Verify passphrase:
 
 #. 打开并自动挂载加密的磁盘
 
@@ -136,9 +136,9 @@ LUKS使用密码验证
 
 #. 使用随机数生成一个密码文件，为4096位即可
 
-.. code-block:: bash
+    .. code-block:: bash
 
-    dd if=/dev/urandom of=/passwd_test bs=4096 count=1
+        dd if=/dev/urandom of=/passwd_test bs=4096 count=1
 
 #. 对密码文件设置权限，其他人不允许读取和写入，600
 
