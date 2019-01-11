@@ -161,3 +161,14 @@ LUKS使用密码验证
         [root@common ~]# vi /etc/crypttab
         [root@common ~]# cat /etc/crypttab
         test /dev/sdb1 /passwd_test
+
+#. 编辑/etc/fstab，配置开机自动挂载
+
+    .. code-block:: bash
+
+        [root@common ~]# vi /etc/fstab
+        [root@common ~]# tail -1 /etc/fstab
+        /dev/mapper/test /mnt/test ext4 defaults 0 0
+
+
+    上面配置完成后，重启系统，/mnt/test会自动挂载。
