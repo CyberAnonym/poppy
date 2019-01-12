@@ -1,8 +1,8 @@
 linux启动顺序
 ######################
 
+可参考：https://www.linuxidc.com/Linux/2017-03/141966.htm
 
-::
 
 1） 启动第一步－－加载BIOS
 
