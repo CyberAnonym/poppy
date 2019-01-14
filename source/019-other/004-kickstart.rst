@@ -99,6 +99,13 @@ kickstart是RedHat/CentOS/Fedora等系统实现无人值守自动化安装的一
 
         [root@common ~]# ksvalidator ks.cfg
 
+
+.. note::
+
+    pre 和post都是执行命令，但是pre是在系统安装之前执行，就是连分区都还没用分的时候，就执行的命令，在initramfs里执行的。 而post是在系统装好之后执行的。
+    pre可以用于在系统安装前定义些变量，比如定义分区时，某些盘或uuid之类的可以先执行命令获取，然后被ks.cfg去调用使用，比如在ks.cfg里的%include /tmp/part-includepart命令使用，
+
+
 制作光盘引导镜像
 ==========================
 

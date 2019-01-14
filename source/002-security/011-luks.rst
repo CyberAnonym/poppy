@@ -173,6 +173,11 @@ LUKS使用密码验证
 
     上面配置完成后，重启系统，/mnt/test会自动挂载。
 
+手动用keyfile进行映射
+
+.. code-block:: bash
+
+    cryptsetup luksOpen -d /passwd_test /dev/sdb1 test
 
 加密根分区免密进系统
 ===================================
@@ -181,23 +186,38 @@ LUKS使用密码验证
 加密根分区
 --------------------
 
-当前根分区使用的是逻辑卷，逻辑卷来源于一个/dev/sda2分区。
 
 .. code-block:: bash
 
-    [root@auto3 ~]# lsblk
+    [root@test3 ~]# lsblk
     NAME                                          MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT
     sda                                             8:0    0   20G  0 disk
     ├─sda1                                          8:1    0    1G  0 part  /boot
-    ├─sda2                                          8:2    0  4.9G  0 part
-    │ └─luks-9b2a037d-574e-43a3-806a-aa511cfc5a1e 253:2    0  4.9G  0 crypt /opt
-    ├─sda3                                          8:3    0  4.9G  0 part
-    │ └─luks-703ae914-0947-4c72-b259-caa088478337 253:1    0  4.9G  0 crypt /usr/local/yunanbao
-    ├─sda4                                          8:4    0    1K  0 part
-    └─sda5                                          8:5    0  9.2G  0 part
-      └─luks-73506abe-4348-4e8d-a517-fc96d42a8a84 253:0    0  9.2G  0 crypt /
-    sr0                                            11:0    1  4.3G  0 rom
+    └─sda2                                          8:2    0   19G  0 part
+      └─luks-7c9f8240-a395-4541-90db-e66456aec1be 253:0    0   19G  0 crypt /
 
+将根分区所在的加密设备，放入变量，便于后续使用
+
+.. code-block:: bash
+
+    ROOT_DEVICE=/dev/sda2
+
+.. note::
+
+    如果当前系统使用的是逻辑卷，比如lsblk的状态是这样的
+
+    .. code-block:: bash
+
+        [root@test4 ~]# lsblk
+        NAME                                            MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT
+        sda                                               8:0    0   20G  0 disk
+        ├─sda1                                            8:1    0    1G  0 part  /boot
+        └─sda2                                            8:2    0   19G  0 part
+          └─centos-root                                 253:0    0   19G  0 lvm
+            └─luks-73585d9b-b7f6-4473-8aa3-4b380930eab8 253:1    0   19G  0 crypt /
+        sr0                                              11:0    1  4.3G  0 rom
+
+    那么ROOT_DEVICE=/dev/centos/root
 
 
 创建key file
@@ -215,11 +235,11 @@ LUKS使用密码验证
 
         chmod 600 /tmp/keyfile
 
-#. 用key加密对上面做的/dev/sda2加密
+#. 用key加密对上面做的$ROOT_DEVICE加密
 
     .. code-block:: bash
 
-        cryptsetup luksAddKey /dev/sda2 /tmp/keyfile
+        cryptsetup luksAddKey $ROOT_DEVICE /tmp/keyfile
 
 
 修改initramfs
@@ -245,6 +265,7 @@ LUKS使用密码验证
     [root@auto3 initramfs]# /usr/lib/dracut/skipcpio no-systemd-initramfs.img  | zcat | cpio -id --no-absolute-filenames
     [root@auto3 initramfs]# ls
     bin  dev  etc  init  lib  lib64  no-systemd-initramfs.img  proc  root  run  sbin  shutdown  sys  sysroot  tmp  usr  var
+    [root@auto3 initramfs]# mv no-systemd-initramfs.img ..
 
 添加keyfile到initramfs的根
 --------------------------------------
@@ -263,6 +284,27 @@ LUKS使用密码验证
 .. code-block:: bash
 
     [root@auto3 initramfs]# sed -i 's/.*unicode.*/#&/' usr/lib/dracut/hooks/cmdline/20-parse-i18n.sh
+
+设置initramfs里的etc/crypttab
+-----------------------------------------
+
+.. code-block:: bash
+
+    uuid=`blkid $ROOT_DEVICE|awk -F 'UUID="' '{print $2}' |awk -F '"' '{print $1}'`  #根分区在$ROOT_DEVIC
+    echo "luks-$uuid /dev/disk/by-uuid/$uuid /keyfile" > etc/crypttab
+
+打包新的initramfs.img
+-------------------------------------
+
+.. code-block:: bash
+
+    [root@auto3 initramfs]# find . | cpio -c -o > ../initrd.img
+
+用新的initramfs.img替换旧的
+----------------------------------------
+
+.. code-block:: bash
+
     [root@auto3 initramfs]# cp /boot/initramfs-3.10.0-957.el7.x86_64.img /boot/initramfs-3.10.0-957.el7.x86_64.img.bak
     [root@auto3 initramfs]# \cp ../initrd.img /boot/initramfs-3.10.0-957.el7.x86_64.img
 
