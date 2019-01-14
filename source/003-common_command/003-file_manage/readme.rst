@@ -11,3 +11,4 @@
     005-tar
     006-zip
     007-unzip
+    008-img

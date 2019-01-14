@@ -1,0 +1,16 @@
+img文件管理
+#######################
+
+解压img镜像
+=====================
+
+::
+
+    /usr/lib/dracut/skipcpio initramfs-3.10.0-957.el7.x86_64.img  | zcat | cpio -id --no-absolute-filenames
+
+打包镜像
+==============
+
+::
+
+    find . -depth | cpio -ocvB >  /tmp/initrd.img
