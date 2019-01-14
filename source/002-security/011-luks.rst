@@ -172,3 +172,112 @@ LUKS使用密码验证
 
 
     上面配置完成后，重启系统，/mnt/test会自动挂载。
+
+
+加密根分区免密进系统
+===================================
+
+
+加密根分区
+--------------------
+
+当前根分区使用的是逻辑卷，逻辑卷来源于一个/dev/sda2分区。
+
+.. code-block:: bash
+
+    [root@auto3 ~]# lsblk
+    NAME                                          MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT
+    sda                                             8:0    0   20G  0 disk
+    ├─sda1                                          8:1    0    1G  0 part  /boot
+    ├─sda2                                          8:2    0  4.9G  0 part
+    │ └─luks-9b2a037d-574e-43a3-806a-aa511cfc5a1e 253:2    0  4.9G  0 crypt /opt
+    ├─sda3                                          8:3    0  4.9G  0 part
+    │ └─luks-703ae914-0947-4c72-b259-caa088478337 253:1    0  4.9G  0 crypt /usr/local/yunanbao
+    ├─sda4                                          8:4    0    1K  0 part
+    └─sda5                                          8:5    0  9.2G  0 part
+      └─luks-73506abe-4348-4e8d-a517-fc96d42a8a84 253:0    0  9.2G  0 crypt /
+    sr0                                            11:0    1  4.3G  0 rom
+
+
+
+创建key file
+-------------------
+
+#. 使用随机数生成一个密码文件，为4096位即可
+
+    .. code-block:: bash
+
+        dd if=/dev/urandom of=/tmp/keyfile bs=4096 count=1
+
+#. 对密码文件设置权限，其他人不允许读取和写入，600
+
+    .. code-block:: bash
+
+        chmod 600 /tmp/keyfile
+
+#. 用key加密对上面做的/dev/sda2加密
+
+    .. code-block:: bash
+
+        cryptsetup luksAddKey /dev/sda2 /tmp/keyfile
+
+
+修改initramfs
+---------------------------
+
+
+创建新的initramfs，忽略systemd
+----------------------------------------------
+因为systemd会让luks使用密码进行验证，如果不禁用的话，后续修改grub制定keyfile那些操作也不会生效。
+
+.. code-block:: bash
+
+    mkdir -p initramfs
+    cd initramfs
+    dracut -o "systemd" no-systemd-initramfs.img
+
+
+解压initramfs
++++++++++++++++++++++++++
+
+.. code-block:: bash
+
+    [root@auto3 initramfs]# /usr/lib/dracut/skipcpio no-systemd-initramfs.img  | zcat | cpio -id --no-absolute-filenames
+    [root@auto3 initramfs]# ls
+    bin  dev  etc  init  lib  lib64  no-systemd-initramfs.img  proc  root  run  sbin  shutdown  sys  sysroot  tmp  usr  var
+
+添加keyfile到initramfs的根
+--------------------------------------
+
+.. code-block:: bash
+
+    [root@auto3 initramfs]# cp /tmp/keyfile .
+
+注意一行包含unicode的参数，避免开机报错
+-------------------------------------------------------
+
+这里我们注销一行内容，注销的内容是 #inst_key_val 1  /etc/vconsole.conf rd.vconsole.font.unicode vconsole.font.unicode UNICODE vconsole.unicode
+
+如果不注销这行内容，启动系统时会报错/etc/vconsole.conf: line 1: vconsole.font.unicode=1: command not found， 虽然不影响进入系统，但没有这个报错出现会更好。
+
+.. code-block:: bash
+
+    [root@auto3 initramfs]# sed -i 's/.*unicode.*/#&/' usr/lib/dracut/hooks/cmdline/20-parse-i18n.sh
+    [root@auto3 initramfs]# cp /boot/initramfs-3.10.0-957.el7.x86_64.img /boot/initramfs-3.10.0-957.el7.x86_64.img.bak
+    [root@auto3 initramfs]# \cp ../initrd.img /boot/initramfs-3.10.0-957.el7.x86_64.img
+
+
+修改grub
+--------------
+
+.. code-block:: bash
+
+    sed -i.bak 's/crashkernel=auto/& rd.luks.key=\/keyfile/' /etc/default/grub
+    grub2-mkconfig >/etc/grub2.cfg
+
+重启验证
+--------------
+
+    .. code-block:: bash
+
+        reboot
