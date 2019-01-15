@@ -1,10 +1,12 @@
 luks
 ########
 
+
+
 LUKS(Linux Unified Key Setup)为Linux硬盘加密提供了一种标准，操作简单，只有在挂载磁盘时需要输入密码，在写入和读取磁盘时不需要。
 当然我们在日常的服务器运维中几乎很少会给磁盘进行加密，不过可以对U盘进行加密。
 
-LUKS使用密码验证
+1. LUKS使用密码验证
 ============================
 
 #. 准备一块没有格式化的磁盘
@@ -131,7 +133,7 @@ LUKS使用密码验证
     另外注意luks是Linux特有的，在unix、mac、windows等操作系统下通过luks加密的磁盘是无法打开的。
 
 
-使用秘钥免密码验证
+2. 使用秘钥免密码验证
 ==============================
 
 #. 使用随机数生成一个密码文件，为4096位即可
@@ -179,7 +181,7 @@ LUKS使用密码验证
 
     cryptsetup luksOpen -d /passwd_test /dev/sdb1 test
 
-加密根分区免密进系统
+3. 加密根分区免密进系统
 ===================================
 
 
@@ -267,6 +269,16 @@ LUKS使用密码验证
     bin  dev  etc  init  lib  lib64  no-systemd-initramfs.img  proc  root  run  sbin  shutdown  sys  sysroot  tmp  usr  var
     [root@auto3 initramfs]# mv no-systemd-initramfs.img ..
 
+
+
+.. note::
+
+    如果上面的命令解压的时候没有解压成功，可以使用下面的命令
+
+    .. code-block:: bash
+
+        cpio -idmv < no-systemd-initramfs.img
+
 添加keyfile到initramfs的根
 --------------------------------------
 
@@ -274,7 +286,7 @@ LUKS使用密码验证
 
     [root@auto3 initramfs]# cp /tmp/keyfile .
 
-注意一行包含unicode的参数，避免开机报错
+注释一行包含unicode的参数，避免开机报错
 -------------------------------------------------------
 
 这里我们注销一行内容，注销的内容是 #inst_key_val 1  /etc/vconsole.conf rd.vconsole.font.unicode vconsole.font.unicode UNICODE vconsole.unicode
