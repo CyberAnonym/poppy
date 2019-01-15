@@ -276,8 +276,7 @@ zabbix 默认的监控的targgers里面已经有对网卡流量的监控了，�
 
  那这里我们用last表达式，加上and来判断
 
- {dc.alv.pub:net.if.out[ens38].last(#1)}>20000 and  {dc.alv.pub:net.if.out[ens38].last(#2)}>20000 and
-{dc.alv.pub:net.if.out[ens38].last(#3)}>20000
+ {dc.alv.pub:net.if.out[ens38].last(#1)}>20000 and  {dc.alv.pub:net.if.out[ens38].last(#2)}>20000 and {dc.alv.pub:net.if.out[ens38].last(#3)}>20000
 
 .. image:: ../../../images/zabbix/44.jpg
 
@@ -337,7 +336,7 @@ zabbix 默认的监控的targgers里面已经有对网卡流量的监控了，�
 然后我们在zabbix web端的配置就配好了，但目标服务器上要能运行这种命令，需要目标服务器上在zabbix配置里面开启这项功能，默认是关闭的。
 
 .. code-block:: bash
-`
+
     # vim /etc/zabbix/zabbix_agentd.conf
     EnableRemoteCommands=1
     # systemctl restart zabbix-agent
