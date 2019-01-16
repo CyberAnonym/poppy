@@ -140,17 +140,17 @@ kickstart是RedHat/CentOS/Fedora等系统实现无人值守自动化安装的一
 
     #yum install createrepo mkisofs isomd5sum squashfs-tools
 
-    #mkdir /root/PanISO
+    #mkdir /root/myiso
 
-将/root/PanISO作为ISO的制作目录
+将/root/myiso作为ISO的制作目录
 
 ::
 
     mount /dev/cdrom /media/
-    cp -r /media/* /root/PanISO/
-    cp  /media/.discinfo /root/PanISO/
-    cp  /media/.treeinfo /root/PanISO/
-    chmod +w /root/PanISO/isolinux/isolinux.cfg
+    cp -r /media/* /root/myiso/
+    cp  /media/.discinfo /root/myiso/
+    cp  /media/.treeinfo /root/myiso/
+    chmod +w /root/myiso/isolinux/isolinux.cfg
 
 
 修改isolinux.cfg文件，将“append initrd=initrd.img”后面的当前行内容删除，并加入“ks=cdrom:/isolinux/ks.cfg”。
@@ -179,8 +179,8 @@ kickstart是RedHat/CentOS/Fedora等系统实现无人值守自动化安装的一
 
 .. code-block:: bash
 
-    cp ks.cfg PanISO/isolinux/
-    mkisofs -o Pan-7.3.iso -input-charset utf-8 -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -R -J -v -T -joliet-long /root/PanISO/
+    cp ks.cfg myiso/isolinux/
+    mkisofs -o Pan-7.3.iso -input-charset utf-8 -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -R -J -v -T -joliet-long /root/myiso/
 
 
 
@@ -207,7 +207,7 @@ kickstart设置逻辑卷
 
 .. code-block:: bash
 
-    createrepo --update -g /root/PanISO/repodata/83b61f9495b5f728989499479e928e09851199a8846ea37ce008a3eb79ad84a0-c7-minimal-x86_64-comps.xml PanISO/
+    createrepo --update -g /root/myiso/repodata/83b61f9495b5f728989499479e928e09851199a8846ea37ce008a3eb79ad84a0-c7-minimal-x86_64-comps.xml myiso/
 
 
 
