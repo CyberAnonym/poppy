@@ -283,3 +283,19 @@ c|替换匹配到的行
 ::
 
     echo 'CONFIG_CINDER_KS_PW=sda3d34dd235d'|sed -r 's/(.+_PW)=[0-9a-z]+/\1=redhat/'
+
+
+匹配行替换
+==============
+
+""中第一列为匹配内容，第二列s表示要进行替换，第三列aa表示匹配aa，第四列6666表示将匹配到的aa替换为6666
+
+
+    [root@localhost ~]# cat 1
+    aaa
+    bbb
+    ccc
+    [root@localhost ~]# sed "/aa/s/aa/66666/" 1
+    66666a
+    bbb
+    ccc
