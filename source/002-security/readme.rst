@@ -30,3 +30,4 @@
     012-startup_system
     013-grub_crypt
     014-base64
+    015-squashfs
