@@ -31,3 +31,4 @@
     013-grub_crypt
     014-base64
     015-squashfs
+    016-shc

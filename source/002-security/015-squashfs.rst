@@ -1,9 +1,12 @@
 squashfs
 ##################
 
-安装软件
+安装相关软件
+============
 
-yum install squashfs-tools -y
+.. code-block:: bash
+
+    yum install squashfs-tools -y
 
 解压镜像获取squashfs
 =============================
@@ -110,13 +113,17 @@ yum install squashfs-tools -y
 
 然后覆盖原镜像
 
-[root@test1 tmp]# cp squashfs1.img ~/myiso/LiveOS/squashfs.img
-cp: overwrite ‘/root/myiso/LiveOS/squashfs.img’? y
+.. code-block:: bash
+
+    [root@test1 tmp]# cp squashfs1.img ~/myiso/LiveOS/squashfs.img
+    cp: overwrite ‘/root/myiso/LiveOS/squashfs.img’? y
 
 
 打包新的镜像
 ========================
 
+
+.. code-block:: bash
 
     [root@test1 tmp]# cd
     [root@test1 ~]# mkisofs -o alvin_custom.iso -input-charset utf-8 -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -R -J -v -T -joliet-long /root/myiso/

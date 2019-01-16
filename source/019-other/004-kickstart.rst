@@ -87,7 +87,7 @@ kickstart是RedHat/CentOS/Fedora等系统实现无人值守自动化安装的一
         part /boot --fstype="xfs" --size=1024
         part / --fstype="ext4" --grow --size=1 --encrypted --passphrase=wankaihao
         part /opt --fstype="xfs" --size=5000 --encrypted --passphrase=wankaihao
-        part /usr/local/yunanbao --fstype="ext4" --size=5000 --encrypted --passphrase=wankaihao
+        part /usr/local/alvin --fstype="ext4" --size=5000 --encrypted --passphrase=wankaihao
 
         %post
         echo alvin >> /tmp/log
