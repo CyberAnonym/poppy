@@ -8,4 +8,5 @@ python的各种模块
 
     001-sys
     002-re
+    003-shutil
     009-subprocess

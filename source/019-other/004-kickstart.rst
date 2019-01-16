@@ -7,6 +7,7 @@ kickstart是RedHat/CentOS/Fedora等系统实现无人值守自动化安装的一
 
 而后在系统安装时，安装程序通过读取事先给定的这个kickstart文件自动化地完成配置并安装完成。
 
+各类参数参考官方文档： https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/installation_guide/s1-kickstart2-options
 
 制作kickstart文件的方式
 ================================
@@ -135,9 +136,11 @@ kickstart是RedHat/CentOS/Fedora等系统实现无人值守自动化安装的一
 
 搭建基础环境
 
-#yum install createrepo mkisofs isomd5sum squashfs-tools
+::
 
-#mkdir /root/PanISO
+    #yum install createrepo mkisofs isomd5sum squashfs-tools
+
+    #mkdir /root/PanISO
 
 将/root/PanISO作为ISO的制作目录
 
@@ -194,3 +197,14 @@ kickstart设置逻辑卷
     logvol  /var  --vgname=vg_rekfan  --size=50000  --name=lv_var
     logvol  /tmp  --vgname=vg_rekfan  --size=2048  --name=lv_tmp
     logvol  /spare  --vgname=vg_rekfan  --size=1  --grow  --name=lv_spare
+
+
+
+更新软件仓库
+=====================
+
+更新了rpm信息之后，一定要记得指定groupfile，用-g参数，否则安装系统的时候会提示找不到组。
+
+.. code-block:: bash
+
+    createrepo --update -g /root/PanISO/repodata/83b61f9495b5f728989499479e928e09851199a8846ea37ce008a3eb79ad84a0-c7-minimal-x86_64-comps.xml PanISO/

@@ -12,3 +12,4 @@
     006-zip
     007-unzip
     008-img
+    009-gzip

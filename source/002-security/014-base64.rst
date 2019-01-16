@@ -1,0 +1,16 @@
+base64
+###########
+
+
+base64加密一个文件
+=========================
+
+这里我们加密一个名为file的文件，文件内容是this is alvin,我们将加密后的内容放到newfile文件里
+
+.. code-block:: bash
+
+    echo "this is alvin" > file
+    base64 file > newfile
+
+
+解密
