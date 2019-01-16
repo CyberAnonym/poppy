@@ -208,3 +208,7 @@ kickstart设置逻辑卷
 .. code-block:: bash
 
     createrepo --update -g /root/PanISO/repodata/83b61f9495b5f728989499479e928e09851199a8846ea37ce008a3eb79ad84a0-c7-minimal-x86_64-comps.xml PanISO/
+
+
+
+hello

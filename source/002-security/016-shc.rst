@@ -11,10 +11,12 @@ shc
 
 .. code-block:: bash
 
+    yum install gcc -y
     wget -q http://www.datsi.fi.upm.es/~frosal/sources/shc-3.8.9.tgz
     tar zxvf shc-3.8.9.tgz
     cd shc-3.8.9
     make
+    mv shc /bin/
 
 
 使用shc加密
