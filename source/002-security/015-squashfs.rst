@@ -105,7 +105,7 @@ squashfs
     [root@test1 squashfs-root]# mount LiveOS/rootfs.img /mnt/rootfs/
     [root@test1 squashfs-root]# ls /mnt/rootfs/
     bin  dev  etc  firmware  lib  lib64  lost+found  mnt  modules  ok  proc  root  run  sbin  sys  tmp  usr  var
-    [root@test1 squashfs-root]# mksquashfs squashfs-root /tmp/squashfs1.img -noappend -all-root
+    [root@test1 squashfs-root]# mksquashfs squashfs-root /tmp/squashfs.img -noappend -all-root
 
 
 如上所示，我们看到了我们之前创建的那个ok文件。
@@ -115,7 +115,7 @@ squashfs
 
 .. code-block:: bash
 
-    [root@test1 tmp]# cp squashfs1.img ~/myiso/LiveOS/squashfs.img
+    [root@test1 tmp]# cp /tmp/squashfs.img ~/myiso/LiveOS/squashfs.img
     cp: overwrite ‘/root/myiso/LiveOS/squashfs.img’? y
 
 
