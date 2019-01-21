@@ -13,6 +13,7 @@ shc
 
     yum install gcc -y
     wget -q http://www.datsi.fi.upm.es/~frosal/sources/shc-3.8.9.tgz
+    #curl -fsSl http://www.datsi.fi.upm.es/~frosal/sources/shc-3.8.9.tgz > shc-3.8.9.tgz   #没有wget命令，也不想装，用curl下载也可以。
     tar zxvf shc-3.8.9.tgz
     cd shc-3.8.9
     make
@@ -82,4 +83,7 @@ abc.sh.x.c 是c源文件。基本没用，可以删除
 
 
 要解密脚本 aa,就执行./UnSHc aa 就可以了。
+
+
+
 
