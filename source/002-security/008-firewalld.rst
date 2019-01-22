@@ -243,3 +243,27 @@ RH-Satellite-6 amanda-client amanda-k5-client bacula bacula-client bitcoin bitco
 ::
 
     firewall-cmd --permanent --add-rich-rule='rule family="ipv4" protocol value="icmp" source address="192.168.3.0/24" accept'
+
+
+将网段添加到信任域
+=======================
+
+
+.. code-block:: bash
+
+    firewall-cmd --add-source=192.168.0.0/24 --zone=trusted
+
+
+
+查看可用的其他域
+
+
+firewall-cmd --get-active-zones
+
+
+添加或移除指定网卡到域
+==========================
+
+.. code-block:: bash
+
+    firewall-cmd --remove-interface=eth1

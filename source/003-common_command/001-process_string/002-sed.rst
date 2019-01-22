@@ -300,3 +300,10 @@ c|替换匹配到的行
     66666a
     bbb
     ccc
+
+删除匹配行到最后一行
+============================
+
+.. code-block:: bash
+
+    sed -i '/label linux/,$d'  myiso/isolinux/isolinux.cfg
