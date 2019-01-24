@@ -39,3 +39,5 @@
     021-cc
     022-syn_flood
     023-awl
+    024-lynis
+    025-OpenVAS
