@@ -117,11 +117,21 @@ OpenVAS配置
 
     安装完成之后，OpenVAS默认设置的监听地址为127.0.0.1，为了使用方便，需要手动配置外部访问，Openvas9.0修改以下四个配置文件中的监听ip，由127.0.0.1改为0.0.0.0（表示任意IP），保存之后，重新加载systemctl，重启openvas即可。
 
+.. code-block:: bash
+
+    vi /lib/systemd/system/greenbone-security-assistant.service
+
+ExecStart=/usr/sbin/gsad --foreground --listen=0.0.0.0 --port=9392 --mlisten=0.0.0.0 --mport=9390
+
+
 
 #. 增加host 头主机地址（IP或域名）
 
-    在--mlisten=0.0.0.0 后增加“--allow-header-host=外部访问的地址IP或域名”，本次测试本机地址为：192.168.200.221，即外部访问的IP为192.168.200.221
+    在--mlisten=0.0.0.0 后增加“--allow-header-host=外部访问的地址IP或域名”，本次测试本机地址为：192.168.127.38，即外部访问的IP为192.168.127.38
 
+.. code-block:: bash
+
+    ExecStart=/usr/sbin/gsad --foreground --listen=0.0.0.0 --port=9392 --mlisten=0.0.0.0 -allow-header-host=192.168.127.38 --mport=9390
     重新加载systemctl：
 
     ::

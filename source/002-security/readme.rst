@@ -41,3 +41,5 @@
     023-awl
     024-lynis
     025-OpenVAS
+    026-vlock
+    027-nessus
