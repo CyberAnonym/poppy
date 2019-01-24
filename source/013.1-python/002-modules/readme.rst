@@ -10,3 +10,4 @@ python的各种模块
     002-re
     003-shutil
     009-subprocess
+    004-selenium
