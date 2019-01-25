@@ -129,10 +129,39 @@ ExecStart=/usr/sbin/gsad --foreground --listen=0.0.0.0 --port=9392 --mlisten=0.0
 
     在--mlisten=0.0.0.0 后增加“--allow-header-host=外部访问的地址IP或域名”，本次测试本机地址为：192.168.127.38，即外部访问的IP为192.168.127.38
 
-.. code-block:: bash
+    .. code-block:: bash
 
-    ExecStart=/usr/sbin/gsad --foreground --listen=0.0.0.0 --port=9392 --mlisten=0.0.0.0 -allow-header-host=192.168.127.38 --mport=9390
-    重新加载systemctl：
+        ExecStart=/usr/sbin/gsad --foreground --listen=0.0.0.0 --port=9392 --mlisten=0.0.0.0 -allow-header-host=192.168.127.38 --mport=9390
+
+
+
+
+#. 增加host主机地址
+
+    ::
+
+        sed -i 's/127.0.0.1/0.0.0.0/' /lib/systemd/system/openvas-manager.service
+
+
+#. 修改openvas-manager.service监听地址
+
+    ::
+
+        sed -i 's/127.0.0.1/0.0.0.0/' /etc/default/openvas-manager
+
+#. 修改openvas-manager监听地址和greenbone-security-assistant监听地址
+
+    ::
+
+        sed -i 's/127.0.0.1/0.0.0.0/' /etc/default/greenbone-security-assistant
+
+
+
+#. 修改greenbone-security-assistant监听地址
+
+
+
+#. 重新加载systemctl：
 
     ::
 
