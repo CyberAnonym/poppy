@@ -11,6 +11,16 @@ nginx参数优化
 
 我们将修改的唯一文件是nginx.conf，其中包含Nginx不同模块的所有设置。你应该能够在服务器的/etc/nginx目录中找到nginx.conf。首先，我们将谈论一些全局设置，然后按文件中的模块挨个来，谈一下哪些设置能够让你在大量客户端访问时拥有良好的性能，为什么它们会提高性能。本文的结尾有一个完整的配置文件。
 
+
+        #减少点击劫持
+        add_header X-Frame-Options DENY;
+        #禁止服务器自动解析资源类型
+        add_header X-Content-Type-Options nosniff;
+        #防XSS攻击
+        add_header X-Xss-Protection 1;
+
+
+
 高层的配置
 ===================
 
@@ -145,6 +155,7 @@ gzip_comp_level 设置数据的压缩等级。这个等级可以是1-9之间的�
 
 gzip_type 设置需要压缩的数据格式。上面例子中已经有一些了，你也可以再添加更多的格式。
 
+        #
 ::
 
     # cache informations about file descriptors, frequently accessed files
