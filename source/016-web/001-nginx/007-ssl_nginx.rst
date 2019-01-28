@@ -72,9 +72,14 @@ Nginx自签ssl证书创建及配置
 
     .. code-block:: bash
 
-        $ openssl x509 -req  -days 365 -sha256 -extfile openssl.cnf -extensions v3_req   -in server.csr -signkey server.key -out server.crt
+        $ openssl x509 -req  -days 365 -sha256 -extfile /etc/pki/tls/openssl.cnf -extensions v3_req   -in server.csr -signkey server.key -out server.crt
 
     #  v3版证书另需配置文件openssl.cnf， `OpenSSL生成v3证书方法及配置文件 <./008-openssl_v3.html>`__ 在下一章
+
+.. note::
+
+    重要说明： -extfile /etc/pki/tls/openssl.cnf -extensions v3_req  参数是生成 X509 V3 版本的证书的必要条件。 /etc/pki/tls/openssl.cnf  是系统自带的OpenSSL配置文件，该配置文件默认开启 X509 V3 格式。下同。
+
 
 nginx使用证书
 ======================
