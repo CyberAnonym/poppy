@@ -156,6 +156,7 @@ gzip_comp_level 设置数据的压缩等级。这个等级可以是1-9之间的�
 gzip_type 设置需要压缩的数据格式。上面例子中已经有一些了，你也可以再添加更多的格式。
 
         #
+
 ::
 
     # cache informations about file descriptors, frequently accessed files

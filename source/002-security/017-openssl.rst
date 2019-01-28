@@ -69,3 +69,56 @@ OpenSSL 使用密钥方式加密或解密文件
 ::
 
     # openssl rsautl -decrypt -inkey rsa.key -in back.zip -out data.zip
+
+
+生成 ECC 的证书
+=========================
+
+ECC证书对应RSA证书
+
+生成私钥
+----------------
+
+::
+
+    openssl ecparam -genkey -name secp384r1 -out imlonghao.com-ecc.key
+
+在 -name 参数中，你可以自己选择 prime256v1 或者是上面所用的 secp384r1
+
+
+- 2015年10月13日更新： secp521r1 早已经不再被浏览器所支持。
+- Security: With Chrome 42 Elliptic curves secp512r1 missing
+
+生成 CSR
+------------
+
+::
+
+    openssl req -new -sha384 -key imlonghao.com-ecc.key -out imlonghao.com-ecc.csr
+
+
+在这里我们只需要 sha384 即可，根据维基百科，目前被破解的只有 109 位的密钥，ECC 最小推荐163位，我们可以选择高一点的 sha384 ，但并不需要512位，因为这会增加的负担，影响效果。
+
+
+签署证书
+-------------
+
+参照：GOGETSSL 证书购买记
+
+
+对比
+----------
+
+另外，我还比较了以下 RSA 证书的密钥长度和 ECC 证书的密钥长度，还是 RSA 证书的证书长度和 ECC 的。
+
+
+::
+
+    root@shield:/var/ssl# cat imlonghao.com.key | wc -l
+    28
+    root@shield:/var/ssl# cat imlonghao.com-ecc.key | wc -l
+    9
+    root@shield:/var/ssl# cat imlonghao.com.crt | wc -l
+    99
+    root@shield:/var/ssl# cat imlonghao.com-ecc.crt | wc -l
+    68
