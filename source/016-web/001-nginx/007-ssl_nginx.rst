@@ -5,13 +5,13 @@ Nginx自签ssl证书创建及配置
 使用OpenSSL创建证书
 =========================
 
-#. 建立服务器私钥（过程需要输入密码，请记住这个密码）生成RSA密钥
+#. 建立服务器私钥（过程需要输入密码，请记住这个密码）生成RSA密钥，这我们生成2048 Bits的，更安全，现在1024的都已经被视为不安全的了，在一些机构那里都过不了审。
 
     .. code-block:: bash
         :emphasize-lines: 1
         :linenos:
 
-        [alvin@poppy ~]$ openssl genrsa -des3 -out server.key 1024
+        [alvin@poppy ~]$ openssl genrsa -des3 -out server.key 2048
         Generating RSA private key, 1024 bit long modulus
         ............++++++
         ....++++++
@@ -61,14 +61,10 @@ Nginx自签ssl证书创建及配置
 
 #. 使用上面的密钥和CSR对证书进行签名
 
-    - 以下命令生成v1版证书
-        这里我们用v1版本的就好了。
 
-    .. code-block:: bash
-
-        $ openssl x509 -req  -days 365 -sha256   -in server.csr -signkey server.key -out server.crt
 
     - 以下命令生成v3版证书
+        这里我们要用v3版证书，因为v1版v2版不够安全，在有些地方都过不了审。
 
     .. code-block:: bash
 
@@ -76,10 +72,17 @@ Nginx自签ssl证书创建及配置
 
     #  v3版证书另需配置文件openssl.cnf， `OpenSSL生成v3证书方法及配置文件 <./008-openssl_v3.html>`__ 在下一章
 
-.. note::
+    .. note::
 
-    重要说明： -extfile /etc/pki/tls/openssl.cnf -extensions v3_req  参数是生成 X509 V3 版本的证书的必要条件。 /etc/pki/tls/openssl.cnf  是系统自带的OpenSSL配置文件，该配置文件默认开启 X509 V3 格式。下同。
+        重要说明： -extfile /etc/pki/tls/openssl.cnf -extensions v3_req  参数是生成 X509 V3 版本的证书的必要条件。 /etc/pki/tls/openssl.cnf  是系统自带的OpenSSL配置文件，该配置文件默认开启 X509 V3 格式。下同。
 
+
+    - 以下命令生成v1版证书
+        如果还是要用v1版的证书，可以使用下面的命令，生成X.509v1证书。
+
+    .. code-block:: bash
+
+        $ openssl x509 -req  -days 365 -sha256   -in server.csr -signkey server.key -out server.crt
 
 nginx使用证书
 ======================
