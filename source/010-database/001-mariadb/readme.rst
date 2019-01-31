@@ -21,3 +21,4 @@ mariadb
     015-other-function
     016-binlog.rst
     017-backup
+    018-error_fix
