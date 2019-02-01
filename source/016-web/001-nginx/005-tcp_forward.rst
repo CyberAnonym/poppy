@@ -1,6 +1,37 @@
 tcp转发
 ########
 
+
+
+
+本地的3389端口转发到另一台服务器的3389端口，（3389是windows远程桌面端口）
+
+::
+
+    stream {
+        server {
+            listen 3389; ##监听端口
+            proxy_pass 192.168.1.218:3389;  #转发请求
+        }
+    }
+
+或者
+
+
+::
+
+    stream {
+        upstream bi_remote_desk {
+            server 192.168.1.218:3389;
+        }
+        server {
+            listen 3389; ##监听端口
+            proxy_pass bi_remote_desk;  #转发请求
+        }
+    }
+
+
+
 将本地666端口转发到本地105端口
 
 ::
@@ -22,19 +53,6 @@ tcp转发
         }
     }
 
-本地的3389端口转发到另一台服务器的3389端口，（3389是windows远程桌面端口）
-
-::
-
-    stream {
-        upstream bi_remote_desk {
-            server 192.168.1.218:3389;
-        }
-        server {
-            listen 3389; ##监听端口
-            proxy_pass bi_remote_desk;  #转发请求
-        }
-    }
 
 
 定义多个端口转发

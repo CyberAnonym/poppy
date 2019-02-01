@@ -14,3 +14,4 @@ python
     007-set_environment_variable
     008-django/readme
     009-list
+    010-function/readme.rst
