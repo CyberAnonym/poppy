@@ -1,5 +1,6 @@
 #coding:utf-8
-#本脚本用于通过mac地址来设置ip地址， curl执行方式: python -c "$(curl -s https://raw.githubusercontent.com/AlvinWanCN/poppy/master/code/alv.pub/set_hostinfo_by_nic.py)"
+#本脚本用于通过mac地址来设置ip地址
+
 import subprocess
 import re
 hostname_domain='.alv.pub'
@@ -33,6 +34,8 @@ hostname['81']='k8s1'
 hostname['82']='k8s2'
 hostname['83']='k8s3'
 hostname['84']='k8s4'
+hostname['90']='vpnserver'
+
 
 
 

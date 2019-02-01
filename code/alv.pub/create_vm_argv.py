@@ -1,24 +1,37 @@
 #!/usr/bin/python
 #coding:utf-8
-import sys,subprocess
+import sys,subprocess,random,string
 
 
 #定义新虚拟机的各种值
 
+try:
+    hostinfo={}
+    hostinfo['name']=sys.argv[1]+'.alv.pub'
+    hostinfo['nic']='00:00:00:00:00:'+str(sys.argv[2])
+    hostinfo['vncport']='59'+str(sys.argv[2])
+    hostinfo['disk']=sys.argv[1]+'.alv.pub'+'.raw'
+    hostinfo['ram']=4096
+    hostinfo['vcpus']=4
+    hostinfo['vncpassword']=''.join(random.sample(string.ascii_letters + string.digits, 12))
+except Exception as e:
+    print(e)
 
 
-hostinfo={}
-hostinfo['name']=sys.argv[1]+'.alv.pub'
-hostinfo['nic']='00:00:00:00:00:'+str(sys.argv[2])
-hostinfo['vncport']='59'+str(sys.argv[2])
-hostinfo['disk']=sys.argv[1]+'.alv.pub'+'.raw'
-hostinfo['ram']=4096
-hostinfo['vcpus']=4
 
-
-
-
-
+def clean_data():
+    try:
+        subprocess.call('virsh shutdown {name}'.format(**hostinfo))
+    except:
+        print('already shutdown {name}'.format(**hostinfo))
+    try:
+        subprocess.call('virsh undefine '.format(**hostinfo))
+    except:
+        print('already undefine {name}'.format(**hostinfo))
+    try:
+        subprocess.call('\rm -f /kvm/{disk}'.format(**hostinfo))
+    except:
+        print('this is a new virtual machine')
 
 
 # 创建虚拟机
@@ -31,13 +44,15 @@ def create_vm():
 --os-variant rhel7 \
 --ram {ram} \
 -m {nic} \
+--autostart \
 --vcpus {vcpus}  \
 --disk=/kvm/{disk} \
---graphics vnc,listen=0.0.0.0,port={vncport},keymap=en-us \
+--graphics vnc,listen=0.0.0.0,port={vncport},keymap=en-us,password={vncpassword} \
 --import \
+--network bridge=br0 \
 --noautoconsole'.format(**hostinfo),shell=True)
 
 
 if __name__ == '__main__':
+    clean_data()
     create_vm()
-#--network bridge=br0 \
