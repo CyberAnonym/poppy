@@ -122,3 +122,14 @@ ECC证书对应RSA证书
     99
     root@shield:/var/ssl# cat imlonghao.com-ecc.crt | wc -l
     68
+
+
+openssl生成12位随机数
+==============================
+
+生成其他位数的随机数也行，这里我们生成12位的随机数。
+
+.. code-block:: bash
+
+    [root@internal ~]# openssl rand -base64 12
+    l4+/PICOu+bQxGYZ

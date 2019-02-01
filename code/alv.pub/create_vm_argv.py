@@ -56,3 +56,4 @@ def create_vm():
 if __name__ == '__main__':
     clean_data()
     create_vm()
+    print('Your vnc port is {vncport}, your vnc password isvncpassword'.format(**hostinfo))
