@@ -34,6 +34,8 @@ hostname['81']='k8s1'
 hostname['82']='k8s2'
 hostname['83']='k8s3'
 hostname['84']='k8s4'
+hostname['90']='vpnserver'
+
 
 
 
