@@ -53,3 +53,18 @@ haproxy
 
 
 这里haproxy对后端服务是有健康检测的，如果后端服务不可用了，就不会调度到后端的服务上去了，后端服务重新可用后，就会分配请的请求到后端服务去。这里我们用的版本：HA-Proxy version 1.5.18 2016/05/10
+
+
+haproxy 转发tcp
+=======================
+
+添加如下配置，表示将本地的tcp 3389端口转发到w7.alv.pub 的3389端口去。
+
+.. code-block:: bash
+
+    $ vim /etc/haproxy/haproxy.cfg
+    listen w7-desktop
+
+      bind *:3389
+      mode     tcp
+      server server1 w7.alv.pub:3389 maxconn 32

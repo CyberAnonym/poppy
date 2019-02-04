@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #coding:utf-8
-import sys,subprocess,random,string
+import sys,subprocess,random,string,time
 
 
 #定义新虚拟机的各种值
@@ -21,15 +21,17 @@ except Exception as e:
 
 def clean_data():
     try:
-        subprocess.call('virsh shutdown {name}'.format(**hostinfo))
+        subprocess.call('virsh shutdown {name}'.format(**hostinfo),shell=True)
+        time.sleep(6)
     except:
         print('already shutdown {name}'.format(**hostinfo))
     try:
-        subprocess.call('virsh undefine '.format(**hostinfo))
+        subprocess.call('virsh undefine {name}'.format(**hostinfo),shell=True)
+        time.sleep(6)
     except:
         print('already undefine {name}'.format(**hostinfo))
     try:
-        subprocess.call('\rm -f /kvm/{disk}'.format(**hostinfo))
+        subprocess.call('rm -f /kvm/{disk}'.format(**hostinfo),shell=True)
     except:
         print('this is a new virtual machine')
 
@@ -56,4 +58,4 @@ def create_vm():
 if __name__ == '__main__':
     clean_data()
     create_vm()
-    print('Your vnc port is {vncport}, your vnc password isvncpassword'.format(**hostinfo))
+    print('Your vnc port is {vncport}, your vnc password is {vncpassword}'.format(**hostinfo))
