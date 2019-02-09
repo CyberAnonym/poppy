@@ -35,9 +35,9 @@ hostname['82']='k8s2'
 hostname['83']='k8s3'
 hostname['84']='k8s4'
 hostname['90']='vpnserver'
-
-
-
+hostname['91']='ubuntu14u4'
+hostname['92']='ubuntu16u4'
+hostname['93']='ubuntu18u4'
 
 #获取mac地址
 get_nic=subprocess.check_output("ip a s|grep ether|awk '{print $2}'",shell=True).split('\n')[0]
