@@ -12,7 +12,7 @@ Nginx自签ssl证书创建及配置
         :linenos:
 
         [alvin@poppy ~]$ openssl genrsa -des3 -out server.key 2048
-        Generating RSA private key, 1024 bit long modulus
+        Generating RSA private key, 2048 bit long modulus
         ............++++++
         ....++++++
         e is 65537 (0x10001)
