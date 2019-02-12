@@ -105,3 +105,12 @@ d).将密钥和证书合并成一个文件
 
 
 
+
+4、一键创建所有证书脚本参考
+=====================================
+
+.. literalinclude:: ../../../code/shell/build_ca_ssl_key.sh
+    :language: shell
+    :linenos:
+
+
