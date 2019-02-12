@@ -85,11 +85,54 @@ c).使用根证书签发服务端证书
 
     openssl ca -in server/server.csr -out server/server.crt -cert ca/ca.crt -keyfile ca/ca.key -config ./openssl.cnf
 
-将证书部署到nginx，做到这个步骤就行了。
+将证书部署到nginx，做到这个步骤就行了，nginx需要用到的证书就在./server 目录下
+
+**部署到nginx**
+
+我们安装好nginx之后，只需要把/etc/nginx/nginx.conf里关于https配置的一些内容的注销取消掉，然后修改下ssl_certificate和ssl_certificate_key的路径就可以了。
+
+.. code-block:: bash
+
+    $ yum install epel-release -y
+    $ yum install nginx -y
+    $ vi /etc/nginx/nginx.conf
+        server {
+            listen       443 ssl http2 default_server;
+            listen       [::]:443 ssl http2 default_server;
+            server_name  _;
+            root         /usr/share/nginx/html;
+
+            ssl_certificate "/root/server/server.crt";
+            ssl_certificate_key "/root/server/server.key";
+            ssl_session_cache shared:SSL:1m;
+            ssl_session_timeout  10m;
+            ssl_ciphers HIGH:!aNULL:!MD5;
+            ssl_prefer_server_ciphers on;
+
+            # Load configuration files for the default server block.
+            include /etc/nginx/default.d/*.conf;
+
+            location / {
+            }
+
+            error_page 404 /404.html;
+                location = /40x.html {
+            }
+
+            error_page 500 502 503 504 /50x.html;
+                location = /50x.html {
+            }
+        }
+    $ nginx -t
+    $ systemctl start nginx
+    $ setenforce 0
+    $ systemctl stop firewalld
+
+
 
 d).将密钥和证书合并成一个文件
 -------------------------------------
-该操作有需求就做，一般用nginx，就不用做这个操作了。
+该操作是可选的，有需求就做，我们用nginx，就不用做下面这个操作了。
 
 .. code-block:: bash
 
