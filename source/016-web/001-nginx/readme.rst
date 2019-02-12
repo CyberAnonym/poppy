@@ -16,6 +16,7 @@ nginx
     009-load_balance
     010-concurrence
     011-match_rule
+    012-ca
 
 
 ..

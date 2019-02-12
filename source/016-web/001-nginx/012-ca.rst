@@ -1,0 +1,107 @@
+自建CA证书搭建https服务器
+##############################
+
+
+
+1、创建相关目录
+=======================
+将openssl.cnf配置文件拷贝到当前目录下并创建以下在配置文件中指定的子文件夹
+
+.. code-block:: bash
+
+    mkdir demoCA
+    cd demoCA
+
+.. note::
+
+    index.txt为空，serial必须写入内容，且为字符串格式的数字（比如1000)
+
+.. code-block:: bash
+
+    mkdir srl certs newcerts
+    touch index.txt serial
+    echo 1000 > serial
+    cd ..
+    cp /etc/pki/tls/openssl.cnf  .
+
+2、生成根证书
+===================
+
+.. code-block:: bash
+
+    mkdir ca
+
+a).生成根证书私钥(key文件)
+----------------------------------
+
+.. code-block:: bash
+
+    openssl genrsa -aes256 -out ca/ca.key 2048
+
+b).生成根证书签发申请文件(csr文件)
+---------------------------------------------
+
+.. code-block:: bash
+
+    openssl req -utf8 -new -key ca/ca.key -out ca/ca.csr -config ./openssl.cnf
+
+c).自签发根证书(crt文件)
+---------------------------------
+
+.. code-block:: bash
+
+    openssl x509 -req -days 3650 -sha1 -extensions v3_ca -signkey ca/ca.key -in ca/ca.csr -out ca/ca.crt
+
+3、用根证书签发server端证书
+====================================
+
+.. code-block:: bash
+
+    mkdir server
+
+a).生成根证书私钥(key文件)
+--------------------------------
+
+.. code-block:: bash
+
+    openssl genrsa -aes256 -out server/server.key 2048
+    cd server
+    cp server.key server.key.org
+    openssl rsa -in server.key.org -out server.key
+    cd ..
+
+b).生成根证书签发申请文件(csr文件)
+-------------------------------------------
+
+.. code-block:: bash
+
+    openssl req -utf8 -new -key server/server.key -out server/server.csr -config ./openssl.cnf
+    cp -rap  demoCA/* /etc/pki/CA/
+
+c).使用根证书签发服务端证书
+----------------------------
+
+.. code-block:: bash
+
+    openssl ca -in server/server.csr -out server/server.crt -cert ca/ca.crt -keyfile ca/ca.key -config ./openssl.cnf
+
+将证书部署到nginx，做到这个步骤就行了。
+
+d).将密钥和证书合并成一个文件
+-------------------------------------
+该操作有需求就做，一般用nginx，就不用做这个操作了。
+
+.. code-block:: bash
+
+    cp server/server.key server/server.pem
+    cat server/server.crt >> server/server.pem
+    mkdir client
+    openssl genrsa -aes256 -out client/client.key 2048
+    openssl req -new -key client/client.key -out client/client.csr -config ./openssl.cnf
+    openssl ca -in client/client.csr -out client/client.crt -cert ca/ca.crt -keyfile ca/ca.key -config ./openssl.cnf
+    cp client/client.key client/client.pem
+    cat client/client.crt >> client/client.pem
+
+
+
+
