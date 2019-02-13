@@ -221,3 +221,40 @@ where 之后排序
     u.delete() #删除数据， 不需要保存，直接删除。
 
 
+
+添加字段
+===============
+
+在我们要添加新字段的app的 models.py 文件中添加需要新增的字段
+
+添加字段到models.py
+-----------------------------
+
+这里我们编辑指定应用下的用于定义表的models.py文件,在一个表下面添加一个comment字段。
+
+.. code-block:: bash
+
+    $ vi models.py
+    comment = models.TextField(null=True) #备注
+
+
+执行makemigrations
+-----------------------------
+
+在工程目录打开命令行窗口输入python manage.py makemigrations apps， 这里的apps，就是我们的应用的名字，实际应用是什么名字这里就写什么名字。
+
+.. code-block:: bash
+
+    python manage.py makemigrations apps
+
+执行之后，会看到提示 Add field comment to securitypolicy，表示我们的字段已经添加完成。
+
+
+执行migrate
+-------------------------------------
+
+然后我们执行python manage.py migrate让数据库里添加这个表。
+
+.. code-block:: bash
+
+    python manage.py migrate

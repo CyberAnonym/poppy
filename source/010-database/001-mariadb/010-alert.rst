@@ -69,6 +69,12 @@ alter|修改字段类型和位置
 
     mysql> alter table clara modify eno int(10) first;
 
+这里我们将policyGroup的位置放到id字段的后面。
+
+::
+
+    alter table apps_securitypolicy modify policyGroup longtext NOT NULL AFTER id
+
 alter|删除字段
 ---------------------------
 
