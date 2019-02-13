@@ -227,6 +227,10 @@ vgcreate 参数说明
 
 在线扩展lv：
 ====================
+
+指定新增大小扩容
+------------------------
+
 .. code-block:: bash
 
     [root@alvin lv01]# lvextend -v -L +10G /dev/vg0/lv01
@@ -244,6 +248,16 @@ vgcreate 参数说明
             --直接执行提示的命令即可(e2fsck -f /dev/vg0/lv01)
     [root@alvin lv01]# df -h | grep lv01
     /dev/mapper/vg0-lv01   20G  156M   19G   1% /mnt/lv01
+
+将剩余空间全部分配给指定逻辑并同时扩容文件系统
+------------------------------------------------------------------------
+
+-r 参数就是在扩容逻辑卷的同时也刷新了文件系统，就不用再执行resize2ft了。
+
+.. code-block:: bash
+
+    lvextend -r -l +100%free -n /dev/centos/root
+
 
 回缩逻辑卷
 ====================
