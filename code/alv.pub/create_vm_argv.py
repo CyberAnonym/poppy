@@ -20,20 +20,23 @@ except Exception as e:
 
 
 def clean_data():
-    try:
-        subprocess.call('virsh shutdown {name}'.format(**hostinfo),shell=True)
-        time.sleep(6)
-    except:
-        print('already shutdown {name}'.format(**hostinfo))
-    try:
-        subprocess.call('virsh undefine {name}'.format(**hostinfo),shell=True)
-        time.sleep(6)
-    except:
-        print('already undefine {name}'.format(**hostinfo))
-    try:
-        subprocess.call('rm -f /kvm/{disk}'.format(**hostinfo),shell=True)
-    except:
-        print('this is a new virtual machine')
+    if subprocess.call('virsh list --all|grep {name} &>/dev/null'.format(**hostinfo),shell=True) == '0':
+        try:
+            subprocess.call('virsh shutdown {name}'.format(**hostinfo),shell=True)
+            time.sleep(6)
+        except:
+            print('already shutdown {name}'.format(**hostinfo))
+        try:
+            subprocess.call('virsh undefine {name}'.format(**hostinfo),shell=True)
+            time.sleep(6)
+        except:
+            print('already undefine {name}'.format(**hostinfo))
+        try:
+            subprocess.call('rm -f /kvm/{disk}'.format(**hostinfo),shell=True)
+        except:
+            print('this is a new virtual machine')
+    else:
+        pass
 
 
 # 创建虚拟机
