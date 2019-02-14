@@ -62,12 +62,19 @@ def check_host(request):
         # def start_check(cmd):
         #     return ssh(host,username,password,port,cmd)
         # result=start_check('hostname')
-        result=ssh('192.168.127.252', 'root', 'sophiroth', '22', 'echo hello')
-        return ({'success': False, 'code': 0, 'message': result})
+        a='echo 0'
+        result=ssh('192.168.3.11', 'root', 'sophiraoth', '22', a)
+        # return ({'success': False, 'code': 0, 'message': result})
+        if result:
+            print('yes')
+        else:
+            print('no')
+        return result
 
 
-request={"username": "root", "host": "192.168.127.252", "password": "sophiroth", "port": "22"}
-check_host(request)
+
+request={"username": "root", "host": "192.168.3.11", "password": "sophiroth", "port": "22"}
+print(check_host(request))
 
 
 # if __name__ == "__main__":
