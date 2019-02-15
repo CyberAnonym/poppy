@@ -43,7 +43,6 @@ def ssh(host, username, password,port,cmds):
         # ssh.connect(sys_ip, 22, username=username, pkey=key_file, timeout=20)
         # 执行命令
         stdin, stdout, stderr = client.exec_command(cmds)
-        print(dir(client.exec_command(cmds)))
         # 获取命令执行结果,返回的数据是一个list
         result = stdout.readlines()
         return result
@@ -62,8 +61,8 @@ def check_host(request):
         # def start_check(cmd):
         #     return ssh(host,username,password,port,cmd)
         # result=start_check('hostname')
-        a='echo 0'
-        result=ssh('192.168.3.11', 'root', 'sophiraoth', '22', a)
+        a='echo 000'
+        result=ssh('192.168.127.156', 'root', 'sophiroth', '22', a)
         # return ({'success': False, 'code': 0, 'message': result})
         if result:
             print('yes')
