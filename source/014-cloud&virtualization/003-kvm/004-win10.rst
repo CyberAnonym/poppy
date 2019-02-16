@@ -1,0 +1,13 @@
+kvm安装win10
+#################
+
+
+kvm里安装win10时的时候需要添加一个如软盘，软盘上挂载virtio的驱动，安装驱动之后才能在安装系统的时候看到磁盘。
+
+
+
+驱动iso下载地址：  https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/
+
+这里我使用的virtio-win-0.1.164_amd64.vfd， 地址是https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.164-1/virtio-win-0.1.164_amd64.vfd
+
+将virtio-win-0.1.164_amd64.vfd作为软盘挂到系统上，安装的是系统的是在磁盘那里点击浏览，打开软盘，选择win10, 然后选择下面那项关于SCSI的驱动，安装之后，就可以看到磁盘了，就可以分区、安装系统了。
