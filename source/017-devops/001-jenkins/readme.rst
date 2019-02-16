@@ -5,4 +5,5 @@ jenkins
 .. toctree::
     :maxdepth: 2
 
-    jenkins_deploy
+    001-jenkins_deploy
+    002-install_plugins
