@@ -11,3 +11,4 @@ RHCA是Red Hat Certified Architect的缩写，即红帽认证架构师。
     002-RH318/readme
     003-RH236/readme
     004-RH210/readme
+    005-DO280/readme

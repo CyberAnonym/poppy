@@ -48,4 +48,4 @@ squid
 ======================
 
 
-docker run -d --name squid3 --restart=always  -m 1G -p 10080:3128 -v /etc/squid3/squid.conf:/etc/squid3/squid.conf -v /var/log/squid3:/var/log/squid3 -v /var/spool/squid3:/var/spool/squid3 sameersbn/squid:3.3.8-14
+docker run -d --name squid3 --restart=always  -m 1G -p 105449:3128 -v /etc/squid3/squid.conf:/etc/squid3/squid.conf -v /var/log/squid3:/var/log/squid3 -v /var/spool/squid3:/var/spool/squid3 sameersbn/squid:3.3.8-14

@@ -1,0 +1,105 @@
+ShadowSocks
+######################
+
+
+
+安装ShadowSocks
+=============================
+
+
+.. code-block:: bash
+
+    yum install m2crypto python-setuptools
+    yum install python-pip
+    pip install shadowsocks
+
+
+
+配置用户
+===============
+
+
+
+.. code-block:: bash
+
+    $ vi /etc/shadowsocks.json
+
+
+配置单用户
+
+.. code-block:: bash
+
+    {
+         "server":"0.0.0.0",
+         "server_port":1234,
+         "local_address": "127.0.0.1",
+         "local_port":1080,
+         "password":"设置ss客户端的连接密码",
+         "timeout":600,
+         "method":"aes-256-cfb",
+         "fast_open": false
+    }
+
+
+多用户：
+
+
+    {
+        "server":"0.0.0.0",
+        "local_address":"127.0.0.1",
+        "local_port":1080,
+        "port_password":{
+             "1234":"password0",
+             "1235":"password1",
+        },
+        "timeout":600,
+        "method":"aes-256-cfb",
+        "fast_open": false
+    }
+
+
+开启防火墙
+==================
+
+
+.. code-block:: bash
+
+    yum install firewalld
+    systemctl start firewalld
+    firewall-cmd --zone=public --add-port=1234/tcp --permanent
+    firewall-cmd --reload
+
+
+启动服务
+==============
+
+.. code-block:: bash
+
+    vim /usr/lib/systemd/system/ss.service
+    加入
+
+    [Unit]
+    Description=ssserver
+    [Service]
+    TimeoutStartSec=0
+    ExecStart=/usr/bin/ssserver -c /etc/shadowsocks.json &
+    [Install]
+    WantedBy=multi-user.target
+
+设置开启启动
+=====================
+
+.. code-block:: bash
+
+    systemctl enable ss
+
+下载客户端连接
+===========================
+
+下载
+
+win：	https://github.com/shadowsocks/shadowsocks-windows/releases
+
+mac：	https://github.com/shadowsocks/ShadowsocksX-NG/releases
+
+linux：	https://github.com/shadowsocks/shadowsocks-qt5/wiki/Installation
