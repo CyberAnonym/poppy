@@ -122,3 +122,39 @@ find
     brw-rw----. 1 root disk 8, 2 Aug  9 07:58 /dev/sda2
     brw-rw----. 1 root disk 8, 1 Aug  9 07:58 /dev/sda1
     brw-rw----. 1 root disk 8, 0 Aug  9 07:58 /dev/sda
+
+指定权限搜索
+``````````````````````````````````
+
+查找文件权限等于指定权限的文件
+---------------------------------------------
+
+这里我们查看文件等于0200权限的文件，就是只有一个所属者可写的文件。
+
+.. code-block:: bash
+
+    $ find . -perm 0200 -exec ls -l {} \;
+    --w------- 1 root root 0 Feb 18 16:43 ./a
+
+
+查找文件权限大于等于指定权限的文件
+----------------------------------------
+
+.. code-block:: bash
+
+    [root@test1 ~]# find . -type f -perm -0600 -exec ls -l {} \;
+    -rw-r--r--. 1 root root 18 Dec 29  2013 ./.bash_logout
+    -rw-r--r--. 1 root root 176 Dec 29  2013 ./.bash_profile
+    -rw-r--r--. 1 root root 176 Dec 29  2013 ./.bashrc
+    -rw-r--r--. 1 root root 100 Dec 29  2013 ./.cshrc
+    -rw-r--r--. 1 root root 129 Dec 29  2013 ./.tcshrc
+    -rw-------. 1 root root 1555 Dec 17 15:35 ./anaconda-ks.cfg
+    -rw-------. 1 root root 1813 Dec 18 18:35 ./.ssh/authorized_keys
+    -rw-------. 1 root root 26099 Feb 18 14:54 ./.bash_history
+    -rw-r--r-- 1 root root 11 Feb 14 17:54 ./a.
+    -rw------- 1 root root 4000 Feb 18 14:57 ./.viminfo
+    -rw------- 1 root root 35836 Feb 18 16:35 ./file
+    -rw------- 1 root root 0 Feb 18 16:43 ./c
+    -rwxrwxrwx 1 root root 0 Feb 18 16:43 ./d
+    [root@test1 ~]#
+

@@ -103,3 +103,10 @@ win：	https://github.com/shadowsocks/shadowsocks-windows/releases
 mac：	https://github.com/shadowsocks/ShadowsocksX-NG/releases
 
 linux：	https://github.com/shadowsocks/shadowsocks-qt5/wiki/Installation
+
+
+.. code-block:: bash
+
+    sudo dnf copr enable librehat/shadowsocks
+    sudo dnf update
+    sudo dnf install shadowsocks-qt5

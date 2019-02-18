@@ -8,3 +8,4 @@ vpn
     002-pptp
     003-l2tp
     004-ikev2
+    005-ss
