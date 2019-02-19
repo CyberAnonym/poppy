@@ -43,6 +43,7 @@ ShadowSocks
 
 多用户：
 
+.. code-block:: bash
 
     {
         "server":"0.0.0.0",

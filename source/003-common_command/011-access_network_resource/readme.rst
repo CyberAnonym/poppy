@@ -10,3 +10,4 @@
     004-nslookup
     005-ab
     007-host
+    008-sftp
