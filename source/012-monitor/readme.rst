@@ -7,3 +7,4 @@
     001-zabbix/readme
     002-nagios
     003-tcpdump
+    004-snmp
