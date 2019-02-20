@@ -1,7 +1,7 @@
 ShadowSocks
 ######################
 
-
+相关网络地址：  https://shadowsocks.org/en/download/clients.html
 
 安装ShadowSocks
 =============================
@@ -105,6 +105,7 @@ mac：	https://github.com/shadowsocks/ShadowsocksX-NG/releases
 
 linux：	https://github.com/shadowsocks/shadowsocks-qt5/wiki/Installation
 
+其他地址 : https://shadowsocks.org/en/download/clients.html
 
 .. code-block:: bash
 
