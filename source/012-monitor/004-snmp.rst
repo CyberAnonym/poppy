@@ -427,3 +427,245 @@ OID是各个监控项的一个标识，树形分配的，比如1.3.6.1.2.1.25.2.
 
 
 
+常用OID列表
+========================
+
+
+::
+
+    1）SNMP协议是通用的，该模板不仅可以监控HP Linux机器，还可以监控HP Windows机器。
+    2）HP代理常用的OID，其它的还很多，大家去慢慢研究。
+    HP阵列卡状态：1.3.6.1.4.1.232.3.2.2.1.1.6
+    物理磁盘状态：1.3.6.1.4.1.232.3.2.5.1.1.6
+    逻辑磁盘状态：1.3.6.1.4.1.232.3.2.3.1.1.4
+    HP部件温度：1.3.6.1.4.1.232.6.2.6.8.1.4
+    snmpwalk -v2c -c public 10.17.71.25 .1.3.6.1.2.1.25.2.2  查看内存总数
+    SNMP监控一些常用OID的总结
+    系统参数（1.3.6.1.2.1.1）
+    OID 描述 备注 请求方式
+    .1.3.6.1.2.1.1.1.0 获取系统基本信息 SysDesc GET
+    .1.3.6.1.2.1.1.3.0 监控时间 sysUptime GET
+    .1.3.6.1.2.1.1.4.0 系统联系人 sysContact GET
+    .1.3.6.1.2.1.1.5.0 获取机器名 SysName GET
+    .1.3.6.1.2.1.1.6.0 机器坐在位置 SysLocation GET
+    .1.3.6.1.2.1.1.7.0 机器提供的服务 SysService GET
+    .1.3.6.1.2.1.25.4.2.1.2 系统运行的进程列表 hrSWRunName WALK
+    .1.3.6.1.2.1.25.6.3.1.2 系统安装的软件列表 hrSWInstalledName WALK
+
+    网络接口（1.3.6.1.2.1.2）
+    OID 描述 备注 请求方式
+    .1.3.6.1.2.1.2.1.0 网络接口的数目 IfNumber GET
+    .1.3.6.1.2.1.2.2.1.2 网络接口信息描述 IfDescr WALK
+    .1.3.6.1.2.1.2.2.1.3 网络接口类型 IfType WALK
+    .1.3.6.1.2.1.2.2.1.4 接口发送和接收的最大IP数据报[BYTE] IfMTU WALK
+    .1.3.6.1.2.1.2.2.1.5 接口当前带宽[bps] IfSpeed WALK
+    .1.3.6.1.2.1.2.2.1.6 接口的物理地址 IfPhysAddress WALK
+    .1.3.6.1.2.1.2.2.1.8 接口当前操作状态[up|down] IfOperStatus WALK
+    .1.3.6.1.2.1.2.2.1.10 接口收到的字节数 IfInOctet WALK
+    .1.3.6.1.2.1.2.2.1.16 接口发送的字节数 IfOutOctet WALK
+    .1.3.6.1.2.1.2.2.1.11 接口收到的数据包个数 IfInUcastPkts WALK
+    .1.3.6.1.2.1.2.2.1.17 接口发送的数据包个数 IfOutUcastPkts WALK
+
+    CPU及负载
+    OID 描述 备注 请求方式
+    . 1.3.6.1.4.1.2021.11.9.0 用户CPU百分比 ssCpuUser GET
+    . 1.3.6.1.4.1.2021.11.10.0 系统CPU百分比 ssCpuSystem GET
+    . 1.3.6.1.4.1.2021.11.11.0 空闲CPU百分比 ssCpuIdle GET
+    . 1.3.6.1.4.1.2021.11.50.0 原始用户CPU使用时间 ssCpuRawUser GET
+    .1.3.6.1.4.1.2021.11.51.0 原始nice占用时间 ssCpuRawNice GET
+    . 1.3.6.1.4.1.2021.11.52.0 原始系统CPU使用时间 ssCpuRawSystem. GET
+    . 1.3.6.1.4.1.2021.11.53.0 原始CPU空闲时间 ssCpuRawIdle GET
+    . 1.3.6.1.2.1.25.3.3.1.2 CPU的当前负载，N个核就有N个负载 hrProcessorLoad WALK
+    . 1.3.6.1.4.1.2021.11.3.0 ssSwapIn GET
+    . 1.3.6.1.4.1.2021.11.4.0 SsSwapOut GET
+    . 1.3.6.1.4.1.2021.11.5.0 ssIOSent GET
+    . 1.3.6.1.4.1.2021.11.6.0 ssIOReceive GET
+    . 1.3.6.1.4.1.2021.11.7.0 ssSysInterrupts GET
+    . 1.3.6.1.4.1.2021.11.8.0 ssSysContext GET
+    . 1.3.6.1.4.1.2021.11.54.0 ssCpuRawWait GET
+    . 1.3.6.1.4.1.2021.11.56.0 ssCpuRawInterrupt GET
+    . 1.3.6.1.4.1.2021.11.57.0 ssIORawSent GET
+    . 1.3.6.1.4.1.2021.11.58.0 ssIORawReceived GET
+    . 1.3.6.1.4.1.2021.11.59.0 ssRawInterrupts GET
+    . 1.3.6.1.4.1.2021.11.60.0 ssRawContexts GET
+    . 1.3.6.1.4.1.2021.11.61.0 ssCpuRawSoftIRQ GET
+    . 1.3.6.1.4.1.2021.11.62.0 ssRawSwapIn. GET
+    . 1.3.6.1.4.1.2021.11.63.0 ssRawSwapOut GET
+    .1.3.6.1.4.1.2021.10.1.3.1 Load5 GET
+    .1.3.6.1.4.1.2021.10.1.3.2 Load10 GET
+    .1.3.6.1.4.1.2021.10.1.3.3 Load15 GET
+
+    内存及磁盘（1.3.6.1.2.1.25）
+    OID 描述 备注 请求方式
+    .1.3.6.1.2.1.25.2.2.0 获取内存总大小 hrMemorySize GET
+    .1.3.6.1.2.1.25.2.3.1.1 存储设备编号 hrStorageIndex WALK
+    .1.3.6.1.2.1.25.2.3.1.2 存储设备类型 hrStorageType[OID] WALK
+    .1.3.6.1.2.1.25.2.3.1.3 存储设备描述 hrStorageDescr WALK
+    .1.3.6.1.2.1.25.2.3.1.4 簇的大小 hrStorageAllocationUnits WALK
+    .1.3.6.1.2.1.25.2.3.1.5 簇的的数目 hrStorageSize WALK
+    .1.3.6.1.2.1.25.2.3.1.6 使用多少，跟总容量相除就是占用率 hrStorageUsed WALK
+    .1.3.6.1.4.1.2021.4.3.0 Total Swap Size(虚拟内存) memTotalSwap GET
+    .1.3.6.1.4.1.2021.4.4.0 Available Swap Space memAvailSwap GET
+    .1.3.6.1.4.1.2021.4.5.0 Total RAM in machine memTotalReal GET
+    .1.3.6.1.4.1.2021.4.6.0 Total RAM Free memAvailReal GET
+    .1.3.6.1.4.1.2021.4.11.0 Total RAM +SWAP Free memTotalFree GET
+    .1.3.6.1.4.1.2021.4.13.0 Total RAM Shared memShared GET
+    .1.3.6.1.4.1.2021.4.14.0 Total RAM Buffered memBuffer GET
+    .1.3.6.1.4.1.2021.4.15.0 Total Cached Memory memCached GET
+    .1.3.6.1.4.1.2021.9.1.2 Path where the disk is mounted dskPath WALK
+    .1.3.6.1.4.1.2021.9.1.3 Path of the device for the partition dskDevice WALK
+    .1.3.6.1.4.1.2021.9.1.6 Total size of the disk/partion (kBytes) dskTotal WALK
+    .1.3.6.1.4.1.2021.9.1.7 Available space on the disk dskAvail WALK
+    .1.3.6.1.4.1.2021.9.1.8 Used space on the disk dskUsed WALK
+    .1.3.6.1.4.1.2021.9.1.9 Percentage of space used on disk dskPercent WALK
+    .1.3.6.1.4.1.2021.9.1.10 Percentage of inodes used on disk dskPercentNode WALK
+    System Group
+    sysDescr 1.3.6.1.2.1.1.1
+    sysObjectID 1.3.6.1.2.1.1.2
+    sysUpTime 1.3.6.1.2.1.1.3
+    sysContact 1.3.6.1.2.1.1.4
+    sysName 1.3.6.1.2.1.1.5
+    sysLocation 1.3.6.1.2.1.1.6
+    sysServices 1.3.6.1.2.1.1.7
+    Interfaces Group
+    ifNumber 1.3.6.1.2.1.2.1
+    ifTable 1.3.6.1.2.1.2.2
+    ifEntry 1.3.6.1.2.1.2.2.1
+    ifIndex 1.3.6.1.2.1.2.2.1.1
+    ifDescr 1.3.6.1.2.1.2.2.1.2
+    ifType 1.3.6.1.2.1.2.2.1.3
+    ifMtu 1.3.6.1.2.1.2.2.1.4
+    ifSpeed 1.3.6.1.2.1.2.2.1.5
+    ifPhysAddress 1.3.6.1.2.1.2.2.1.6
+    ifAdminStatus 1.3.6.1.2.1.2.2.1.7
+    ifOperStatus 1.3.6.1.2.1.2.2.1.8
+    ifLastChange 1.3.6.1.2.1.2.2.1.9
+    ifInOctets 1.3.6.1.2.1.2.2.1.10
+    ifInUcastPkts 1.3.6.1.2.1.2.2.1.11
+    ifInNUcastPkts 1.3.6.1.2.1.2.2.1.12
+    ifInDiscards 1.3.6.1.2.1.2.2.1.13
+    ifInErrors 1.3.6.1.2.1.2.2.1.14
+    ifInUnknownProtos 1.3.6.1.2.1.2.2.1.15
+    ifOutOctets 1.3.6.1.2.1.2.2.1.16
+    ifOutUcastPkts 1.3.6.1.2.1.2.2.1.17
+    ifOutNUcastPkts 1.3.6.1.2.1.2.2.1.18
+    ifOutDiscards 1.3.6.1.2.1.2.2.1.19
+    ifOutErrors 1.3.6.1.2.1.2.2.1.20
+    ifOutQLen 1.3.6.1.2.1.2.2.1.21
+    ifSpecific 1.3.6.1.2.1.2.2.1.22
+    IP Group
+    ipForwarding 1.3.6.1.2.1.4.1
+    ipDefaultTTL 1.3.6.1.2.1.4.2
+    ipInReceives 1.3.6.1.2.1.4.3
+    ipInHdrErrors 1.3.6.1.2.1.4.4
+    ipInAddrErrors 1.3.6.1.2.1.4.5
+    ipForwDatagrams 1.3.6.1.2.1.4.6
+    ipInUnknownProtos 1.3.6.1.2.1.4.7
+    ipInDiscards 1.3.6.1.2.1.4.8
+    ipInDelivers 1.3.6.1.2.1.4.9
+    ipOutRequests 1.3.6.1.2.1.4.10
+    ipOutDiscards 1.3.6.1.2.1.4.11
+    ipOutNoRoutes 1.3.6.1.2.1.4.12
+    ipReasmTimeout 1.3.6.1.2.1.4.13
+    ipReasmReqds 1.3.6.1.2.1.4.14
+    ipReasmOKs 1.3.6.1.2.1.4.15
+    ipReasmFails 1.3.6.1.2.1.4.16
+    ipFragsOKs 1.3.6.1.2.1.4.17
+    ipFragsFails 1.3.6.1.2.1.4.18
+    ipFragCreates 1.3.6.1.2.1.4.19
+    ipAddrTable 1.3.6.1.2.1.4.20
+    ipAddrEntry 1.3.6.1.2.1.4.20.1
+    ipAdEntAddr 1.3.6.1.2.1.4.20.1.1
+    ipAdEntIfIndex 1.3.6.1.2.1.4.20.1.2
+    ipAdEntNetMask 1.3.6.1.2.1.4.20.1.3
+    ipAdEntBcastAddr 1.3.6.1.2.1.4.20.1.4
+    ipAdEntReasmMaxSize 1.3.6.1.2.1.4.20.1.5
+    ICMP Group
+    icmpInMsgs 1.3.6.1.2.1.5.1
+    icmpInErrors 1.3.6.1.2.1.5.2
+    icmpInDestUnreachs 1.3.6.1.2.1.5.3
+    icmpInTimeExcds 1.3.6.1.2.1.5.4
+    icmpInParmProbs 1.3.6.1.2.1.5.5
+    icmpInSrcQuenchs 1.3.6.1.2.1.5.6
+    icmpInRedirects 1.3.6.1.2.1.5.7
+    icmpInEchos 1.3.6.1.2.1.5.8
+    icmpInEchoReps 1.3.6.1.2.1.5.9
+    icmpInTimestamps 1.3.6.1.2.1.5.10
+    icmpInTimestampReps 1.3.6.1.2.1.5.11
+    icmpInAddrMasks 1.3.6.1.2.1.5.12
+    icmpInAddrMaskReps 1.3.6.1.2.1.5.13
+    icmpOutMsgs 1.3.6.1.2.1.5.14
+    icmpOutErrors 1.3.6.1.2.1.5.15
+    icmpOutDestUnreachs 1.3.6.1.2.1.5.16
+    icmpOutTimeExcds 1.3.6.1.2.1.5.17
+    icmpOutParmProbs 1.3.6.1.2.1.5.18
+    icmpOutSrcQuenchs 1.3.6.1.2.1.5.19
+    icmpOutRedirects 1.3.6.1.2.1.5.20
+    icmpOutEchos 1.3.6.1.2.1.5.21
+    icmpOutEchoReps 1.3.6.1.2.1.5.22
+    icmpOutTimestamps 1.3.6.1.2.1.5.23
+    icmpOutTimestampReps 1.3.6.1.2.1.5.24
+    icmpOutAddrMasks 1.3.6.1.2.1.5.25
+    icmpOutAddrMaskReps 1.3.6.1.2.1.5.26
+    TCP Group
+    tcpRtoAlgorithm 1.3.6.1.2.1.6.1
+    tcpRtoMin 1.3.6.1.2.1.6.2
+    tcpRtoMax 1.3.6.1.2.1.6.3
+    tcpMaxConn 1.3.6.1.2.1.6.4
+    tcpActiveOpens 1.3.6.1.2.1.6.5
+    tcpPassiveOpens 1.3.6.1.2.1.6.6
+    tcpAttemptFails 1.3.6.1.2.1.6.7
+    tcpEstabResets 1.3.6.1.2.1.6.8
+    tcpCurrEstab 1.3.6.1.2.1.6.9
+    tcpInSegs 1.3.6.1.2.1.6.10
+    tcpOutSegs 1.3.6.1.2.1.6.11
+    tcpRetransSegs 1.3.6.1.2.1.6.12
+    tcpConnTable 1.3.6.1.2.1.6.13
+    tcpConnEntry 1.3.6.1.2.1.6.13.1
+    tcpConnState 1.3.6.1.2.1.6.13.1.1
+    tcpConnLocalAddress 1.3.6.1.2.1.6.13.1.2
+    tcpConnLocalPort 1.3.6.1.2.1.6.13.1.3
+    tcpConnRemAddress 1.3.6.1.2.1.6.13.1.4
+    tcpConnRemPort 1.3.6.1.2.1.6.13.1.5
+    tcpInErrs 1.3.6.1.2.1.6.14
+    tcpOutRsts 1.3.6.1.2.1.6.15
+    UDP Group
+    udpInDatagrams 1.3.6.1.2.1.7.1
+    udpNoPorts 1.3.6.1.2.1.7.2
+    udpInErrors 1.3.6.1.2.1.7.3
+    udpOutDatagrams 1.3.6.1.2.1.7.4
+    udpTable 1.3.6.1.2.1.7.5
+    udpEntry 1.3.6.1.2.1.7.5.1
+    udpLocalAddress 1.3.6.1.2.1.7.5.1.1
+    udpLocalPort 1.3.6.1.2.1.7.5.1.2
+    SNMP Group
+    snmpInPkts 1.3.6.1.2.1.11.1
+    snmpOutPkts 1.3.6.1.2.1.11.2
+    snmpInBadVersions 1.3.6.1.2.1.11.3
+    snmpInBadCommunityNames 1.3.6.1.2.1.11.4
+    snmpInBadCommunityUses 1.3.6.1.2.1.11.5
+    snmpInASNParseErrs 1.3.6.1.2.1.11.6
+    NOT USED 1.3.6.1.2.1.11.7
+    snmpInTooBigs 1.3.6.1.2.1.11.8
+    snmpInNoSuchNames 1.3.6.1.2.1.11.9
+    snmpInBadValues 1.3.6.1.2.1.11.10
+    snmpInReadOnlys 1.3.6.1.2.1.11.11
+    snmpInGenErrs 1.3.6.1.2.1.11.12
+    snmpInTotalReqVars 1.3.6.1.2.1.11.13
+    snmpInTotalSetVars 1.3.6.1.2.1.11.14
+    snmpInGetRequests 1.3.6.1.2.1.11.15
+    snmpInGetNexts 1.3.6.1.2.1.11.16
+    snmpInSetRequests 1.3.6.1.2.1.11.17
+    snmpInGetResponses 1.3.6.1.2.1.11.18
+    snmpInTraps 1.3.6.1.2.1.11.19
+    snmpOutTooBigs 1.3.6.1.2.1.11.20
+    snmpOutNoSuchNames 1.3.6.1.2.1.11.21
+    snmpOutBadValues 1.3.6.1.2.1.11.22
+    NOT USED 1.3.6.1.2.1.11.23
+    snmpOutGenErrs 1.3.6.1.2.1.11.24
+    snmpOutGetRequests 1.3.6.1.2.1.11.25
+    snmpOutGetNexts 1.3.6.1.2.1.11.26
+    snmpOutSetRequests 1.3.6.1.2.1.11.27
+    snmpOutGetResponses 1.3.6.1.2.1.11.28
+    snmpOutTraps 1.3.6.1.2.1.11.29
+    snmpEnableAuthenTraps 1.3.6.1.2.1.11.30
