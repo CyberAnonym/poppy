@@ -5,45 +5,50 @@ snmp
 
 snmp， 简单网络管理协议
 
+1. SNMP描述&说明
+====================
 
 SNMP 是一个协议用来管理网络上的节点，（包括工作站，路由器，交换机，集线器和其他的外围设备）。SNMP是一个应用协议，使用UDP封装进行传输。UDP是一个无连接的传输层协议，在OSI模型中为第四层协议，提供简单的可靠的传输服务。SNMP使网络管理者能够管理网络性能，发现和解决网络问题，规划网络的增长。
-     当前，定义了三个版本的网络管理协议，SNMP v1，SNMP v2，SNMP v3。SNMP v1，v2有很多共同的特征，SNMP v3 在先前的版本地基础上增加了安全和远程配置能力 。为了解决不同版本的兼容性问题，RFC3584定义了共存策略。
 
-   SNMP v1 是最初实施SNMP协议。SNMPv1 运行在像UDP，IP，OSI无连接网络服务（CLNS），DDP（AppTalk Datagram-Delivery）,IPX(Novell Internet Packet Exchange)之上.SNMPv1 广泛使用成为因特网上实际的网络管理协议。
+当前，定义了三个版本的网络管理协议，SNMP v1，SNMP v2，SNMP v3。SNMP v1，v2有很多共同的特征，SNMP v3 在先前的版本地基础上增加了安全和远程配置能力 。为了解决不同版本的兼容性问题，RFC3584定义了共存策略。
 
-   SNMP 是一种简单的request/response协议。网络管理系统发出一个请求，被管理设备返回响应。这些行为由四种协议操作组成：Get，GetNext，Set 和Trap。Get操作使NMS来获取agent的一个或多个对象实例。如果agent返回get操作不能提供列表所有对象实例的值，就不能提供任何值。GetNext 操作是NMS用来从agent表中获取表中下一个对象实例。Set操作是NMS用来设置agent对象实例的值。trap操作用于agent向NMS通告有意义的事件。
+SNMP v1 是最初实施SNMP协议。SNMPv1 运行在像UDP，IP，OSI无连接网络服务（CLNS），DDP（AppTalk Datagram-Delivery）,IPX(Novell Internet Packet Exchange)之上.SNMPv1 广泛使用成为因特网上实际的网络管理协议。
 
-   SNMP v2是1993年设计的，是v1版的演进版。Get，GetNext和Set操作相同于SNMPv1。然而，SNMPv2 增加和加强了一些协议操作。在SNMPv2中，如果在get-request中需要多个请求值，如果有一个不存在，请求照样会被正常执行。而在SNMPv1中将响应一个错误消息。在 v1，Trap 消息和其他几个操作消息的PDU不同。v2版本简化了trap消息，使trap和其他的get和set消息格式相同。
+SNMP 是一种简单的request/response协议。网络管理系统发出一个请求，被管理设备返回响应。这些行为由四种协议操作组成：Get，GetNext，Set 和Trap。Get操作使NMS来获取agent的一个或多个对象实例。如果agent返回get操作不能提供列表所有对象实例的值，就不能提供任何值。GetNext 操作是NMS用来从agent表中获取表中下一个对象实例。Set操作是NMS用来设置agent对象实例的值。trap操作用于agent向NMS通告有意义的事件。
+
+SNMP v2是1993年设计的，是v1版的演进版。Get，GetNext和Set操作相同于SNMPv1。然而，SNMPv2 增加和加强了一些协议操作。在SNMPv2中，如果在get-request中需要多个请求值，如果有一个不存在，请求照样会被正常执行。而在SNMPv1中将响应一个错误消息。在 v1，Trap 消息和其他几个操作消息的PDU不同。v2版本简化了trap消息，使trap和其他的get和set消息格式相同。
 
 SNMPv2还定义了两个新的协议操作：GetBulk和Inform。GetBulk 操作被用于NMS高效的获取大量的块数据，如表中一行中的多列(一个UDP数据包应答)。GetBulk 将请求返回的响应消息尽量多的返回。Inform操作允许一个NMS 来发送trap消息给其他的NMS，再接收响应。在SNMPv2中，如果agent响应GetBulk操作不能提供list中全部的变量的值，则提供部分的结果。
 
-   SNMP v2在安全策略演变时存在多个变种,实际存在多个SNMP v2的消息格式。SNMPv2各个变种之间的不同在于安全的实施。因而各个SNMP v2变种之间的PDU都有相同的格式，而总的消息格式又都不同。
+SNMP v2在安全策略演变时存在多个变种,实际存在多个SNMP v2的消息格式。SNMPv2各个变种之间的不同在于安全的实施。因而各个SNMP v2变种之间的PDU都有相同的格式，而总的消息格式又都不同。
 
-   现在，SNMP v3 在前面的版本上增加了安全能力和远程配置能力，SNMPv3结构为消息安全和VACM（View-based Access Control Model）引入了USM（User-based Security Model）。这个结构支持同时使用不同的安全机制，接入控制，消息处理模型。SNMP v3 也引入使用SNMP SET命令动态配置 SNMP agent而不失MIB对象代表agent配置。
+现在，SNMP v3 在前面的版本上增加了安全能力和远程配置能力，SNMPv3结构为消息安全和VACM（View-based Access Control Model）引入了USM（User-based Security Model）。这个结构支持同时使用不同的安全机制，接入控制，消息处理模型。SNMP v3 也引入使用SNMP SET命令动态配置 SNMP agent而不失MIB对象代表agent配置。
 
-  这些动态配置支持能够增加，删除，修改和配置远程或本地实体。
+这些动态配置支持能够增加，删除，修改和配置远程或本地实体。
 
 
-有三个可能的安全级别: noAuthNoPriv, authNoPriv, 和 authPriv.
-noAuthNoPriv 级别指明了没有认证或私密性被执行.
-authNoPriv 级别指明了认证被执行但没有私密性被执行.
-authPriv 级别指明了认证和私密性都被执行.
+有三个可能的安全级别: noAuthNoPriv, authNoPriv, 和 authPriv。
+    noAuthNoPriv 级别指明了没有认证或私密性被执行.
+
+    authNoPriv 级别指明了认证被执行但没有私密性被执行.
+
+    authPriv 级别指明了认证和私密性都被执行.
 
 auth---认证 支持MD5 or SHA;
 priv---加密 支持DES or RSA;
 
-  通用的SNMPv3消息格式遵循相同的消息封装格式包含一个头和一个被封装PDU。 头部区域，被分成两个部分，一部分处理安全，和另外一部份与安全无关的部分。与安全无关部分所有的SNMPv3部分是相同的，而使用安全相关部分被设计成各种的SNMPv3安全模型，被SNMP内的安全模型处理。
+通用的SNMPv3消息格式遵循相同的消息封装格式包含一个头和一个被封装PDU。 头部区域，被分成两个部分，一部分处理安全，和另外一部份与安全无关的部分。与安全无关部分所有的SNMPv3部分是相同的，而使用安全相关部分被设计成各种的SNMPv3安全模型，被SNMP内的安全模型处理。
 
 
 
-    SNMPv1只使用一种安全策略，团体名。团体名和密码相似。Agent能够被设置回答那些团体名能够被接受的Manager的查询。在很容易让人截取得到团体名或密码。SNMPv2增加了不少额外的安全。首先所有的包信息除了目的地址，其他都被加密。在加密的数据中包括团体名和源IP地址。Agent 能够解开加密包并使用收到的团体名和源IP地址使请求有效。SNMPv3提供三重的安全机制。最高层是认证和私密。中间层提供认证而没有私密和底层没有任何的认证机制和私密
+SNMPv1只使用一种安全策略，团体名。团体名和密码相似。Agent能够被设置回答那些团体名能够被接受的Manager的查询。在很容易让人截取得到团体名或密码。SNMPv2增加了不少额外的安全。首先所有的包信息除了目的地址，其他都被加密。在加密的数据中包括团体名和源IP地址。Agent 能够解开加密包并使用收到的团体名和源IP地址使请求有效。SNMPv3提供三重的安全机制。最高层是认证和私密。中间层提供认证而没有私密和底层没有任何的认证机制和私密
 
-    SNMPV1,V2均采用明文传送，SNMPV3采用加密传送，也就是说对应SNMPV1,V2用抓包工具能在数据包中直接看到团体名。
+SNMPV1,V2均采用明文传送，SNMPV3采用加密传送，也就是说对应SNMPV1,V2用抓包工具能在数据包中直接看到团体名。
 
 如下团体名为：snmpv2, 显然抓包可以抓到
 
 
-安装snmp
+2. 安装snmp
 ================
 
 .. code-block:: bash
@@ -58,8 +63,43 @@ priv---加密 支持DES or RSA;
     snmpd -v
 
 
-配置snmp团体名
+3. snmp的常用配置
 =======================
+
+3.1 配置解释
+--------------------
+
+这里我们先查看一下snmpd的配置。
+
+.. code-block:: bash
+
+    $ grep -vE '^$|^#' /etc/snmp/snmpd.conf
+    com2sec notConfigUser  default       public
+    group   notConfigGroup v1           notConfigUser
+    group   notConfigGroup v2c           notConfigUser
+    view    systemview    included   .1.3.6.1.2.1.1
+    view    systemview    included   .1.3.6.1.2.1.25.1.1
+    access  notConfigGroup ""      any       noauth    exact  systemview none none
+    syslocation Unknown (edit /etc/snmp/snmpd.conf)
+    syscontact Root <root@localhost> (configure /etc/snmp/snmp.local.conf)
+    dontLogTCPWrappersConnects yes
+
+
+下面我们来了解下这些配置,首先是com2sec这一行
+
+com2sec 这一行的内容表示定义一个团体名（community）public到安全名(security name)notConfigUser. defaults表示范围是默认范围，即对所有地址开放，可将default改成具体ip。 团体名public相当于一个密码，客户端通过这个团体名来获取信息。
+
+group这一行的内容表示将安全名notConfigUser映射到一个noConfigGroup这个组，这个组使用的协议是v1，下面一行使用的协议是v2c.
+
+view开头的行，表示定义定一个视图，这里是视图名为systemview，后面是动作，这里的动作是included，就是包含，最后一列就是要包含的内容，也就是该视图的权限范围。
+
+access 这一行就是将权限分配给组，各列的的值的分别代表group  context sec.model sec.level prefix read   write  notif ， 上面的配置表示我们在读的权限上是给了systemview,写的权限没有给，验证方式是noauth。
+
+后面的 syslocation syscontact 就是关于本机信息我们自己的填写标识了。
+
+上面这些配置，都是SNMP v1和SNMPv 2的配置。
+
+
 
 下面我们修改/etc/snmp/snmpd.conf ，原配置中我们修改的那一行，最后一列数据默认是public，这里我们改成了sophiroth，后续访问该服务器的snmp服务时，也需要通过sophiroth这个标识来验证获取数据。
 
@@ -69,7 +109,7 @@ priv---加密 支持DES or RSA;
     com2sec notConfigUser  default       sophiroth
 
 
-启动snmp服务
+4. 启动snmp服务
 ===================
 
 .. code-block:: bash
@@ -83,7 +123,7 @@ priv---加密 支持DES or RSA;
 
 
 
-查看通过SNMP能看到的东西
+5. 查看通过SNMP能看到的东西
 ==============================
 
 刚才我们是在test2上安装的，现在我们在test1上安装了客户端工具，去查看一下test1
@@ -131,7 +171,7 @@ priv---加密 支持DES or RSA;
     HOST-RESOURCES-MIB::hrSystemUptime.0 = Timeticks: (5956198) 16:32:41.98
     HOST-RESOURCES-MIB::hrSystemUptime.0 = No more variables left in this MIB View (It is past the end of the MIB tree)
 
-修改配置，使客户端能获取更多信息
+6. 修改配置，使客户端能获取更多信息
 =========================================
 
 下面我们指定能访问我们的snmp服务的ip地址，指定只允许192.168.3.42来访问。
@@ -147,7 +187,7 @@ access那一行的倒数第三列改成了all，使得客户端可以获取更�
 
 
 
-通过OID查看主机信息
+7. 通过OID查看主机信息
 ==============================
 
 .. code-block:: bash
@@ -185,7 +225,7 @@ snmpwalk 命令参数
 
 
 
-snmpv3用户，并设置认证以及加密方式
+8. snmpv3用户，并设置认证以及加密方式
 ==========================================
 
 .. note::
@@ -193,7 +233,7 @@ snmpv3用户，并设置认证以及加密方式
     为了安全，验证密码和加密密码不要设置相同。
 
 
-配置之前，要先停止服务
+8.1配置之前，要先停止服务
 -------------------------------
 
 .. code-block:: bash
@@ -202,8 +242,9 @@ snmpv3用户，并设置认证以及加密方式
     [root@test2 ~]#
 
 
-然后开始新增snmpv3用户，并设置认证及加密方式
+8.2 然后开始新增snmpv3用户，并设置认证及加密方式
 -----------------------------------------------------
+
 
 .. code-block:: bash
 
@@ -237,7 +278,7 @@ net-snmp-create-v3-user命令参数解释如下
 
 
 
-客户端验证
+8.3 客户端验证
 -------------------
 
 
@@ -248,8 +289,8 @@ net-snmp-create-v3-user命令参数解释如下
 
 
 
-删除SNMPv3账户
-----------------------
+8.4 删除SNMPv3账户
+-------------------------
 
 
 先停止服务
@@ -281,7 +322,7 @@ SNMPv3 账户信息被包含在两个文件之中。删除账户即删除这个�
 
 
 
-SNMPV3禁止不安全的接入方式
+9. SNMPV3禁止不安全的接入方式
 =====================================
 
 按照上述文档内容我配置了SNMPV3的用户验证之后，客户端可以通过-lauthNoPriv也就是验证但不加密的方式访问， 但出于安全需求我们要禁止不加密。也就是禁止authNoPriv这个级别
@@ -366,5 +407,23 @@ SNMPV3禁止不安全的接入方式
 
         [root@test1 ~]# snmpwalk -v3 -l authPriv  -u alvin -aMD5 -A 'alvinAuthPassword' -x DES -X alvinEcryptPassword  test2|wc -l
         4468
+
+这里我们通过OID来针对性的查看一下目标服务器的总内存, 下面的命令中，最后的.1.3.6.1.2.1.25.2.2.0就是OID, 开头1前面那个点也可以去掉。
+
+.. code-block:: bash
+
+    [root@test1 ~]# snmpwalk -v3 -l authPriv  -u alvin -aMD5 -A 'alvinAuthPassword' -x DES -X alvinEcryptPassword  test2 .1.3.6.1.2.1.25.2.2.0
+    HOST-RESOURCES-MIB::hrMemorySize.0 = INTEGER: 3881516 KBytes
+
+OID是各个监控项的一个标识，树形分配的，比如1.3.6.1.2.1.25.2.2.0 后面去掉.2.0，使用1.3.6.1.2.1.25.2去查看，出来的内容就更多，其中就包含1.3.6.1.2.1.25.2.2.0所显示的内容。如果只输入1，那就是查看全部，因为所有的项都是在1下面的。
+
+
+**查看空闲CPU百分比**
+
+.. code-block:: bash
+
+    [root@test1 ~]# snmpwalk -v3 -l authPriv  -u alvin -aMD5 -A 'alvinAuthPassword' -x DES -X alvinEcryptPassword  test2 1.3.6.1.4.1.2021.11.11.0
+    UCD-SNMP-MIB::ssCpuIdle.0 = INTEGER: 99
+
 
 
