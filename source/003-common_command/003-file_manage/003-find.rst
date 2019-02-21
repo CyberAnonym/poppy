@@ -158,3 +158,13 @@ find
     -rwxrwxrwx 1 root root 0 Feb 18 16:43 ./d
     [root@test1 ~]#
 
+
+
+满足部分权限就匹配
+-----------------------------
+
+满足权限位中其中一个就匹配
+
+.. code-block:: bash
+
+    find . -type f -perm /0600 -ls

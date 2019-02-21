@@ -1,16 +1,49 @@
 给grub设置用户名和密码
 ######################################
 
-1)、执行生成加密密码的命令"grub2-mkpasswd-pbkdf2",两次输入相同密码，PBKDF2 hash of your password is 之后的部分就是加密后的密码
+通过grub2-mkpasswd-pbkdf2生成密码
+==============================================
+
+
+执行生成加密密码的命令"grub2-mkpasswd-pbkdf2",两次输入相同密码，PBKDF2 hash of your password is 之后的部分就是加密后的密码
+
+
+.. code-block:: bash
+
+    [root@test1 ~]# grub2-mkpasswd-pbkdf2
+    Enter password:
+    Reenter password:
+    PBKDF2 hash of your password is grub.pbkdf2.sha512.10000.53CB2BB4BF569F5B0106C365860315EF522DAD3BF8AAB903AEB1DF1CBAB43C4061DC26DB25E21E4F2816B6186ABDE7038D7DC56F77A9B0927EE16D79F0A02CA2.9968FB3BB23E16EB823E2752FE8B765F75F39D4B18F6E9A9741FF4B6598CDED644894D18A30096933E37B7E033271E7921BFF19558A7780267FB1C01BF73BC6D
+
+
+然后我们将密码传到/boot/grub2/user.cfg文件里去
+
+.. code-block:: bash
+
+    $ GRUB2_PASSWORD='grub.pbkdf2.sha512.10000.53CB2BB4BF569F5B0106C365860315EF522DAD3BF8AAB903AEB1DF1CBAB43C4061DC26DB25E21E4F2816B6186ABDE7038D7DC56F77A9B0927EE16D79F0A02CA2.9968FB3BB23E16EB823E2752FE8B765F75F39D4B18F6E9A9741FF4B6598CDED644894D18A30096933E37B7E033271E7921BFF19558A7780267FB1C01BF73BC6D'
+    $ echo "GRUB2_PASSWORD=$GRUB2_PASSWORD"  > /boot/grub2/user.cfg
+
+然后使其生效
+
+.. code-block:: bash
+
+    grub2-mkconfig -o /boot/grub2/grub.cfg
+
+然后重启服务器验证。
 
 
 
 
-给grub菜单加密，就是为了不让不法分子利用单用户模式修改root密码，请看操作记录
 
 
 
- 在/etc/grub.d/00_header 文件末尾，添加以下内容
+
+
+上面的方法是比较新的方式，旧方法也可参考下面
+
+
+
+在/etc/grub.d/00_header 文件末尾，添加以下内容
 
 ::
 
