@@ -43,40 +43,52 @@ use vsftpd
     $ systemctl restart vsftpd
     $ systemctl enable vsftpd
 
-再查看一下yum信息,确认我们能找到我们需要的东西。
-
-::
-
-    yum list openstack*
 
 
 
-packstack安装openstack
-=============================
-
-packstack安装的时候，有两种方式，
-    1.allinone
-    2.应答文件的方式
-
-生成应答文件
-
-::
-
-    [root@cl210controller ~]# packstack --help | grep ans
-      --gen-answer-file=GEN_ANSWER_FILE
-                            Generate a template of an answer file.
-      --answer-file=ANSWER_FILE
-                            answerfile will also be generated and should be used
-      -o, --options         Print details on options available in answer file(rst
-                            Packstack a second time with the same answer file and
-                            attribute where "y" means an account is disabled.
-        --manila-netapp-transport-type=MANILA_NETAPP_TRANSPORT_TYPE
-                            The transport protocol used when communicating with
-    [root@cl210controller ~]# packstack --gen-answer-file=aa.txt
-
-这样我们就生存了一个应答文件aa.txt
-
-然后我们修改应答文件，主要修改两点，第一点是密码，所有的密码我们改为统一的密码，如果不改，后续需要一些密码的时候就需要到这个文件来找了。第二点是修改CONFIG_PROVISION_DEMO的值为n，也就是不去下载demo，如果为y，系统会去下载demo，需要很长的时间。
 
 
-grep -i _pw aa.txt
+
+禁止root用户登录
+==========================
+
+
+.. code-block:: bash
+
+    if [ -d /etc/vsftpd/ ];then sudo grep ^root /etc/vsftpd/user_list &>/dev/null || sudo sed -i.yabbak '$a root' /etc/vsftpd/user_list; if [ $? -eq 0 ];then sudo grep ^root /etc/vsftpd/ftpusers &>/dev/null || sudo sed -i.yabbak '$a root'  /etc/vsftpd/ftpusers ; echo $?;else echo 1;fi || echo 1 ; else echo 0;fi
+
+
+
+
+linux客户端访问
+=======================
+
+安装lftp
+---------------
+
+.. code-block:: bash
+
+    yum install lftp -y
+
+
+匿名用户访问
+
+.. code-block:: bash
+
+    [root@test1 ~]# lftp test3
+    lftp test3:~> ls
+    drwxr-xr-x    2 0        0               6 Oct 30 19:45 pub
+    lftp test3:/> exit
+
+系统用户访问
+
+.. code-block:: bash
+
+    [root@test1 ~]# lftp test3 -ualvin
+    Password:
+    lftp alvin@test3:~> ls
+    -rw-------    1 1000     1000           11 Feb 21 08:41 alvinhome.txt
+    lftp alvin@test3:~> cat alvinhome.txt
+    alvin home
+    11 bytes transferred
+    lftp alvin@test3:~> exit
