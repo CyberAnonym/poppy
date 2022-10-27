@@ -12,6 +12,7 @@ ShadowSocks
     yum install m2crypto python-setuptools
     yum install python-pip
     pip install shadowsocks
+    pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U
 
 
 
