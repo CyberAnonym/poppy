@@ -8,18 +8,18 @@ if os.path.exists('/usr/bin/python3'):
 
 subprocess.call('yum install gcc zlib zlib-devel libffi-devel openssl-devel -y',shell=True)
 os.chdir('/tmp')
-if os.path.exists('/tmp/python3.6.5.tar.xz'):
+if os.path.exists('/tmp/python3.9.13.tar.xz'):
     pass
 else:
-    subprocess.call('curl -fsSL https://www.python.org/ftp/python/3.6.5/Python-3.6.5.tar.xz > python3.6.5.tar.xz',shell=True)
+    subprocess.call('curl -fsSL https://www.python.org/ftp/python/3.6.5/Python-3.9.13.tar.xz > python3.9.13.tar.xz',shell=True)
 
-subprocess.call('tar xf python3.6.5.tar.xz -C /usr/local/src/',shell=True)
-os.chdir('/usr/local/src/Python-3.6.5/')
+subprocess.call('tar xf python3.9.13.tar.xz -C /usr/local/src/',shell=True)
+os.chdir('/usr/local/src/Python-3.9.13/')
 subprocess.call('./configure --prefix=/usr/local/python3',shell=True)
 subprocess.call('make',shell=True)
 subprocess.call('make install',shell=True)
-subprocess.call("sed -i '210,212s/#//' /usr/local/src/Python-3.6.5/Modules/Setup",shell=True)
-subprocess.call("sed -i '205s/#//' /usr/local/src/Python-3.6.5/Modules/Setup",shell=True)
+subprocess.call("sed -i '210,212s/#//' /usr/local/src/Python-3.9.13/Modules/Setup",shell=True)
+subprocess.call("sed -i '205s/#//' /usr/local/src/Python-3.9.13/Modules/Setup",shell=True)
 
 subprocess.call('make',shell=True)
 subprocess.call('make install',shell=True)
