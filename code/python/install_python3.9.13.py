@@ -11,7 +11,7 @@ os.chdir('/tmp')
 if os.path.exists('/tmp/python3.9.13.tar.xz'):
     pass
 else:
-    subprocess.call('curl -fsSL https://www.python.org/ftp/python/3.6.5/Python-3.9.13.tar.xz > python3.9.13.tar.xz',shell=True)
+    subprocess.call('curl -fsSL https://www.python.org/ftp/python/3.9.13/Python-3.9.13.tar.xz > python3.9.13.tar.xz',shell=True)
 
 subprocess.call('tar xf python3.9.13.tar.xz -C /usr/local/src/',shell=True)
 os.chdir('/usr/local/src/Python-3.9.13/')
